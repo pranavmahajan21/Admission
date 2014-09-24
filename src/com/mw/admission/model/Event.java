@@ -1,6 +1,7 @@
 package com.mw.admission.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,11 @@ public class Event implements Serializable {
 
 	List<Ticket> ticketList;
 	List<Scan> scanList;
+	
+	public Event()
+	{
+		
+	}
 
 	public Event(String name, Date date) {
 		super();

@@ -4,21 +4,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/label_TV"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:background="#00ff00"
-        android:padding="10dp"
-        android:text="SELECT AN EVENT"
-        android:textStyle="bold"
-        android:textColor="@android:color/white" />
+        android:background="#09B9AB"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/label_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="10dp"
+            android:paddingLeft="20dp"
+            android:text="SELECT AN EVENT"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="#ff6823"
+            android:clickable="true"
+            android:onClick="getTickets"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:text="Ok"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/event_LV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    
-    
+
 </LinearLayout>

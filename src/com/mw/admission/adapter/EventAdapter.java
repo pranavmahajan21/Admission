@@ -26,7 +26,6 @@ public class EventAdapter extends BaseAdapter {
 		super();
 		this.context = context;
 		this.eventPO = eventList;
-
 		myApp = (MyApp) context.getApplicationContext();
 	}
 
@@ -62,8 +61,11 @@ public class EventAdapter extends BaseAdapter {
 		}
 
 		Event tempEvent = eventPO.get(position);
+		if(tempEvent.getName().length() > 25)
+		viewHolder.nameTV.setText(tempEvent.getName().substring(0, 25)+"...");
+		else
 		viewHolder.nameTV.setText(tempEvent.getName());
-		viewHolder.nameTV.setText(tempEvent.getDate().toString());
+		viewHolder.dateIV.setText(tempEvent.getDate().toString().substring(3, 10));
 
 		return convertView;
 	}

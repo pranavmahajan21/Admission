@@ -9,6 +9,15 @@ public class Ticket implements Serializable {
 
 	String ticketId, guestName, barcode, orderId;
 	Date scanTime;
+	boolean checkedIn;
+
+	public boolean isCheckedIn() {
+		return checkedIn;
+	}
+
+	public void setCheckedIn(boolean checkedIn) {
+		this.checkedIn = checkedIn;
+	}
 
 	public String getTicketId() {
 		return ticketId;

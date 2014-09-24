@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green"
+        android:background="#09B9AB"
         android:gravity="center_horizontal"
         android:padding="10dp"
         android:text="SELECT A FUNCTION"

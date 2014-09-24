@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f1f1f1"
     android:orientation="vertical"
     android:weightSum="10" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6" >
+        android:layout_weight="6.5" >
 
         <ImageView
             android:id="@+id/header1"
@@ -24,7 +25,7 @@
         <ImageView
             android:id="@+id/header2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:scaleType="fitXY"
             android:src="@drawable/powered_by_mission" />
@@ -35,14 +36,15 @@
         android:id="@+id/parent_view_LL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4" >
+        android:layout_weight="3.5"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:id="@+id/child_view_LL"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="20dp" >
+            android:padding="10dp" >
 
             <TextView
                 android:id="@+id/header_TV"
@@ -50,12 +52,13 @@
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#848484" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" >
+                android:layout_marginTop="15dp" >
 
                 <ImageView
                     android:id="@+id/user_IV"
@@ -74,6 +77,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/user_IV"
                     android:background="#ffffff"
+                    android:hint="E-mail Address"
+                    android:paddingLeft="5dp"
                     android:singleLine="true" />
             </RelativeLayout>
 
@@ -99,20 +104,29 @@
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/password_IV"
                     android:background="#ffffff"
+                    android:hint="Password"
                     android:inputType="textPassword"
+                    android:paddingLeft="5dp"
                     android:singleLine="true" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp" >
 
-                <Button
-                    android:id="@+id/button1"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="#ff6823"
+                    android:clickable="true"
                     android:onClick="onLogin"
-                    android:text="Login" />
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="5dp"
+                    android:text="LOGIN"
+                    android:textColor="#ffffff" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -122,8 +136,44 @@
                     android:clickable="true"
                     android:gravity="center_vertical"
                     android:onClick="onForgotPassword"
+                    android:textColor="#909090"
                     android:text="I forgot my password" />
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/forgotPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Please contact your administrator to reset your password."
+                android:textColor="#22C4BC"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/okBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="#ff6823"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                android:onClick="onOk"
+                android:paddingBottom="5dp"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:paddingTop="5dp"
+                android:text="Ok"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
