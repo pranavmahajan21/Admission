@@ -1,7 +1,6 @@
 package com.mw.admission.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -9,8 +8,10 @@ public class Event implements Serializable {
 
 	private static final long serialVersionUID = -5990446164790566066L;
 
-	String id, name;
-
+	String id;
+	
+	String name;
+	
 	Date date, scanStartDate;
 
 	long total, totalCheckedIn;

@@ -8,10 +8,13 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = -7719557886765194596L;
 
-	boolean isLoggedIn, isPatternMode;
+	boolean isLoggedIn;
+	boolean isPatternMode;
 	int selectedEventIndex;
 
-	String username, password, token;
+	String username;
+	String email;
+	String token;
 
 	List<Event> eventList;
 	Date startTime;
@@ -50,12 +53,12 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getToken() {
@@ -88,6 +91,12 @@ public class User implements Serializable {
 
 	public void setScanSetting(ScanSetting scanSetting) {
 		this.scanSetting = scanSetting;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", email=" + email + ", token="
+				+ token + "]";
 	}
 
 }

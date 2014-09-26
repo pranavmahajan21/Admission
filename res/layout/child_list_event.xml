@@ -8,15 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#09B9AB"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:padding="10dp" >
 
         <TextView
             android:id="@+id/label_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:padding="10dp"
-            android:paddingLeft="20dp"
             android:text="SELECT AN EVENT"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
@@ -27,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
             android:background="#ff6823"
             android:clickable="true"
             android:onClick="getTickets"
@@ -35,13 +33,14 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="5dp"
-            android:text="Ok"
+            android:text="OK"
             android:textColor="#ffffff" />
     </RelativeLayout>
 
     <ListView
         android:id="@+id/event_LV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice" />
 
 </LinearLayout>

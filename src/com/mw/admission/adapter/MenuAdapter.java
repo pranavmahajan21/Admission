@@ -7,25 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mw.admission.activity.R;
 import com.mw.admission.extra.MyApp;
 import com.mw.admission.model.Event;
+import com.mw.admission.model.MenuItem;
 
-public class EventAdapter extends BaseAdapter {
+public class MenuAdapter extends BaseAdapter {
 
 	Context context;
-	List<Event> eventPO;
+	List<MenuItem> menuList;
 
 	MyApp myApp;
 
 	LayoutInflater inflater;
 
-	public EventAdapter(Context context, List<Event> eventList) {
+	public MenuAdapter(Context context, List<MenuItem> menuList) {
 		super();
 		this.context = context;
-		this.eventPO = eventList;
+		this.menuList = menuList;
 		myApp = (MyApp) context.getApplicationContext();
 	}
 
@@ -34,8 +36,8 @@ public class EventAdapter extends BaseAdapter {
 	// }
 
 	static class ViewHolder {
-		protected TextView nameTV;
-		protected TextView dateIV;
+		protected TextView labelTV;
+		protected ImageView arrowIV;
 	}
 
 	@Override
@@ -45,13 +47,13 @@ public class EventAdapter extends BaseAdapter {
 			inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			viewHolder = new ViewHolder();
-			convertView = inflater.inflate(R.layout.element_event, parent,
-					false);
+			convertView = inflater
+					.inflate(R.layout.element_menu, parent, false);
 
-			viewHolder.nameTV = (TextView) convertView
-					.findViewById(R.id.name_TV);
-			viewHolder.dateIV = (TextView) convertView
-					.findViewById(R.id.date_TV);
+			viewHolder.labelTV = (TextView) convertView
+					.findViewById(R.id.label_TV);
+			viewHolder.arrowIV = (ImageView) convertView
+					.findViewById(R.id.arrow_IV);
 
 			// viewHolder.nameTV.setTypeface(myApp.getTypefaceBold());
 
@@ -60,17 +62,21 @@ public class EventAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		Event tempEvent = eventPO.get(position);
-		viewHolder.nameTV.setText(tempEvent.getName());
+		MenuItem tempMenuItem = menuList.get(position);
+		viewHolder.labelTV.setText(tempMenuItem.getText());
 
-		//		viewHolder.dateIV.setText(tempEvent.getDate().toString().substring(3, 10));
+		if (tempMenuItem.isArrowVisible()) {
+			viewHolder.arrowIV.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.arrowIV.setVisibility(View.INVISIBLE);
+		}
 
 		return convertView;
 	}
 
 	@Override
 	public int getCount() {
-		return eventPO.size();
+		return menuList.size();
 	}
 
 	@Override

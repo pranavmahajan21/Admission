@@ -9,13 +9,15 @@
         android:id="@+id/name_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:singleLine="true"
+        android:layout_toLeftOf="@+id/date_TV"
+        android:text="Event Name" />
 
     <TextView
         android:id="@+id/date_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="" />
+        android:text="12/02/99" />
 
 </RelativeLayout>
