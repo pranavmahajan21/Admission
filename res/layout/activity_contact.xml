@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/action_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/footer_RL"
+        android:layout_below="@+id/actionbar"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="50dp" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="222dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/mission" />
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/TV_label"
+            android:text="Phone Support" />
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/TV_label"
+            android:text="888-9996-4774" />
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/TV_label"
+            android:layout_marginTop="50dp"
+            android:text="Email Feedback:" />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/TV_label"
+            android:text="support@missiontix.com" />
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/TV_label"
+            android:layout_marginTop="70dp"
+            android:text="@string/habibulla2" />
+    </LinearLayout>
+
+</RelativeLayout>
