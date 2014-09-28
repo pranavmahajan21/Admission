@@ -38,11 +38,13 @@ public class MyApp extends Application {
 
 	User loginUser;
 
+	List<Event> eventList;
+	Event selectedEvent;
+	
 	List<MenuItem> menuItemList;
 
 	SharedPreferences sharedPreferences;
 
-	Event selectedEvent;
 
 	@Override
 	public void onCreate() {
@@ -126,4 +128,12 @@ public class MyApp extends Application {
 		this.menuItemList = menuItemList;
 	}
 
+	public List<Event> getEventList() {
+		return eventList;
+	}
+
+	public void setEventList(List<Event> eventList) {
+		this.eventList = eventList;
+	}
+	
 }

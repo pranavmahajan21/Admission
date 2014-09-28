@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <include layout="@layout/action_bar" />
+    <include
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/action_bar" />
+
+    <include
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionbar"
+        layout="@layout/header" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/footer"
+        android:layout_below="@+id/header"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
@@ -16,7 +30,7 @@
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/arrow" />
+            android:src="@drawable/mission60x60" />
 
         <TextView
             android:id="@+id/textView1"
@@ -27,7 +41,7 @@
 
         <TextView
             android:id="@+id/textView2"
-            style="@style/TV_about"
+            style="@style/TV_label"
             android:text="v1.0" />
 
         <TextView
@@ -39,7 +53,7 @@
 
         <TextView
             android:id="@+id/textView4"
-            style="@style/TV_about"
+            style="@style/TV_label"
             android:text="v4.0" />
 
         <TextView
@@ -50,4 +64,11 @@
             android:text="@string/habibulla" />
     </LinearLayout>
 
-</LinearLayout>
+    <include
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/footer" />
+
+</RelativeLayout>

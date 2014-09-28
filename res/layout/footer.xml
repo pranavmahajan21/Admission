@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="10dp"
     android:layout_height="wrap_content"
-    android:background="@android:color/black"
+    android:background="@color/translucent_black"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/label_TV"
+        android:id="@+id/selectedEvent_TV"
         android:layout_width="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/arrow_IV"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/settings_IB"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
         android:text="TextView"
+        android:textColor="@color/green"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/grey_background"
-         />
+        android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/arrow_IV"
+    <ImageButton
+        android:id="@+id/settings_IB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@drawable/arrow" />
+        android:background="@null"
+        android:src="@drawable/settings_footer1" />
 
 </RelativeLayout>

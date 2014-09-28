@@ -250,6 +250,7 @@ public class LoginActivity extends Activity {
 						}.getType();
 						eventList = (List<Event>) gson.fromJson(
 								arg0.toString(), listType);
+						myApp.setEventList(eventList);
 						System.out.println(">>>>> events size:"
 								+ eventList.size());
 						adapter = new EventAdapter(LoginActivity.this,

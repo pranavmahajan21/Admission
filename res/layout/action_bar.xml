@@ -41,7 +41,8 @@
         android:background="@color/green"
         android:gravity="center"
         android:padding="15dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="@android:color/white" />
 
     <ImageButton
         android:id="@+id/imageView2"

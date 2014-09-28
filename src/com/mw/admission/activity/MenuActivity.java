@@ -65,6 +65,9 @@ public class MenuActivity extends Activity {
 					nextIntent = new Intent(MenuActivity.this, LoginActivity.class);
 					nextIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 							| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					
+					// TODO : clear preferences
+					
 					startActivity(nextIntent);
 					break;
 				default:

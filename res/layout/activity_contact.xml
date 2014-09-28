@@ -10,11 +10,19 @@
         android:layout_alignParentTop="true"
         layout="@layout/action_bar" />
 
+    <include
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionbar"
+        layout="@layout/header" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/footer_RL"
-        android:layout_below="@+id/actionbar"
+        android:layout_above="@+id/footer"
+        android:layout_below="@+id/header"
+        android:background="@android:color/black"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="50dp" >
@@ -55,5 +63,12 @@
             android:layout_marginTop="70dp"
             android:text="@string/habibulla2" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/footer" />
 
 </RelativeLayout>

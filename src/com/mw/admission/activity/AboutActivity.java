@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class ContactActivity extends Activity {
+public class AboutActivity extends Activity {
 
 	TextView labelTV;
 	TextView selectedEventTV;
@@ -18,14 +18,14 @@ public class ContactActivity extends Activity {
 	}
 
 	private void initView() {
-		labelTV.setText("Contact Us");
+		labelTV.setText("About");
 		selectedEventTV.setText("TODO");
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_contact);
+		setContentView(R.layout.activity_about);
 
 		findThings();
 		initThings();
