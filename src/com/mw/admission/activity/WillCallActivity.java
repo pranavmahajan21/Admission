@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -39,7 +40,7 @@ public class WillCallActivity extends MenuButtonActivity {
 		nextIntent = new Intent(this, TicketDetailActivity.class);
 	}
 
-	private void findThings() {
+	public void findThings() {
 		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
 		labelHeaderTV = (TextView) findViewById(R.id.label_TV);
 		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
@@ -47,7 +48,7 @@ public class WillCallActivity extends MenuButtonActivity {
 		ticketLV= (ListView) findViewById(R.id.ticket_LV);
 	}
 
-	private void initView() {
+	public void initView() {
 		labelActionBarTV.setText("Will Call");
 		labelHeaderTV.setText("Will Call");
 		selectedEventTV.setText("TODO");
@@ -62,6 +63,7 @@ public class WillCallActivity extends MenuButtonActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_will_call);
 
 		findThings();

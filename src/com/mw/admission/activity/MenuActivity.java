@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -15,10 +17,13 @@ public class MenuActivity extends Activity {
 
 	MyApp myApp;
 
+	Intent nextIntent;
+
 	ListView menuLV;
 	MenuAdapter adapter;
 
-	Intent nextIntent;
+	TextView selectedEventTV;
+	TextView timeTV;
 
 	private void initThings() {
 		myApp = (MyApp) getApplicationContext();
@@ -27,14 +32,23 @@ public class MenuActivity extends Activity {
 
 	private void findThings() {
 		menuLV = (ListView) findViewById(R.id.menu_LV);
+		selectedEventTV = (TextView) findViewById(R.id.event_selected_name_TV);
+		timeTV = (TextView) findViewById(R.id.time_TV);
+	}
+
+	public void initView() {
+		selectedEventTV.setText(myApp.getSelectedEvent().getName());
+		timeTV.setText("(12 hrs 37 mins)");
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_menu);
 		initThings();
 		findThings();
+		initView();
 
 		menuLV.setAdapter(adapter);
 
@@ -105,5 +119,8 @@ public class MenuActivity extends Activity {
 			}
 
 		});
+	}
+
+	public void onMenu(View view) {
 	}
 }

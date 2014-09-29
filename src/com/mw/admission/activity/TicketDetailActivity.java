@@ -1,10 +1,10 @@
 package com.mw.admission.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.TextView;
 
-public class TicketDetailActivity extends Activity {
+public class TicketDetailActivity extends MenuButtonActivity {
 
 	TextView labelActionBarTV;
 	TextView labelHeaderTV;
@@ -13,13 +13,13 @@ public class TicketDetailActivity extends Activity {
 	private void initThings() {
 	}
 
-	private void findThings() {
+	public void findThings() {
 		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
 		labelHeaderTV = (TextView) findViewById(R.id.label_TV);
 		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
 	}
 
-	private void initView() {
+	public void initView() {
 		labelActionBarTV.setText("Will Call");
 		labelHeaderTV.setText("Ticket Detail");
 		selectedEventTV.setText("TODO");
@@ -28,7 +28,8 @@ public class TicketDetailActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_about);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_ticket_details);
 
 		findThings();
 		initThings();

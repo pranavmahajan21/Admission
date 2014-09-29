@@ -3,8 +3,8 @@ package com.mw.admission.activity;
 import java.util.List;
 
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.mw.admission.adapter.EventAdapter;
 import com.mw.admission.extra.MyApp;
@@ -13,9 +13,6 @@ import com.mw.admission.model.Event;
 public class EventChangeActivity extends MenuButtonActivity {
 
 	MyApp myApp;
-
-	TextView labelTV;
-	TextView selectedEventTV;
 
 	ListView eventLV;
 	EventAdapter adapter;
@@ -30,16 +27,15 @@ public class EventChangeActivity extends MenuButtonActivity {
 		}
 	}
 
-	private void findThings() {
-		labelTV = (TextView) findViewById(R.id.label_TV);
-		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
-
+	public void findThings() {
+		super.findThings();
 		eventLV = (ListView) findViewById(R.id.event_LV);
 	}
 
-	private void initView() {
-		labelTV.setText("Change Event");
-		selectedEventTV.setText("TODO");
+	public void initView() {
+		super.initView();
+		getLabelActionBarTV().setText("Change Event");
+		getLabelHeaderTV().setText("Change Event");
 
 		if (adapter != null) {
 			eventLV.setAdapter(adapter);
@@ -51,6 +47,7 @@ public class EventChangeActivity extends MenuButtonActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_event_list);
 
 		initThings();

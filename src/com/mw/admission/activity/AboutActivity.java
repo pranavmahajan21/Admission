@@ -1,32 +1,28 @@
 package com.mw.admission.activity;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.Window;
 
 public class AboutActivity extends MenuButtonActivity {
 
-	TextView labelActionBarTV;
-	TextView labelHeaderTV;
-	TextView selectedEventTV;
 
 	private void initThings() {
 	}
 
-	private void findThings() {
-		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
-		labelHeaderTV = (TextView) findViewById(R.id.label_TV);
-		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
+	public void findThings() {
+		super.findThings();
 	}
 
-	private void initView() {
-		labelActionBarTV.setText("About");
-		labelHeaderTV.setText("About");
-		selectedEventTV.setText("TODO");
+	public void initView() {
+		super.initView();
+		getLabelActionBarTV().setText("About");
+		getLabelHeaderTV().setText("About");
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_about);
 
 		findThings();

@@ -1,30 +1,27 @@
 package com.mw.admission.activity;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.Window;
 
 public class ContactActivity extends MenuButtonActivity {
-
-	TextView labelActionBarTV;
-	TextView labelTV;
-	TextView selectedEventTV;
 
 	private void initThings() {
 	}
 
-	private void findThings() {
-		labelTV = (TextView) findViewById(R.id.label_TV);
-		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
+	public void findThings() {
+		super.findThings();
 	}
 
-	private void initView() {
-		labelTV.setText("Contact Us");
-		selectedEventTV.setText("TODO");
+	public void initView() {
+		super.initView();
+		getLabelActionBarTV().setText("Contact Us");
+		getLabelHeaderTV().setText("Contact Us");
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_contact);
 
 		findThings();
