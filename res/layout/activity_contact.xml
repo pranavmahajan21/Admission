@@ -28,7 +28,7 @@
         android:padding="50dp" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/arrow_right_IV"
             android:layout_width="222dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
@@ -37,7 +37,7 @@
             android:src="@drawable/mission" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/ticket_owner_TV"
             style="@style/TV_label"
             android:text="Phone Support" />
 

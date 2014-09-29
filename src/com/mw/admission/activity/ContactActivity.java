@@ -1,11 +1,11 @@
 package com.mw.admission.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class ContactActivity extends Activity {
+public class ContactActivity extends MenuButtonActivity {
 
+	TextView labelActionBarTV;
 	TextView labelTV;
 	TextView selectedEventTV;
 

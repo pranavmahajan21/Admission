@@ -1,9 +1,10 @@
 package com.mw.admission.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class AboutActivity extends MenuButtonActivity {
+public class TicketDetailActivity extends Activity {
 
 	TextView labelActionBarTV;
 	TextView labelHeaderTV;
@@ -19,8 +20,8 @@ public class AboutActivity extends MenuButtonActivity {
 	}
 
 	private void initView() {
-		labelActionBarTV.setText("About");
-		labelHeaderTV.setText("About");
+		labelActionBarTV.setText("Will Call");
+		labelHeaderTV.setText("Ticket Detail");
 		selectedEventTV.setText("TODO");
 	}
 
@@ -34,5 +35,5 @@ public class AboutActivity extends MenuButtonActivity {
 		initView();
 
 	}
-
+	
 }

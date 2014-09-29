@@ -46,6 +46,7 @@ import com.mw.admission.adapter.EventAdapter;
 import com.mw.admission.extra.CreateDialog;
 import com.mw.admission.extra.MyApp;
 import com.mw.admission.model.Event;
+import com.mw.admission.model.Ticket;
 import com.mw.admission.model.User;
 
 public class LoginActivity extends Activity {
@@ -67,6 +68,8 @@ public class LoginActivity extends Activity {
 	ListView eventLV;
 	EventAdapter adapter;
 	List<Event> eventList;
+	List<Ticket> ticketList;
+	
 
 	AlertDialog alertDialog;
 	CreateDialog createDialog;
@@ -236,23 +239,25 @@ public class LoginActivity extends Activity {
 	}
 
 	public void getEvents() {
-		String eventsUrl = MyApp.EVENT + myApp.getLoginUser().getToken();
+		String eventsUrl = MyApp.URL + MyApp.EVENT
+				+ myApp.getLoginUser().getToken();
 		System.out.println(eventsUrl);
 		JsonArrayRequest req = new JsonArrayRequest(eventsUrl,
 				new Response.Listener<JSONArray>() {
 
 					@Override
-					public void onResponse(JSONArray arg0) {
+					public void onResponse(JSONArray responseJsonArray) {
 						// progressDialog.dismiss();
 						eventList = new ArrayList<Event>();
-						Gson gson = new Gson();
+//						Gson gson = new Gson();
 						Type listType = (Type) new TypeToken<ArrayList<Event>>() {
 						}.getType();
 						eventList = (List<Event>) gson.fromJson(
-								arg0.toString(), listType);
+								responseJsonArray.toString(), listType);
 						myApp.setEventList(eventList);
 						System.out.println(">>>>> events size:"
 								+ eventList.size());
+						
 						adapter = new EventAdapter(LoginActivity.this,
 								eventList);
 
@@ -292,18 +297,33 @@ public class LoginActivity extends Activity {
 	}
 
 	private void getTickets() {
-		String ticketsUrl = MyApp.TICKET + myApp.getSelectedEvent().getId()
-				+ "/" + myApp.getLoginUser().getToken();
-		System.out.println(ticketsUrl);
+		String ticketsUrl = MyApp.URL + MyApp.TICKET
+				+ myApp.getSelectedEvent().getId() + "/"
+				+ myApp.getLoginUser().getToken();
+		System.out.println("tickets url : " + ticketsUrl);
 
 		JsonObjectRequest ticketsRequest = new JsonObjectRequest(Method.GET,
 				ticketsUrl, null, new Response.Listener<JSONObject>() {
 
 					@Override
-					public void onResponse(JSONObject response) {
+					public void onResponse(JSONObject responseJsonObject) {
 						System.out.println("Ticket Response => "
-								+ response.toString());
+								+ responseJsonObject.toString());
 
+						Type listType = (Type) new TypeToken<ArrayList<Ticket>>() {
+						}.getType();
+						try {
+							ticketList = (List<Ticket>) gson.fromJson(
+									responseJsonObject.getJSONArray("tickets").toString(), listType);
+						} catch (JsonSyntaxException e) {
+							e.printStackTrace();
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						System.out.println("tickets size : " + ticketList.size());
+						
+						myApp.setTicketList(ticketList);
+						
 						parentViewLL.removeAllViews();
 						parentViewLL.addView(childViewOptionLL);
 

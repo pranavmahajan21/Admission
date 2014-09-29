@@ -2,16 +2,15 @@ package com.mw.admission.activity;
 
 import java.util.List;
 
-import com.mw.admission.adapter.EventAdapter;
-import com.mw.admission.extra.MyApp;
-import com.mw.admission.model.Event;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class EventChangeActivity extends Activity {
+import com.mw.admission.adapter.EventAdapter;
+import com.mw.admission.extra.MyApp;
+import com.mw.admission.model.Event;
+
+public class EventChangeActivity extends MenuButtonActivity {
 
 	MyApp myApp;
 

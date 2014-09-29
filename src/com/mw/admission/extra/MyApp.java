@@ -14,20 +14,24 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.mw.admission.model.Event;
 import com.mw.admission.model.MenuItem;
+import com.mw.admission.model.Ticket;
 import com.mw.admission.model.User;
 
 public class MyApp extends Application {
 
-//	http://staging.missiontix.com	404
+	// http://staging.missiontix.com 404
 
-	//	http://private-db490-missiontix.apiary-proxy.com	500
-	
-	// http://beta.missiontix.com		500
-	
-	public static final String URL = "http://staging.missiontix.com/"; 
+	// http://private-db490-missiontix.apiary-proxy.com 500
+
+	// http://beta.missiontix.com 500
+
+	public static final String URL = "http://staging.missiontix.com/";
+
 	public static final String LOGIN = "api/users/authenticate";
-	public static final String EVENT = "http://private-db490-missiontix.apiary-proxy.com/api/users/events/";
-	public static final String TICKET = "http://private-db490-missiontix.apiary-proxy.com/api/admissions/events/";
+	// public static final String EVENT =
+	// "http://private-db490-missiontix.apiary-proxy.com/api/users/events/";
+	public static final String EVENT = "api/users/events/";
+	public static final String TICKET = "api/admissions/events/";
 
 	// volley stuff
 	public static final String TAG = MyApp.class.getSimpleName();
@@ -40,11 +44,12 @@ public class MyApp extends Application {
 
 	List<Event> eventList;
 	Event selectedEvent;
-	
+
+	List<Ticket> ticketList;
+
 	List<MenuItem> menuItemList;
 
 	SharedPreferences sharedPreferences;
-
 
 	@Override
 	public void onCreate() {
@@ -135,5 +140,13 @@ public class MyApp extends Application {
 	public void setEventList(List<Event> eventList) {
 		this.eventList = eventList;
 	}
-	
+
+	public List<Ticket> getTicketList() {
+		return ticketList;
+	}
+
+	public void setTicketList(List<Ticket> ticketList) {
+		this.ticketList = ticketList;
+	}
+
 }
