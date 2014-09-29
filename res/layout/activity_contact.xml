@@ -25,42 +25,46 @@
         android:background="@android:color/black"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="50dp" >
+        android:padding="40dp" >
 
         <ImageView
             android:id="@+id/arrow_right_IV"
             android:layout_width="222dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="40dp"
             android:layout_marginTop="20dp"
             android:scaleType="fitXY"
             android:src="@drawable/mission" />
 
         <TextView
             android:id="@+id/ticket_owner_TV"
-            style="@style/TV_label"
+            style="@style/TV_label_green"
+              android:textColor="@color/grey_background"
             android:text="Phone Support" />
 
         <TextView
             android:id="@+id/textView2"
-            style="@style/TV_label"
+            style="@style/TV_label_green"
             android:text="888-9996-4774" />
 
         <TextView
             android:id="@+id/textView3"
-            style="@style/TV_label"
-            android:layout_marginTop="50dp"
+            style="@style/TV_label_green"
+              android:textColor="@color/grey_background"
+            android:layout_marginTop="40dp"
             android:text="Email Feedback:" />
 
         <TextView
             android:id="@+id/textView4"
-            style="@style/TV_label"
+            style="@style/TV_label_green"
             android:text="support@missiontix.com" />
 
         <TextView
             android:id="@+id/textView5"
-            style="@style/TV_label"
-            android:layout_marginTop="70dp"
+            style="@style/TV_label_green"
+            android:textColor="@color/grey_background"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
             android:text="@string/habibulla2" />
     </LinearLayout>
 

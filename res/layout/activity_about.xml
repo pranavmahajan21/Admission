@@ -35,30 +35,31 @@
 
         <TextView
             android:id="@+id/ticket_owner_TV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TV_label_green"
             android:layout_marginTop="30dp"
             android:text="App Version:"
-            android:textColor="@color/grey_background"
-            android:textSize="20sp" />
+            android:textColor="@color/grey_background" />
+        <!--
+                 android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+        -->
 
         <TextView
             android:id="@+id/textView2"
-            style="@style/TV_label"
+            style="@style/TV_label_green"
             android:text="v1.0" />
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TV_label_green"
             android:layout_marginTop="30dp"
             android:text="Android Version"
-            android:textColor="@color/grey_background"
-            android:textSize="20sp" />
+            android:textColor="@color/grey_background" />
 
         <TextView
             android:id="@+id/textView4"
-            style="@style/TV_label"
+            style="@style/TV_label_green"
             android:text="v4.0" />
 
         <TextView
@@ -67,7 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/habibulla"
-            android:textColor="@color/grey_background" />
+            android:textColor="@color/grey_background"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <include

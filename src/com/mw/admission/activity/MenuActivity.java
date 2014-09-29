@@ -22,6 +22,7 @@ public class MenuActivity extends Activity {
 	ListView menuLV;
 	MenuAdapter adapter;
 
+	TextView labelActionBarTV;
 	TextView selectedEventTV;
 	TextView timeTV;
 
@@ -31,12 +32,14 @@ public class MenuActivity extends Activity {
 	}
 
 	private void findThings() {
+		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
 		menuLV = (ListView) findViewById(R.id.menu_LV);
 		selectedEventTV = (TextView) findViewById(R.id.event_selected_name_TV);
 		timeTV = (TextView) findViewById(R.id.time_TV);
 	}
 
 	public void initView() {
+		labelActionBarTV.setText("Menu");
 		selectedEventTV.setText(myApp.getSelectedEvent().getName());
 		timeTV.setText("(12 hrs 37 mins)");
 	}
