@@ -10,6 +10,7 @@
 
     <uses-feature android:glEsVersion="0x00010001" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -46,11 +47,30 @@
         </activity>
         <activity android:name="com.mw.admission.activity.ScannerActivity" >
         </activity>
-        <activity android:name="com.mw.admission.activity.SearchActivity" >
+        <activity
+            android:name="com.mw.admission.activity.SearchActivity"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity android:name="com.mw.admission.activity.EventReportActivity" >
         </activity>
         <activity android:name="com.mw.admission.activity.HistoryActivity" >
+        </activity>
+        <activity
+            android:name="com.google.zxing.client.android.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SCAN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

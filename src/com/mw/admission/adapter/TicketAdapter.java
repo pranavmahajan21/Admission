@@ -1,6 +1,8 @@
 package com.mw.admission.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,15 +19,20 @@ public class TicketAdapter extends BaseAdapter {
 
 	Context context;
 	List<Ticket> ticketList;
-
+	List<Ticket> tempTicketList = new ArrayList<Ticket>();
+	boolean whichViewToUse;
+	
 	MyApp myApp;
 
 	LayoutInflater inflater;
 
-	public TicketAdapter(Context context, List<Ticket> ticketList) {
+	public TicketAdapter(Context context, List<Ticket> ticketList, boolean whichViewToUse) {
 		super();
 		this.context = context;
 		this.ticketList = ticketList;
+		tempTicketList = new ArrayList<Ticket>();
+		tempTicketList.addAll(ticketList);
+		this.whichViewToUse = whichViewToUse;
 		myApp = (MyApp) context.getApplicationContext();
 	}
 
@@ -44,9 +51,13 @@ public class TicketAdapter extends BaseAdapter {
 			inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			viewHolder = new ViewHolder();
+			
+			if(whichViewToUse){
 			convertView = inflater.inflate(R.layout.element_ticket, parent,
 					false);
-
+			}else{convertView = inflater.inflate(R.layout.element_ticket2, parent,
+					false);}
+			
 			viewHolder.nameTV = (TextView) convertView
 					.findViewById(R.id.ticket_owner_TV);
 
@@ -76,4 +87,19 @@ public class TicketAdapter extends BaseAdapter {
 		return 0;
 	}
 
+	public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        ticketList.clear();
+        if (charText.length() == 0) {
+        	ticketList.addAll(tempTicketList);
+        } else {
+            for (Ticket tempTicket : tempTicketList) {
+                if (tempTicket.getNameOfGuest().toLowerCase(Locale.getDefault())
+                        .contains(charText)) {
+                	ticketList.add(tempTicket);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 }

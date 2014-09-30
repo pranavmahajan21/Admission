@@ -18,12 +18,14 @@ public class MenuButtonActivity extends Activity {
 	private TextView labelActionBarTV;
 	private TextView labelHeaderTV;
 	private TextView selectedEventTV;
-	
+
 	private ImageButton settingsIB;
 
-	public void findThings() {
+	public void findThings(boolean isHeaderThere) {
 		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
-		labelHeaderTV = (TextView) findViewById(R.id.label_TV);
+		if (isHeaderThere) {
+			labelHeaderTV = (TextView) findViewById(R.id.label_TV);
+		}
 		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
 		settingsIB = (ImageButton) findViewById(R.id.settings_IB);
 	}
@@ -50,7 +52,6 @@ public class MenuButtonActivity extends Activity {
 		finish();
 	}
 
-	
 	// getters - setters
 	public TextView getLabelActionBarTV() {
 		return labelActionBarTV;

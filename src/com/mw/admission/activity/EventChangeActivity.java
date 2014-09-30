@@ -12,6 +12,8 @@ import com.mw.admission.model.Event;
 
 public class EventChangeActivity extends MenuButtonActivity {
 
+	boolean isHeaderThere = true;
+	
 	MyApp myApp;
 
 	ListView eventLV;
@@ -27,8 +29,8 @@ public class EventChangeActivity extends MenuButtonActivity {
 		}
 	}
 
-	public void findThings() {
-		super.findThings();
+	public void findThings(boolean isHeaderThere) {
+		super.findThings(isHeaderThere);
 		eventLV = (ListView) findViewById(R.id.event_LV);
 	}
 
@@ -51,7 +53,7 @@ public class EventChangeActivity extends MenuButtonActivity {
 		setContentView(R.layout.activity_event_list);
 
 		initThings();
-		findThings();
+		findThings(isHeaderThere);
 		initView();
 
 	}

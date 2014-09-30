@@ -34,7 +34,7 @@ public class WillCallActivity extends MenuButtonActivity {
 		ticketList = myApp.getTicketList();
 		
 		if (ticketList != null && ticketList.size() > 0) {
-			adapter = new TicketAdapter(this, ticketList);
+			adapter = new TicketAdapter(this, ticketList, true);
 		}
 		
 		nextIntent = new Intent(this, TicketDetailActivity.class);

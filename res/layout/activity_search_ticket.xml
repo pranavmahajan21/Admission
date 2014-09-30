@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/action_bar" />
+
+    <RelativeLayout
+        android:id="@+id/searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionbar"
+        android:background="@color/translucent_black"
+        android:padding="8dp" >
+
+        <EditText
+            android:id="@+id/search_ET"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/search_IB"
+            android:gravity="center_horizontal"
+            android:hint="Search ticket" />
+
+        <ImageButton
+            android:id="@+id/search_IB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:src="@drawable/tick" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/ticket_LV"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/footer"
+        android:layout_below="@+id/searchbar"
+        android:background="@color/black"
+        android:divider="@color/grey_background"
+        android:dividerHeight="2dp" />
+
+    <include
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/footer" />
+
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/arrow_right_IV"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ticket:"
+            android:textColor="@color/green" />
+
+        <TextView
+            android:id="@+id/ticket_owner_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ticket Owner"
+            android:textColor="@color/grey_background" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/arrow_right_IV"
+        android:layout_centerVertical="true"        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/arrow" />
+
+</RelativeLayout>

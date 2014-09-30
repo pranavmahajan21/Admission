@@ -5,12 +5,13 @@ import android.view.Window;
 
 public class AboutActivity extends MenuButtonActivity {
 
-
+	boolean isHeaderThere = true;
+	
 	private void initThings() {
 	}
 
-	public void findThings() {
-		super.findThings();
+	public void findThings(boolean isHeaderThere) {
+		super.findThings(isHeaderThere);
 	}
 
 	public void initView() {
@@ -25,7 +26,7 @@ public class AboutActivity extends MenuButtonActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_about);
 
-		findThings();
+		findThings(isHeaderThere);
 		initThings();
 		initView();
 

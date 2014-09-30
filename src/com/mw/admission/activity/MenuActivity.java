@@ -3,12 +3,13 @@ package com.mw.admission.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.mw.admission.adapter.MenuAdapter;
 import com.mw.admission.extra.MyApp;
@@ -62,9 +63,13 @@ public class MenuActivity extends Activity {
 					int position, long id) {
 				switch (position) {
 				case 0:
-					nextIntent = new Intent(MenuActivity.this,
-							ScannerActivity.class);
-					startActivity(nextIntent);
+					nextIntent = new Intent("com.google.zxing.client.android.SCAN");
+					nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+	                startActivityForResult(nextIntent, 0);
+					
+//	                nextIntent = new Intent(MenuActivity.this,
+//							ScannerActivity.class);
+//					startActivity(nextIntent);
 					break;
 				case 1:
 					nextIntent = new Intent(MenuActivity.this,
@@ -124,6 +129,22 @@ public class MenuActivity extends Activity {
 		});
 	}
 
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+           if (resultCode == RESULT_OK) {
+               
+              String contents = intent.getStringExtra("SCAN_RESULT");
+              String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+           
+              // Handle successful scan
+                                        
+           } else if (resultCode == RESULT_CANCELED) {
+              // Handle cancel
+              Log.i("App","Scan unsuccessful");
+           }
+      }
+   }
+	
 	public void onMenu(View view) {
 	}
 }
