@@ -22,21 +22,25 @@ public class Ticket implements Serializable {
 	String orderId;
 
 	@SerializedName("order_quantity")
-	int quantityOrder;
+	int orderQuantity;
 
 	@SerializedName("quantity")
 	int quantityTicket;
 
+	@SerializedName("checked_in")
+	boolean checkedIn;
+
+	@SerializedName("scanned_at")
 	Date scanTime;
+
+	@SerializedName("scanner_id")
+	String scannerID;
 
 	@Override
 	public String toString() {
 		return "Ticket [ticketId=" + ticketId + ", nameOfGuest=" + nameOfGuest
 				+ "]";
 	}
-
-	@SerializedName("checked_in")
-	boolean checkedIn;
 
 	public String getTicketId() {
 		return ticketId;
@@ -70,12 +74,12 @@ public class Ticket implements Serializable {
 		this.orderId = orderId;
 	}
 
-	public int getQuantityOrder() {
-		return quantityOrder;
+	public int getOrderQuantity() {
+		return orderQuantity;
 	}
 
-	public void setQuantityOrder(int quantityOrder) {
-		this.quantityOrder = quantityOrder;
+	public void setOrderQuantity(int orderQuantity) {
+		this.orderQuantity = orderQuantity;
 	}
 
 	public int getQuantityTicket() {
@@ -100,6 +104,14 @@ public class Ticket implements Serializable {
 
 	public void setCheckedIn(boolean checkedIn) {
 		this.checkedIn = checkedIn;
+	}
+
+	public String getScannerID() {
+		return scannerID;
+	}
+
+	public void setScannerID(String scannerID) {
+		this.scannerID = scannerID;
 	}
 
 }

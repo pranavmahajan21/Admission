@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/TV_label_green2"
+        android:text="Scan Date/Time :" />
+
+    <TextView
+        android:id="@+id/scanDate_TV"
+        style="@style/TV_label_grey"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/TV_label_green2"
+        android:layout_marginTop="5dp"
+        android:text="Scanner ID :" />
+
+    <TextView
+        android:id="@+id/scannerID_TV"
+        style="@style/TV_label_grey"
+        android:text="TextView" />
+
+</LinearLayout>

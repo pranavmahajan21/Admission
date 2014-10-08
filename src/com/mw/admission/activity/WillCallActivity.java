@@ -1,63 +1,40 @@
 package com.mw.admission.activity;
 
-import java.util.List;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.mw.admission.adapter.TicketAdapter;
 import com.mw.admission.extra.MyApp;
-import com.mw.admission.model.Ticket;
+import com.mw.admission.fragment.OrderFragment;
+import com.mw.admission.fragment.TicketFragment;
 
-public class WillCallActivity extends MenuButtonActivity {
+public class WillCallActivity extends FragmentActivity {
 
 	MyApp myApp;
-	
-	Intent nextIntent;
-	
+
+	FragmentPagerAdapter adapterViewPager;
+
 	TextView labelActionBarTV;
-	TextView labelHeaderTV;
 	TextView selectedEventTV;
 
-	ListView ticketLV;
-	List<Ticket> ticketList;
-	TicketAdapter adapter;
-	
 	private void initThings() {
 		myApp = (MyApp) getApplicationContext();
-		ticketList = myApp.getTicketList();
-		
-		if (ticketList != null && ticketList.size() > 0) {
-			adapter = new TicketAdapter(this, ticketList, true);
-		}
-		
-		nextIntent = new Intent(this, TicketDetailActivity.class);
 	}
 
 	public void findThings() {
 		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
-		labelHeaderTV = (TextView) findViewById(R.id.label_TV);
 		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
-		
-		ticketLV= (ListView) findViewById(R.id.ticket_LV);
 	}
 
 	public void initView() {
 		labelActionBarTV.setText("Will Call");
-		labelHeaderTV.setText("Will Call");
 		selectedEventTV.setText("TODO");
-		
-		if (adapter != null) {
-			ticketLV.setAdapter(adapter);
-		} else {
-			// no tickets
-		}
+
 	}
 
 	@Override
@@ -70,17 +47,44 @@ public class WillCallActivity extends MenuButtonActivity {
 		initThings();
 		initView();
 
-		ticketLV.setOnItemClickListener(new OnItemClickListener() {
+		ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+		adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
+		vpPager.setAdapter(adapterViewPager);
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				nextIntent.putExtra("position", position);
-				startActivity(nextIntent);
+	}
+
+	public static class MyPagerAdapter extends FragmentPagerAdapter {
+		private static int NUM_ITEMS = 2;
+
+		public MyPagerAdapter(FragmentManager fragmentManager) {
+			super(fragmentManager);
+		}
+
+		// Returns total number of pages
+		@Override
+		public int getCount() {
+			return NUM_ITEMS;
+		}
+
+		// Returns the fragment to display for that page
+		@Override
+		public Fragment getItem(int position) {
+			switch (position) {
+			case 0:
+				return TicketFragment.newInstance(0, "Page # 1");
+			case 1:
+				return OrderFragment.newInstance(1, "Page # 2");
+			default:
+				return null;
 			}
-		
-		});
-		
+		}
+
+		// Returns the page title for the top indicator
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return "Page " + position;
+		}
+
 	}
 
 }

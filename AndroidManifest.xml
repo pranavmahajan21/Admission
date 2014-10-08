@@ -55,7 +55,7 @@
         </activity>
         <activity android:name="com.mw.admission.activity.HistoryActivity" >
         </activity>
-        <activity
+        <!-- <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
@@ -71,7 +71,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
+        </activity> -->
     </application>
 
 </manifest>

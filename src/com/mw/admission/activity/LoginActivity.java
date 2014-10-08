@@ -322,6 +322,8 @@ public class LoginActivity extends Activity {
 						}
 						System.out.println("tickets size : " + ticketList.size());
 						
+						Toast.makeText(LoginActivity.this, "tickets size : " + ticketList.size() , Toast.LENGTH_SHORT).show();
+						
 						myApp.setTicketList(ticketList);
 						
 						parentViewLL.removeAllViews();

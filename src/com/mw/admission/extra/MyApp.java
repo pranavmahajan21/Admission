@@ -1,7 +1,9 @@
 package com.mw.admission.extra;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -19,6 +21,8 @@ import com.mw.admission.model.User;
 
 public class MyApp extends Application {
 
+	public static final int CAMERA_REQUEST_CODE = 0;
+
 	// http://staging.missiontix.com 404
 
 	// http://private-db490-missiontix.apiary-proxy.com 500
@@ -35,6 +39,7 @@ public class MyApp extends Application {
 
 	// volley stuff
 	public static final String TAG = MyApp.class.getSimpleName();
+
 	private RequestQueue mRequestQueue;
 	private ImageLoader mImageLoader;// not needed
 
@@ -46,18 +51,25 @@ public class MyApp extends Application {
 	Event selectedEvent;
 
 	List<Ticket> ticketList;
+	Map<String, List<Ticket>> orderMap;
 
 	List<MenuItem> menuItemList;
 
 	SharedPreferences sharedPreferences;
 
+	private void initThings() {
+		mInstance = this;
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		menuItemList = new ArrayList<MenuItem>();
+		orderMap = new HashMap<String, List<Ticket>>();
+	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		mInstance = this;
-		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-		menuItemList = new ArrayList<MenuItem>();
+		initThings();
+
 		menuItemList.add(new MenuItem("Scanner", false));
 		menuItemList.add(new MenuItem("Will Call", false));
 		menuItemList.add(new MenuItem("Event Report", false));
@@ -147,6 +159,36 @@ public class MyApp extends Application {
 
 	public void setTicketList(List<Ticket> ticketList) {
 		this.ticketList = ticketList;
+
+		// create a map for orders
+		for (int i = 0; i < this.ticketList.size(); i++) {
+			Ticket tempTicket = this.ticketList.get(i);
+			if (orderMap.containsKey(tempTicket.getOrderId())) {
+				// add all but first tickets of an order
+				List<Ticket> aa = orderMap.get(tempTicket.getOrderId());
+				aa.add(tempTicket);
+				orderMap.put(tempTicket.getOrderId(), aa);
+			} else {
+				// add the first ticket of an order
+				List<Ticket> aa = new ArrayList<Ticket>();
+				aa.add(tempTicket);
+				orderMap.put(tempTicket.getOrderId(), aa);
+			}
+		}
+		
+		System.out.println("orderMap size:" + orderMap.size());
+		for (int i = 0; i < orderMap.size(); i++) {
+			List<Ticket> aa = orderMap.get(i);
+			System.out.println(i + "   " + (aa==null));
+		}
+	}
+
+	public Map<String, List<Ticket>> getOrderMap() {
+		return orderMap;
+	}
+
+	public void setOrderMap(Map<String, List<Ticket>> orderMap) {
+		this.orderMap = orderMap;
 	}
 
 }

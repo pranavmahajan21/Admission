@@ -65,8 +65,14 @@ public class MenuActivity extends Activity {
 				case 0:
 					nextIntent = new Intent("com.google.zxing.client.android.SCAN");
 					nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-	                startActivityForResult(nextIntent, 0);
+	                startActivityForResult(nextIntent, MyApp.CAMERA_REQUEST_CODE);
 					
+//	                Intent intent = new Intent(
+//	                		"com.google.zxing.client.android.SCAN");
+//	                		intent.putExtra("SCAN_MODE", "QR_CODE_MODE,PRODUCT_MODE");
+//	                		startActivityForResult(intent, 0);
+	                
+	                
 //	                nextIntent = new Intent(MenuActivity.this,
 //							ScannerActivity.class);
 //					startActivity(nextIntent);
@@ -130,17 +136,18 @@ public class MenuActivity extends Activity {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == 0) {
+        if (requestCode == MyApp.CAMERA_REQUEST_CODE) {
            if (resultCode == RESULT_OK) {
                
               String contents = intent.getStringExtra("SCAN_RESULT");
               String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+       	   Log.i("App","Scan successful");
            
               // Handle successful scan
                                         
            } else if (resultCode == RESULT_CANCELED) {
               // Handle cancel
-              Log.i("App","Scan unsuccessful");
+        	   Log.i("App","Scan unsuccessful");
            }
       }
    }

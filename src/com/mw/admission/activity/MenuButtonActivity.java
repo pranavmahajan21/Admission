@@ -31,6 +31,7 @@ public class MenuButtonActivity extends Activity {
 	}
 
 	public void initView() {
+//		super.initView();
 		selectedEventTV.setText(myApp.getSelectedEvent().getName());
 		settingsIB.setVisibility(View.GONE);
 	}
@@ -77,4 +78,11 @@ public class MenuButtonActivity extends Activity {
 		this.selectedEventTV = selectedEventTV;
 	}
 
+	public ImageButton getSettingsIB() {
+		return settingsIB;
+	}
+
+	public void setSettingsIB(ImageButton settingsIB) {
+		this.settingsIB = settingsIB;
+	}
 }
