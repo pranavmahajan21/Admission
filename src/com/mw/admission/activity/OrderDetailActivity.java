@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mw.admission.adapter.TicketAdapter;
 import com.mw.admission.extra.MyApp;
 import com.mw.admission.model.Ticket;
 
@@ -26,7 +29,13 @@ public class OrderDetailActivity extends MenuButtonActivity {
 	int position;
 
 	TextView nameTV, orderNumberTV, numberOfTicketsTV;
+
+	LinearLayout parentLL;
+	LinearLayout childLL;
+
+	ListView barcodeLV;
 	List<Ticket> ticketsOfOrderList;
+	TicketAdapter adapter;
 
 	private void initThings() {
 		previousIntent = getIntent();
@@ -35,9 +44,10 @@ public class OrderDetailActivity extends MenuButtonActivity {
 
 		inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		ticketsOfOrderList = new ArrayList<List<Ticket>>(myApp.getOrderMap().values()).get(position);
-//				List<List<Ticket>> aa =new ArrayList<List<Ticket>>(myApp.getOrderMap().values());
-//				(position);
+		ticketsOfOrderList = new ArrayList<List<Ticket>>(myApp.getOrderMap()
+				.values()).get(position);
+
+		adapter = new TicketAdapter(this, ticketsOfOrderList, 2);
 	}
 
 	private void findThings() {
@@ -46,6 +56,11 @@ public class OrderDetailActivity extends MenuButtonActivity {
 		nameTV = (TextView) findViewById(R.id.name_TV);
 		orderNumberTV = (TextView) findViewById(R.id.orderNumber_TV);
 		numberOfTicketsTV = (TextView) findViewById(R.id.numberOfTickets_TV);
+
+		barcodeLV = (ListView) findViewById(R.id.barcode_LV);
+
+		parentLL = (LinearLayout) findViewById(R.id.parent_LL);
+		childLL = (LinearLayout) findViewById(R.id.child_LL);
 	}
 
 	public void initView() {
@@ -60,6 +75,8 @@ public class OrderDetailActivity extends MenuButtonActivity {
 
 		numberOfTicketsTV.setText(Integer.toString(tempTicket
 				.getOrderQuantity()));
+
+		barcodeLV.setAdapter(adapter);
 	}
 
 	@Override
@@ -74,7 +91,9 @@ public class OrderDetailActivity extends MenuButtonActivity {
 	}
 
 	public void onAdmitIndividually(View view) {
-
+		parentLL.removeView(childLL);
+		adapter = new TicketAdapter(this, ticketsOfOrderList, 3);
+		barcodeLV.setAdapter(adapter);
 	}
 
 	public void onAdmitAll(View view) {

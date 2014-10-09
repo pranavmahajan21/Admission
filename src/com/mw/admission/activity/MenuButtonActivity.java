@@ -31,7 +31,6 @@ public class MenuButtonActivity extends Activity {
 	}
 
 	public void initView() {
-//		super.initView();
 		selectedEventTV.setText(myApp.getSelectedEvent().getName());
 		settingsIB.setVisibility(View.GONE);
 	}

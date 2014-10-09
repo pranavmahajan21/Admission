@@ -216,7 +216,7 @@ public class LoginActivity extends Activity {
 
 	public void onWillCall(View view) {
 		System.out.println("22");
-		nextIntent = new Intent(this, MenuActivity.class);
+		nextIntent = new Intent(this, WillCallActivity.class);
 		nextIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(nextIntent);

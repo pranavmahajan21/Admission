@@ -1,29 +1,23 @@
 package com.mw.admission.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
-import android.widget.TextView;
 
 public class HistoryActivity extends MenuButtonActivity {
 
-	TextView labelActionBarTV;
-	TextView labelHeaderTV;
-	TextView selectedEventTV;
+	boolean isHeaderThere = true;
 
 	private void initThings() {
 	}
 
 	public void findThings() {
-		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
-		labelHeaderTV = (TextView) findViewById(R.id.label_TV);
-		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
+		super.findThings(isHeaderThere);
 	}
 
 	public void initView() {
-		labelActionBarTV.setText("History");
-		labelHeaderTV.setText("History");
-		selectedEventTV.setText("TODO");
+		super.initView();
+		getLabelActionBarTV().setText("History");
+		getLabelHeaderTV().setText("History");
 	}
 
 	@Override
@@ -37,5 +31,5 @@ public class HistoryActivity extends MenuButtonActivity {
 		initView();
 
 	}
-	
+
 }

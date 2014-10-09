@@ -28,6 +28,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_one_side"
             android:orientation="vertical"
             android:padding="10dp" >
 
@@ -45,6 +46,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_one_side"
             android:orientation="horizontal"
             android:padding="10dp"
             android:weightSum="2" >
@@ -87,6 +89,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_one_side"
             android:orientation="vertical"
             android:padding="10dp" >
 
@@ -100,44 +103,56 @@
                 style="@style/TV_label_grey"
                 android:clickable="true"
                 android:onClick="onAdmitAll"
+                android:textColor="@color/text_color"
                 android:text="Admit all Guest on Order" />
 
             <TextView
                 android:id="@+id/action2_TV"
                 style="@style/TV_label_grey"
+                android:textColor="@color/text_color"
                 android:clickable="true"
                 android:onClick="onAdmitIndividually"
                 android:text="Admit Guests Individually" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/parent_LL"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:padding="10dp" >
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-               style="@style/TV_label_green2"
-                android:text="Barcodes:" />
+            <LinearLayout
+                android:id="@+id/child_LL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="2" >
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                style="@style/TV_label_green2"
-                android:text="Status:" />
-            
+                <!-- We can't give paddding on bottom coz rows of ListView already have padding on top -->
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/TV_label_green2"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:text="Barcodes:" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/TV_label_green2"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:text="Status:" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/barcode_LV"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent" />
         </LinearLayout>
-        
-        <ListView 
-            android:id="@+id/barcodes_LV"
-    android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-            />
     </LinearLayout>
 
     <include

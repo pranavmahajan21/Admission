@@ -3,20 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp"
+    android:paddingLeft="10dp"
     android:weightSum="2" >
 
     <TextView
-        android:id="@+id/textView1"
-        style="@style/TV_label_green2"
+        android:id="@+id/barcode_TV"
+        style="@style/TV_label_grey"
         android:layout_width="0dip"
+        android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:text="Barcodes:" />
 
     <TextView
-        android:id="@+id/textView2"
-        style="@style/TV_label_green2"
+        android:id="@+id/status_TV"
+        style="@style/TV_label_grey"
         android:layout_width="0dip"
+        android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:text="Status:" />
 

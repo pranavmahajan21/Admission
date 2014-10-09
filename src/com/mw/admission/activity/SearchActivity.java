@@ -30,7 +30,7 @@ public class SearchActivity extends MenuButtonActivity {
 		ticketList = myApp.getTicketList();
 
 		if (ticketList != null && ticketList.size() > 0) {
-			adapter = new TicketAdapter(this, ticketList, false);
+			adapter = new TicketAdapter(this, ticketList, 1);
 		}
 
 	}

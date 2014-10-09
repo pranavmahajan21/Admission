@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/translucent_black"
-    android:orientation="vertical" >
+    android:background="@color/translucent_black" >
 
     <TextView
         android:id="@+id/selectedEvent_TV"
@@ -15,9 +14,10 @@
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
+        android:singleLine="true"
         android:text="TextView"
         android:textColor="@color/green"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <ImageButton
@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:background="@null"
+        android:onClick="onSettings"
         android:src="@drawable/settings_footer1" />
 
 </RelativeLayout>

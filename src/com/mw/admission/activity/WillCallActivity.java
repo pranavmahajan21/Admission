@@ -1,12 +1,15 @@
 package com.mw.admission.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.mw.admission.extra.MyApp;
@@ -17,11 +20,15 @@ public class WillCallActivity extends FragmentActivity {
 
 	MyApp myApp;
 
+	Intent nextIntent;
+
 	FragmentPagerAdapter adapterViewPager;
 
 	TextView labelActionBarTV;
 	TextView selectedEventTV;
 
+	private ImageButton settingsIB;
+	
 	private void initThings() {
 		myApp = (MyApp) getApplicationContext();
 	}
@@ -29,12 +36,16 @@ public class WillCallActivity extends FragmentActivity {
 	public void findThings() {
 		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
 		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
+		
+		settingsIB = (ImageButton) findViewById(R.id.settings_IB);
 	}
 
 	public void initView() {
 		labelActionBarTV.setText("Will Call");
-		selectedEventTV.setText("TODO");
+//		selectedEventTV.setText("TODO");
 
+		selectedEventTV.setText(myApp.getSelectedEvent().getName());
+		settingsIB.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -71,9 +82,10 @@ public class WillCallActivity extends FragmentActivity {
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				return TicketFragment.newInstance(0, "Page # 1");
+				// Pranav : I have not removed the args just to see the scope of fragments
+				return TicketFragment.newInstance(0, "Ticket");
 			case 1:
-				return OrderFragment.newInstance(1, "Page # 2");
+				return OrderFragment.newInstance();
 			default:
 				return null;
 			}
@@ -82,9 +94,30 @@ public class WillCallActivity extends FragmentActivity {
 		// Returns the page title for the top indicator
 		@Override
 		public CharSequence getPageTitle(int position) {
-			return "Page " + position;
+			switch (position) {
+			case 0:
+				return "Ticket";
+			case 1:
+				return "Order";
+			default:
+				return "";
+			}
 		}
 
 	}
 
+	public void onMenu(View view) {
+		nextIntent = new Intent(this, MenuActivity.class);
+		nextIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		startActivity(nextIntent);
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		onMenu(null);
+	}
+
+	
 }

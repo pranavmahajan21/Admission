@@ -1,6 +1,5 @@
 package com.mw.admission.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +13,10 @@ import android.widget.TextView;
 import com.mw.admission.adapter.MenuAdapter;
 import com.mw.admission.extra.MyApp;
 
-public class MenuActivity extends Activity {
+public class MenuActivity extends MenuButtonActivity {
 
+	boolean isHeaderThere = true;
+	
 	MyApp myApp;
 
 	Intent nextIntent;
@@ -23,8 +24,6 @@ public class MenuActivity extends Activity {
 	ListView menuLV;
 	MenuAdapter adapter;
 
-	TextView labelActionBarTV;
-	TextView selectedEventTV;
 	TextView timeTV;
 
 	private void initThings() {
@@ -33,15 +32,14 @@ public class MenuActivity extends Activity {
 	}
 
 	private void findThings() {
-		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
+		super.findThings(isHeaderThere);
 		menuLV = (ListView) findViewById(R.id.menu_LV);
-		selectedEventTV = (TextView) findViewById(R.id.event_selected_name_TV);
 		timeTV = (TextView) findViewById(R.id.time_TV);
 	}
 
 	public void initView() {
-		labelActionBarTV.setText("Menu");
-		selectedEventTV.setText(myApp.getSelectedEvent().getName());
+		super.initView();
+		getLabelActionBarTV().setText("Menu");
 		timeTV.setText("(12 hrs 37 mins)");
 	}
 

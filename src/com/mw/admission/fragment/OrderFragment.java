@@ -12,14 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.mw.admission.activity.OrderDetailActivity;
 import com.mw.admission.activity.R;
-import com.mw.admission.activity.TicketDetailActivity;
 import com.mw.admission.adapter.OrderAdapter;
-import com.mw.admission.adapter.TicketAdapter;
 import com.mw.admission.extra.MyApp;
 import com.mw.admission.model.Ticket;
 
@@ -57,19 +54,16 @@ public class OrderFragment extends Fragment {
 		}
 	}
 
-	// newInstance constructor for creating fragment with arguments
-	public static OrderFragment newInstance(int page, String title) {
+	public static OrderFragment newInstance() {
 		OrderFragment fragmentFirst = new OrderFragment();
 		return fragmentFirst;
 	}
 
-	// Store instance variables based on arguments passed
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
 
-	// Inflate the view for the fragment based on layout XML
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -84,17 +78,17 @@ public class OrderFragment extends Fragment {
 		findThings();
 		initThings();
 		initView();
-		
-				orderLV.setOnItemClickListener(new OnItemClickListener() {
-			
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view,
-								int position, long id) {
-							nextIntent.putExtra("position", position);
-							startActivity(nextIntent);
-						}
-					
-					});
+
+		orderLV.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				nextIntent.putExtra("position", position);
+				startActivity(nextIntent);
+			}
+
+		});
 	}
 
 }

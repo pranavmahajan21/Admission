@@ -34,7 +34,7 @@ public class TicketFragment extends Fragment {
 		ticketList = myApp.getTicketList();
 
 		if (ticketList != null && ticketList.size() > 0) {
-			adapter = new TicketAdapter(getActivity(), ticketList, true);
+			adapter = new TicketAdapter(getActivity(), ticketList, 0);
 		}
 
 		nextIntent = new Intent(getActivity(), TicketDetailActivity.class);
@@ -88,17 +88,17 @@ public class TicketFragment extends Fragment {
 		findThings();
 		initThings();
 		initView();
-		
-				ticketLV.setOnItemClickListener(new OnItemClickListener() {
-			
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view,
-								int position, long id) {
-							nextIntent.putExtra("position", position);
-							startActivity(nextIntent);
-						}
-					
-					});
+
+		ticketLV.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				nextIntent.putExtra("position", position);
+				startActivity(nextIntent);
+			}
+
+		});
 	}
 
 }
