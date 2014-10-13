@@ -1,32 +1,86 @@
 package com.mw.admission.activity;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+import com.android.volley.Request.Method;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.mw.admission.adapter.EventAdapter;
+import com.mw.admission.extra.CreateDialog;
 import com.mw.admission.extra.MyApp;
 import com.mw.admission.model.Event;
+import com.mw.admission.model.Ticket;
 
 public class EventChangeActivity extends MenuButtonActivity {
 
 	boolean isHeaderThere = true;
-	
+
 	MyApp myApp;
+
+	Gson gson;
+	SharedPreferences sharedPreferences;
+	SharedPreferences.Editor editor;
 
 	ListView eventLV;
 	EventAdapter adapter;
 	List<Event> eventList;
 
+	List<Ticket> ticketList;
+
+	CreateDialog createDialog;
+	ProgressDialog progressDialog;
+
+	RequestQueue queue;
+
 	private void initThings() {
 		myApp = (MyApp) getApplicationContext();
+
+		createDialog = new CreateDialog(this);
+		progressDialog = createDialog.createProgressDialog("Fetching Tickets",
+				"Please Wait", true, null);
+
 		eventList = myApp.getEventList();
 
 		if (eventList != null && eventList.size() > 0) {
 			adapter = new EventAdapter(this, eventList);
 		}
+
+		GsonBuilder builder = new GsonBuilder();
+		gson = builder.create();
+
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
+				.getApplicationContext());
+		editor = sharedPreferences.edit();
+
+		queue = Volley.newRequestQueue(this);
 	}
 
 	public void findThings(boolean isHeaderThere) {
@@ -56,5 +110,94 @@ public class EventChangeActivity extends MenuButtonActivity {
 		findThings(isHeaderThere);
 		initView();
 
+		eventLV.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// progressDialog.show();
+				if (eventList.get(position).getId()
+						.equals(myApp.getSelectedEvent().getId())) {
+					// when you click on same event
+				} else {
+					myApp.setSelectedEvent(eventList.get(position));
+
+					// we can't use notify data set changed coz we need to reset
+					// the selectedEvent variable inside the adapter class
+					adapter = new EventAdapter(EventChangeActivity.this,
+							eventList);
+					eventLV.setAdapter(adapter);
+
+					getTickets();
+				}
+			}
+
+		});
+	}
+
+	private void getTickets() {
+		String ticketsUrl = MyApp.URL + MyApp.TICKET
+				+ myApp.getSelectedEvent().getId() + "/"
+				+ myApp.getLoginUser().getToken();
+		System.out.println("tickets url : " + ticketsUrl);
+		progressDialog = createDialog.createProgressDialog("Fetching Tickets",
+				"Please Wait", true, null);
+		progressDialog.show();
+
+		JsonObjectRequest ticketsRequest = new JsonObjectRequest(Method.GET,
+				ticketsUrl, null, new Response.Listener<JSONObject>() {
+
+					@Override
+					public void onResponse(JSONObject responseJsonObject) {
+						progressDialog.hide();
+						System.out.println("Ticket Response => "
+								+ responseJsonObject.toString());
+
+						Type listType = (Type) new TypeToken<ArrayList<Ticket>>() {
+						}.getType();
+						try {
+							ticketList = (List<Ticket>) gson.fromJson(
+									responseJsonObject.getJSONArray("tickets")
+											.toString(), listType);
+						} catch (JsonSyntaxException e) {
+							e.printStackTrace();
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						System.out.println("tickets size : "
+								+ ticketList.size());
+
+						Toast.makeText(EventChangeActivity.this,
+								"tickets size : " + ticketList.size(),
+								Toast.LENGTH_SHORT).show();
+
+						myApp.setTicketList(ticketList);
+
+						editor.putString("ticketList",
+								gson.toJson(myApp.getTicketList()));
+						editor.commit();
+
+					}
+
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						progressDialog.hide();
+						System.out.println("ERROR" + error.getMessage());
+						error.printStackTrace();
+						if (error instanceof NetworkError) {
+						}
+						if (error instanceof NoConnectionError) {
+						}
+						if (error instanceof ServerError) {
+						}
+					}
+				});
+		RetryPolicy policy = new DefaultRetryPolicy(30000,
+				DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+				DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+		ticketsRequest.setRetryPolicy(policy);
+		queue.add(ticketsRequest);
 	}
 }

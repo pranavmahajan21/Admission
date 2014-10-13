@@ -18,12 +18,13 @@ import com.mw.admission.extra.MyApp;
 public class MenuActivity extends MenuButtonActivity {
 
 	boolean isHeaderThere = true;
-	
+
 	MyApp myApp;
-	
+
 	SharedPreferences sharedPreferences;
 	SharedPreferences.Editor editor;
 
+	Intent previousIntent;
 	Intent nextIntent;
 
 	ListView menuLV;
@@ -33,11 +34,13 @@ public class MenuActivity extends MenuButtonActivity {
 
 	private void initThings() {
 		myApp = (MyApp) getApplicationContext();
-		
+
+		previousIntent = getIntent();
+
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplicationContext());
 		editor = sharedPreferences.edit();
-		
+
 		adapter = new MenuAdapter(this, myApp.getMenuItemList());
 	}
 
@@ -71,19 +74,21 @@ public class MenuActivity extends MenuButtonActivity {
 					int position, long id) {
 				switch (position) {
 				case 0:
-					nextIntent = new Intent("com.google.zxing.client.android.SCAN");
+					nextIntent = new Intent(
+							"com.google.zxing.client.android.SCAN");
 					nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-	                startActivityForResult(nextIntent, MyApp.CAMERA_REQUEST_CODE);
-					
-//	                Intent intent = new Intent(
-//	                		"com.google.zxing.client.android.SCAN");
-//	                		intent.putExtra("SCAN_MODE", "QR_CODE_MODE,PRODUCT_MODE");
-//	                		startActivityForResult(intent, 0);
-	                
-	                
-//	                nextIntent = new Intent(MenuActivity.this,
-//							ScannerActivity.class);
-//					startActivity(nextIntent);
+					startActivityForResult(nextIntent,
+							MyApp.CAMERA_REQUEST_CODE);
+
+					// Intent intent = new Intent(
+					// "com.google.zxing.client.android.SCAN");
+					// intent.putExtra("SCAN_MODE",
+					// "QR_CODE_MODE,PRODUCT_MODE");
+					// startActivityForResult(intent, 0);
+
+					// nextIntent = new Intent(MenuActivity.this,
+					// ScannerActivity.class);
+					// startActivity(nextIntent);
 					break;
 				case 1:
 					nextIntent = new Intent(MenuActivity.this,
@@ -92,7 +97,7 @@ public class MenuActivity extends MenuButtonActivity {
 					break;
 				case 2:
 					nextIntent = new Intent(MenuActivity.this,
-							EventReportActivity.class);
+							ReportActivity.class);
 					startActivity(nextIntent);
 					break;
 				case 3:
@@ -134,8 +139,11 @@ public class MenuActivity extends MenuButtonActivity {
 					// TODO : clear preferences
 					editor.clear();
 					editor.commit();
-					
+
 					myApp.setLoginUser(null);
+					myApp.setEventList(null);
+					myApp.setSelectedEvent(null);
+					myApp.setTicketList(null);
 
 					startActivity(nextIntent);
 					break;
@@ -145,25 +153,32 @@ public class MenuActivity extends MenuButtonActivity {
 			}
 
 		});
+
+		if (previousIntent.hasExtra("option")) {
+			int x = previousIntent.getIntExtra("option", 0);
+
+			menuLV.performItemClick(menuLV.getAdapter().getView(x, null, null),
+					x, menuLV.getAdapter().getItemId(x));
+		}
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == MyApp.CAMERA_REQUEST_CODE) {
-           if (resultCode == RESULT_OK) {
-               
-              String contents = intent.getStringExtra("SCAN_RESULT");
-              String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-       	   Log.i("App","Scan successful");
-           
-              // Handle successful scan
-                                        
-           } else if (resultCode == RESULT_CANCELED) {
-              // Handle cancel
-        	   Log.i("App","Scan unsuccessful");
-           }
-      }
-   }
-	
+		if (requestCode == MyApp.CAMERA_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+
+				String contents = intent.getStringExtra("SCAN_RESULT");
+				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+				Log.i("App", "Scan successful");
+
+				// Handle successful scan
+
+			} else if (resultCode == RESULT_CANCELED) {
+				// Handle cancel
+				Log.i("App", "Scan unsuccessful");
+			}
+		}
+	}
+
 	public void onMenu(View view) {
 	}
 }

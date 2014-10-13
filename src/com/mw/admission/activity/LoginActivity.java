@@ -2,6 +2,7 @@ package com.mw.admission.activity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -79,7 +80,7 @@ public class LoginActivity extends Activity {
 	List<Ticket> ticketList;
 
 	AlertDialog alertDialog;
-	
+
 	CreateDialog createDialog;
 	ProgressDialog progressDialog;
 
@@ -99,8 +100,13 @@ public class LoginActivity extends Activity {
 		gson = builder.create();
 
 		createDialog = new CreateDialog(this);
-		progressDialog = createDialog.createProgressDialog("LoggingIn", "Please Wait", true, null);
-		
+		progressDialog = createDialog.createProgressDialog("LoggingIn",
+				"Please Wait", true, null);
+
+		nextIntent = new Intent(this, MenuActivity.class);
+		nextIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
 		queue = Volley.newRequestQueue(this);
 
 	}
@@ -150,7 +156,7 @@ public class LoginActivity extends Activity {
 		// When we have fetched data from preferences
 		if (myApp.getLoginUser() != null) {
 			if (myApp.getEventList() != null) {
-				eventList = myApp.getEventList(); 
+				eventList = myApp.getEventList();
 				if (myApp.getSelectedEvent() != null) {
 					if (myApp.getTicketList() != null) {
 						loadMenuView();
@@ -180,7 +186,9 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				myApp.setSelectedEvent(eventList.get(position));
+				Event tempEvent = eventList.get(position);
+				tempEvent.setScanStartDate(new Date());
+				myApp.setSelectedEvent(tempEvent);
 
 				editor.putInt("position_selected_event", position);
 				editor.commit();
@@ -212,6 +220,9 @@ public class LoginActivity extends Activity {
 	public void onOk(View view) {
 		childViewLoginLL.setVisibility(View.VISIBLE);
 		findViewById(R.id.forgotPassword).setVisibility(View.GONE);
+	}
+
+	public void onOk2(View view) {
 	}
 
 	public void onLogin(View view) {
@@ -295,28 +306,26 @@ public class LoginActivity extends Activity {
 	}
 
 	public void onScanner(View view) {
-		System.out.println("11");
+		nextIntent.putExtra("option", 0);
+		startActivity(nextIntent);
 	}
 
 	public void onWillCall(View view) {
-		System.out.println("22");
-		nextIntent = new Intent(this, WillCallActivity.class);
-		nextIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		nextIntent.putExtra("option", 1);
 		startActivity(nextIntent);
 	}
 
 	public void onReport(View view) {
-		System.out.println("33");
+		nextIntent.putExtra("option", 2);
+		startActivity(nextIntent);
 	}
 
 	public void onChangeEvent(View view) {
-		System.out.println("44");
-		
+
 		editor.remove("position_selected_event");
 		editor.commit();
 		myApp.setSelectedEvent(null);
-		
+
 		parentViewLL.removeAllViews();
 		parentViewLL.addView(childViewEventLL);
 	}
@@ -324,10 +333,12 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		// myApp.saveSharedPreferences();
 	}
 
 	public void getEvents() {
+		progressDialog = createDialog.createProgressDialog("Fetching Events",
+				"Please Wait", true, null);
+		progressDialog.show();
 		String eventsUrl = MyApp.URL + MyApp.EVENT
 				+ myApp.getLoginUser().getToken();
 		System.out.println(eventsUrl);
@@ -336,13 +347,34 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onResponse(JSONArray responseJsonArray) {
-						// progressDialog.dismiss();
+						progressDialog.dismiss();
 						eventList = new ArrayList<Event>();
 						// Gson gson = new Gson();
+						System.out.println(responseJsonArray.toString());
+
 						Type listType = (Type) new TypeToken<ArrayList<Event>>() {
 						}.getType();
 						eventList = (List<Event>) gson.fromJson(
 								responseJsonArray.toString(), listType);
+
+						// TODO: remove this for loop & find proper way to do
+						// this using GSON
+						for (int i = 0; i < eventList.size(); i++) {
+							try {
+								eventList
+										.get(i)
+										.setDate(
+												myApp.formatStringToDate(responseJsonArray
+														.getJSONObject(i)
+														.getJSONObject("start")
+														.getString("date")));
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+
 						myApp.setEventList(eventList);
 
 						editor.putString("eventList",
@@ -360,6 +392,7 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onErrorResponse(VolleyError arg0) {
 						arg0.getStackTrace();
+						progressDialog.dismiss();
 					}
 				});
 		queue.add(req);
@@ -374,9 +407,10 @@ public class LoginActivity extends Activity {
 				+ myApp.getSelectedEvent().getId() + "/"
 				+ myApp.getLoginUser().getToken();
 		System.out.println("tickets url : " + ticketsUrl);
-
+		progressDialog = createDialog.createProgressDialog("Fetching Tickets",
+				"Please Wait", true, null);
 		progressDialog.show();
-		
+
 		JsonObjectRequest ticketsRequest = new JsonObjectRequest(Method.GET,
 				ticketsUrl, null, new Response.Listener<JSONObject>() {
 

@@ -1,12 +1,15 @@
 package com.mw.admission.extra;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -115,15 +118,21 @@ public class MyApp extends Application {
 					setEventList(eventList);
 				}
 				if (sharedPreferences.contains("position_selected_event")) {
-					setSelectedEvent(getEventList().get(
+					Event tempEvent = getEventList().get(
 							sharedPreferences.getInt("position_selected_event",
-									0)));
+									0));
+					
+					// discuss if the next step is required??
+					tempEvent.setScanStartDate(new Date());
+					
+					setSelectedEvent(tempEvent);
 				}
 				if (sharedPreferences.contains("ticketList")) {
 					Type listType = (Type) new TypeToken<ArrayList<Ticket>>() {
 					}.getType();
 					List<Ticket> ticketList = (List<Ticket>) gson.fromJson(
-							sharedPreferences.getString("ticketList", null), listType);
+							sharedPreferences.getString("ticketList", null),
+							listType);
 					setTicketList(ticketList);
 				}
 
@@ -248,6 +257,43 @@ public class MyApp extends Application {
 
 	private static void checkInTicket(String barcode) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	public String formatDate(Date date) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("MMM dd");
+
+		String dateStr = formatter.format(date);
+		System.out.println(">><<><><><" + dateStr);
+		return dateStr;
+
+	}
+	
+	@SuppressLint("SimpleDateFormat")
+	public String formatDate2(Date date) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("MMM-dd-yyyy/HH:mm");
+
+		String dateStr = formatter.format(date);
+		System.out.println(">><<><><><" + dateStr);
+		return dateStr;
+
+	}
+	
+	public Date formatStringToDate(String dateString) {
+//		2014-10-16 20:00:00 
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		Date date = null;
+		try {
+			date = formatter.parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+//		System.out.println(">><<><><><" + dateStr);
+		return date;
 
 	}
 

@@ -29,7 +29,7 @@
             android:layout_centerVertical="true"
             android:background="#ff6823"
             android:clickable="true"
-            android:onClick="getTickets"
+            android:onClick="onOk2"
             android:paddingBottom="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"

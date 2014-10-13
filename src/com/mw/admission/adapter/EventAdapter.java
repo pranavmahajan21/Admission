@@ -3,6 +3,7 @@ package com.mw.admission.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class EventAdapter extends BaseAdapter {
 	List<Event> eventPO;
 
 	MyApp myApp;
+	Event selectedEvent;
 
 	LayoutInflater inflater;
 
@@ -27,6 +29,7 @@ public class EventAdapter extends BaseAdapter {
 		this.context = context;
 		this.eventPO = eventList;
 		myApp = (MyApp) context.getApplicationContext();
+		selectedEvent = myApp.getSelectedEvent();
 	}
 
 	// public void swapData(List<ParseObject> alertList) {
@@ -35,11 +38,12 @@ public class EventAdapter extends BaseAdapter {
 
 	static class ViewHolder {
 		protected TextView nameTV;
-		protected TextView dateIV;
+		protected TextView dateTV;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		System.out.println("getview");
 		final ViewHolder viewHolder;
 		if (convertView == null) {
 			inflater = (LayoutInflater) context
@@ -50,7 +54,7 @@ public class EventAdapter extends BaseAdapter {
 
 			viewHolder.nameTV = (TextView) convertView
 					.findViewById(R.id.name_TV);
-			viewHolder.dateIV = (TextView) convertView
+			viewHolder.dateTV = (TextView) convertView
 					.findViewById(R.id.date_TV);
 
 			// viewHolder.nameTV.setTypeface(myApp.getTypefaceBold());
@@ -62,8 +66,14 @@ public class EventAdapter extends BaseAdapter {
 
 		Event tempEvent = eventPO.get(position);
 		viewHolder.nameTV.setText(tempEvent.getName());
+		if (selectedEvent != null
+				&& tempEvent.getId().equals(selectedEvent.getId())) {
+			viewHolder.nameTV.setTextAppearance(context, R.style.textRedBold);
+		} else {
+			viewHolder.nameTV.setTextAppearance(context, R.style.textGreyNormal);
+		}
 
-		//		viewHolder.dateIV.setText(tempEvent.getDate().toString().substring(3, 10));
+		 viewHolder.dateTV.setText(myApp.formatDate(tempEvent.getDate()));
 
 		return convertView;
 	}
