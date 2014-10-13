@@ -44,7 +44,7 @@ public class OrderAdapter extends BaseAdapter {
 					false);
 
 			viewHolder.nameTV = (TextView) convertView
-					.findViewById(R.id.ticket_owner_TV);
+					.findViewById(R.id.label_name_TV);
 
 			convertView.setTag(viewHolder);
 		} else {

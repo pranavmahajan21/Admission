@@ -7,7 +7,13 @@ public class Scan implements Serializable {
 
 	private static final long serialVersionUID = 6937381401958484517L;
 
-	String barcode, result;
+	String barcode;
+
+	int result;
+	// 0 -> valid barcode & not checked in i.e. ideal case
+	// 1 -> valid barcode & checked in i.e. duplicate
+	// 2 -> invalid barcode
+	
 	Date scanDate;
 
 	public String getBarcode() {
@@ -18,11 +24,11 @@ public class Scan implements Serializable {
 		this.barcode = barcode;
 	}
 
-	public String getResult() {
+	public int getResult() {
 		return result;
 	}
 
-	public void setResult(String result) {
+	public void setResult(int result) {
 		this.result = result;
 	}
 

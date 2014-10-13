@@ -20,7 +20,7 @@
             android:textColor="@color/green" />
 
         <TextView
-            android:id="@+id/ticket_owner_TV"
+            android:id="@+id/label_name_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ticket Owner"

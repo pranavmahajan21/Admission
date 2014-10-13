@@ -13,8 +13,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -51,6 +53,12 @@ import com.mw.admission.model.User;
 
 public class LoginActivity extends Activity {
 
+	MyApp myApp;
+
+	Gson gson;
+	SharedPreferences sharedPreferences;
+	SharedPreferences.Editor editor;
+
 	Intent nextIntent;
 	LayoutInflater inflater;
 
@@ -69,16 +77,39 @@ public class LoginActivity extends Activity {
 	EventAdapter adapter;
 	List<Event> eventList;
 	List<Ticket> ticketList;
-	
 
 	AlertDialog alertDialog;
+	
 	CreateDialog createDialog;
 	ProgressDialog progressDialog;
 
 	RequestQueue queue;
 
-	Gson gson;
-	MyApp myApp;
+	private void initThings() {
+		myApp = (MyApp) getApplicationContext();
+
+		inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		childViewOptionLL = inflater.inflate(R.layout.child_option, null);
+
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
+				.getApplicationContext());
+		editor = sharedPreferences.edit();
+
+		GsonBuilder builder = new GsonBuilder();
+		gson = builder.create();
+
+		createDialog = new CreateDialog(this);
+		progressDialog = createDialog.createProgressDialog("LoggingIn", "Please Wait", true, null);
+		
+		queue = Volley.newRequestQueue(this);
+
+	}
+
+	private void setTypeface() {
+		loginPageHeaderTV.setTypeface(myApp.getTypefaceBoldSans());
+		usernameTV.setTypeface(myApp.getTypefaceBoldSans());
+		passwordTV.setTypeface(myApp.getTypefaceBoldSans());
+	}
 
 	private void findLoginThings() {
 
@@ -87,36 +118,12 @@ public class LoginActivity extends Activity {
 		usernameTV = (EditText) findViewById(R.id.user_ET);
 		passwordTV = (EditText) findViewById(R.id.password_ET);
 		loginPageHeaderTV = (TextView) findViewById(R.id.header_TV);
+
+		setTypeface();
 	}
 
 	private void findEventThings() {
 		eventLV = (ListView) findViewById(R.id.event_LV);
-	}
-
-	private void initThings() {
-		inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		myApp = (MyApp) getApplicationContext();
-
-		childViewOptionLL = inflater.inflate(R.layout.child_option, null);
-
-		GsonBuilder builder = new GsonBuilder();
-		gson = builder.create();
-
-		queue = Volley.newRequestQueue(this);
-
-	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		Toast.makeText(this, "dsadsa", Toast.LENGTH_SHORT).show();
-		System.out.println("dfsred");
-		setContentView(R.layout.activity_login);
-
-		findLoginThings();
-		initThings();
-		staticNonsense();
 	}
 
 	private void staticNonsense() {
@@ -127,6 +134,76 @@ public class LoginActivity extends Activity {
 		passwordTV.setText("password");
 	}
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		Toast.makeText(this, "dsadsa", Toast.LENGTH_SHORT).show();
+		System.out.println("dfsred");
+		setContentView(R.layout.activity_login);
+
+		initThings();
+		findLoginThings();
+
+		staticNonsense();
+
+		// When we have fetched data from preferences
+		if (myApp.getLoginUser() != null) {
+			if (myApp.getEventList() != null) {
+				eventList = myApp.getEventList(); 
+				if (myApp.getSelectedEvent() != null) {
+					if (myApp.getTicketList() != null) {
+						loadMenuView();
+					} else {
+						getTickets();
+					}
+				} else {
+					loadEventListView();
+				}
+			} else {
+				getEvents();
+			}
+		}
+	}
+
+	private void loadEventListView() {
+		adapter = new EventAdapter(LoginActivity.this, myApp.getEventList());
+
+		childViewEventLL = inflater.inflate(R.layout.child_list_event, null);
+		parentViewLL.removeAllViews();
+		parentViewLL.addView(childViewEventLL);
+		findEventThings();
+		eventLV.setAdapter(adapter);
+
+		eventLV.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				myApp.setSelectedEvent(eventList.get(position));
+
+				editor.putInt("position_selected_event", position);
+				editor.commit();
+
+				// TICKETS TICKETS TICKETS TICKETS
+				getTickets();
+
+			}
+
+		});
+
+	}
+
+	private void loadMenuView() {
+
+		parentViewLL.removeAllViews();
+		parentViewLL.addView(childViewOptionLL);
+
+		findThingsForOptions();
+
+		selectedEventTV.setText(myApp.getSelectedEvent().getName());
+	}
+
 	public void onForgotPassword(View view) {
 		findViewById(R.id.forgotPassword).setVisibility(View.VISIBLE);
 		childViewLoginLL.setVisibility(View.GONE);
@@ -135,11 +212,11 @@ public class LoginActivity extends Activity {
 	public void onOk(View view) {
 		childViewLoginLL.setVisibility(View.VISIBLE);
 		findViewById(R.id.forgotPassword).setVisibility(View.GONE);
-
 	}
 
 	public void onLogin(View view) {
 		System.out.println(">>>>>> login");
+		progressDialog.show();
 		JSONObject jsonObject;
 		try {
 			jsonObject = new JSONObject();
@@ -160,21 +237,28 @@ public class LoginActivity extends Activity {
 						public void onResponse(JSONObject response) {
 							System.out.println(">>>>Response => "
 									+ response.toString());
-
+							progressDialog.hide();
 							User user = null;
 							try {
 								user = gson.fromJson(
 										response.getJSONObject("user")
 												.toString(), User.class);
 								user.setToken(response.getString("token"));
-								myApp.setLoginUser(user);
-
-								System.out.println("login user" + user);
 							} catch (JsonSyntaxException e) {
 								e.printStackTrace();
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
+							myApp.setLoginUser(user);
+
+							editor.putBoolean("isLoggedIn", true);
+							editor.putString("user",
+									gson.toJson(myApp.getLoginUser()));
+							editor.commit();
+
+							System.out.println("login user" + user);
+
+							// EVENTS EVENTS EVENTS EVENTS
 							getEvents();
 						}
 					}, new Response.ErrorListener() {
@@ -228,6 +312,11 @@ public class LoginActivity extends Activity {
 
 	public void onChangeEvent(View view) {
 		System.out.println("44");
+		
+		editor.remove("position_selected_event");
+		editor.commit();
+		myApp.setSelectedEvent(null);
+		
 		parentViewLL.removeAllViews();
 		parentViewLL.addView(childViewEventLL);
 	}
@@ -249,38 +338,22 @@ public class LoginActivity extends Activity {
 					public void onResponse(JSONArray responseJsonArray) {
 						// progressDialog.dismiss();
 						eventList = new ArrayList<Event>();
-//						Gson gson = new Gson();
+						// Gson gson = new Gson();
 						Type listType = (Type) new TypeToken<ArrayList<Event>>() {
 						}.getType();
 						eventList = (List<Event>) gson.fromJson(
 								responseJsonArray.toString(), listType);
 						myApp.setEventList(eventList);
+
+						editor.putString("eventList",
+								gson.toJson(myApp.getEventList()));
+						editor.commit();
+
 						System.out.println(">>>>> events size:"
 								+ eventList.size());
-						
-						adapter = new EventAdapter(LoginActivity.this,
-								eventList);
 
-						childViewEventLL = inflater.inflate(
-								R.layout.child_list_event, null);
-						parentViewLL.removeAllViews();
-						parentViewLL.addView(childViewEventLL);
-						findEventThings();
-						eventLV.setAdapter(adapter);
+						loadEventListView();
 
-						eventLV.setOnItemClickListener(new OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								myApp.setSelectedEvent(eventList.get(position));
-
-								// Load Tickets for event
-								getTickets();
-
-							}
-
-						});
 					}
 				}, new Response.ErrorListener() {
 
@@ -302,11 +375,14 @@ public class LoginActivity extends Activity {
 				+ myApp.getLoginUser().getToken();
 		System.out.println("tickets url : " + ticketsUrl);
 
+		progressDialog.show();
+		
 		JsonObjectRequest ticketsRequest = new JsonObjectRequest(Method.GET,
 				ticketsUrl, null, new Response.Listener<JSONObject>() {
 
 					@Override
 					public void onResponse(JSONObject responseJsonObject) {
+						progressDialog.hide();
 						System.out.println("Ticket Response => "
 								+ responseJsonObject.toString());
 
@@ -314,31 +390,35 @@ public class LoginActivity extends Activity {
 						}.getType();
 						try {
 							ticketList = (List<Ticket>) gson.fromJson(
-									responseJsonObject.getJSONArray("tickets").toString(), listType);
+									responseJsonObject.getJSONArray("tickets")
+											.toString(), listType);
 						} catch (JsonSyntaxException e) {
 							e.printStackTrace();
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
-						System.out.println("tickets size : " + ticketList.size());
-						
-						Toast.makeText(LoginActivity.this, "tickets size : " + ticketList.size() , Toast.LENGTH_SHORT).show();
-						
+						System.out.println("tickets size : "
+								+ ticketList.size());
+
+						Toast.makeText(LoginActivity.this,
+								"tickets size : " + ticketList.size(),
+								Toast.LENGTH_SHORT).show();
+
 						myApp.setTicketList(ticketList);
-						
-						parentViewLL.removeAllViews();
-						parentViewLL.addView(childViewOptionLL);
 
-						findThingsForOptions();
+						editor.putString("ticketList",
+								gson.toJson(myApp.getTicketList()));
+						editor.commit();
 
-						selectedEventTV.setText(myApp.getSelectedEvent()
-								.getName());
+						loadMenuView();
+
 					}
 
 				}, new Response.ErrorListener() {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
+						progressDialog.hide();
 						System.out.println("ERROR" + error.getMessage());
 						error.printStackTrace();
 						if (error instanceof NetworkError) {

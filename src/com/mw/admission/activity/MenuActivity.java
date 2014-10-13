@@ -1,7 +1,9 @@
 package com.mw.admission.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +20,9 @@ public class MenuActivity extends MenuButtonActivity {
 	boolean isHeaderThere = true;
 	
 	MyApp myApp;
+	
+	SharedPreferences sharedPreferences;
+	SharedPreferences.Editor editor;
 
 	Intent nextIntent;
 
@@ -28,6 +33,11 @@ public class MenuActivity extends MenuButtonActivity {
 
 	private void initThings() {
 		myApp = (MyApp) getApplicationContext();
+		
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
+				.getApplicationContext());
+		editor = sharedPreferences.edit();
+		
 		adapter = new MenuAdapter(this, myApp.getMenuItemList());
 	}
 
@@ -122,6 +132,10 @@ public class MenuActivity extends MenuButtonActivity {
 							| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 					// TODO : clear preferences
+					editor.clear();
+					editor.commit();
+					
+					myApp.setLoginUser(null);
 
 					startActivity(nextIntent);
 					break;

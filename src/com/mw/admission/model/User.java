@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -7719557886765194596L;
@@ -12,9 +14,12 @@ public class User implements Serializable {
 	boolean isPatternMode;
 	int selectedEventIndex;
 
+	@SerializedName("login")
 	String username;
-	String email;
+	
 	String token;
+
+	String email;
 
 	List<Event> eventList;
 	Date startTime;

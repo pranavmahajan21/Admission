@@ -1,12 +1,15 @@
 package com.mw.admission.extra;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
@@ -14,8 +17,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mw.admission.model.Event;
 import com.mw.admission.model.MenuItem;
+import com.mw.admission.model.Scan;
 import com.mw.admission.model.Ticket;
 import com.mw.admission.model.User;
 
@@ -43,33 +49,34 @@ public class MyApp extends Application {
 	private RequestQueue mRequestQueue;
 	private ImageLoader mImageLoader;// not needed
 
-	private static MyApp mInstance;
+	private static MyApp myAppInstance;
 
+	// don't initialize in this class
 	User loginUser;
 
+	// don't initialize in this class
 	List<Event> eventList;
+	// don't initialize in this class
 	Event selectedEvent;
 
+	// don't initialize in this class
 	List<Ticket> ticketList;
 	Map<String, List<Ticket>> orderMap;
 
 	List<MenuItem> menuItemList;
 
+	List<Scan> scanList;
+
 	SharedPreferences sharedPreferences;
 
+	Typeface typefaceRegularSans;
+	Typeface typefaceBoldSans;
+
 	private void initThings() {
-		mInstance = this;
+		myAppInstance = this;
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
 		menuItemList = new ArrayList<MenuItem>();
-		orderMap = new HashMap<String, List<Ticket>>();
-	}
-
-	@Override
-	public void onCreate() {
-		super.onCreate();
-
-		initThings();
-
 		menuItemList.add(new MenuItem("Scanner", false));
 		menuItemList.add(new MenuItem("Will Call", false));
 		menuItemList.add(new MenuItem("Event Report", false));
@@ -80,10 +87,65 @@ public class MyApp extends Application {
 		menuItemList.add(new MenuItem("Help/Contact Us", true));
 		menuItemList.add(new MenuItem("About", true));
 		menuItemList.add(new MenuItem("Logout", false));
+
+		scanList = new ArrayList<Scan>();
+		orderMap = new HashMap<String, List<Ticket>>();
+
+		typefaceRegularSans = Typeface.createFromAsset(getAssets(),
+				"fonts/SourceSansPro-Regular.ttf");
+		typefaceBoldSans = Typeface.createFromAsset(getAssets(),
+				"fonts/SourceSansPro-Semibold.ttf");
+	}
+
+	private void fetchPreferences() {
+
+		if (sharedPreferences.contains("isLoggedIn")
+				&& sharedPreferences.getBoolean("isLoggedIn", false)) {
+			Gson gson = new Gson();
+			User user = gson.fromJson(
+					sharedPreferences.getString("user", null), User.class);
+			if (user != null) {
+				setLoginUser(user);
+				if (sharedPreferences.contains("eventList")) {
+					Type listType = (Type) new TypeToken<ArrayList<Event>>() {
+					}.getType();
+					List<Event> eventList = (List<Event>) gson.fromJson(
+							sharedPreferences.getString("eventList", null),
+							listType);
+					setEventList(eventList);
+				}
+				if (sharedPreferences.contains("position_selected_event")) {
+					setSelectedEvent(getEventList().get(
+							sharedPreferences.getInt("position_selected_event",
+									0)));
+				}
+				if (sharedPreferences.contains("ticketList")) {
+					Type listType = (Type) new TypeToken<ArrayList<Ticket>>() {
+					}.getType();
+					List<Ticket> ticketList = (List<Ticket>) gson.fromJson(
+							sharedPreferences.getString("ticketList", null), listType);
+					setTicketList(ticketList);
+				}
+
+			} else {
+				// Something wrong with preferences
+			}
+		}
+
+	}
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+
+		initThings();
+
+		fetchPreferences();
+
 	}
 
 	public static synchronized MyApp getInstance() {
-		return mInstance;
+		return myAppInstance;
 	}
 
 	public RequestQueue getRequestQueue() {
@@ -119,6 +181,74 @@ public class MyApp extends Application {
 		if (mRequestQueue != null) {
 			mRequestQueue.cancelAll(tag);
 		}
+	}
+
+	public static void isTicketValidPattern(String barcode) {
+
+	}
+
+	public static void isTicketValid(String barcode, boolean isPositionKnown,
+			int position) {
+
+		// if(isInPatternMode)
+		// {
+		// isTicketValidPattern(barcode);
+		// return;
+		// }
+
+		int tempTicketPosition;
+		Ticket tempTicket = null;
+
+		if (isPositionKnown) {
+			// if(we are coming from will call page)
+			tempTicket = myAppInstance.getTicketList().get(position);
+		} else {
+			// we are coming from scanner page
+			for (int i = 0; i < myAppInstance.getTicketList().size(); i++) {
+				if (barcode.equals(myAppInstance.getTicketList().get(i))) {
+					tempTicket = myAppInstance.getTicketList().get(i);
+				}
+			}
+		}
+
+		if (tempTicket != null) {
+			if (!isPositionKnown) {
+				// if we don't know the position i.e. we are coming from scanner
+				// page
+				tempTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
+						myAppInstance.getLoginUser().getUsername(), true);
+			}
+			Scan scan = new Scan();
+			scan.setBarcode(barcode);
+			scan.setScanDate(new Date());
+			if (barcode.equals(tempTicket.getBarcode())) {
+				// VALID BARCODE
+
+				if (!tempTicket.isCheckedIn()) {
+					// NOT CHECKED IN i.e. *** ideal case ***
+					scan.setResult(0);
+					// if(inOnlineMode)
+					{
+						checkInTicket(barcode);
+					}
+				} else {
+					// ALREADY CHECKED IN i.e. DUPLICATE TICKET
+					scan.setResult(1);
+				}
+			} else {
+				// INVALID BARCODE
+				scan.setResult(2);
+			}
+			myAppInstance.getScanList().add(scan);
+		} else {
+			// bug (ticket should have been found)
+			// maybe scanner read something wrong
+		}
+	}
+
+	private static void checkInTicket(String barcode) {
+		// TODO Auto-generated method stub
+
 	}
 
 	public User getLoginUser() {
@@ -175,11 +305,11 @@ public class MyApp extends Application {
 				orderMap.put(tempTicket.getOrderId(), aa);
 			}
 		}
-		
+
 		System.out.println("orderMap size:" + orderMap.size());
 		for (int i = 0; i < orderMap.size(); i++) {
 			List<Ticket> aa = orderMap.get(i);
-			System.out.println(i + "   " + (aa==null));
+			System.out.println(i + "   " + (aa == null));
 		}
 	}
 
@@ -189,6 +319,30 @@ public class MyApp extends Application {
 
 	public void setOrderMap(Map<String, List<Ticket>> orderMap) {
 		this.orderMap = orderMap;
+	}
+
+	public List<Scan> getScanList() {
+		return scanList;
+	}
+
+	public void setScanList(List<Scan> scanList) {
+		this.scanList = scanList;
+	}
+
+	public Typeface getTypefaceRegularSans() {
+		return typefaceRegularSans;
+	}
+
+	public void setTypefaceRegularSans(Typeface typefaceRegularSans) {
+		this.typefaceRegularSans = typefaceRegularSans;
+	}
+
+	public Typeface getTypefaceBoldSans() {
+		return typefaceBoldSans;
+	}
+
+	public void setTypefaceBoldSans(Typeface typefaceBoldSans) {
+		this.typefaceBoldSans = typefaceBoldSans;
 	}
 
 }

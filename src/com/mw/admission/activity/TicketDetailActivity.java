@@ -1,10 +1,13 @@
 package com.mw.admission.activity;
 
+import java.util.Date;
+
 import com.mw.admission.extra.MyApp;
 import com.mw.admission.model.Ticket;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ public class TicketDetailActivity extends MenuButtonActivity {
 	MyApp myApp;
 	Intent previousIntent;
 
+	int position;
 	Ticket selectedTicket;
 
 	LayoutInflater inflater;
@@ -27,15 +31,20 @@ public class TicketDetailActivity extends MenuButtonActivity {
 	LinearLayout oldChildLL;
 	View newChildLL;
 
-	TextView nameTV, barcodeTV, statusTV, orderNumberTV, numberOfTicketsTV;
+	TextView nameTV, barcodeTV, statusTV, orderNumberTV, numberOfTicketsTV,
+			actionTV;
 	TextView scanDateTV, scannerIDTV;
+
+	TextView label_name_TV, label_barcode_TV, label_status_TV, label_order_TV,
+			label_ticket_TV, label_action_TV;
 
 	private void initThings() {
 		previousIntent = getIntent();
 
 		myApp = (MyApp) getApplicationContext();
-		selectedTicket = myApp.getTicketList().get(
-				previousIntent.getIntExtra("position", 0));
+
+		position = previousIntent.getIntExtra("position", 0);
+		selectedTicket = myApp.getTicketList().get(position);
 
 		inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		newChildLL = inflater.inflate(R.layout.child_ticket_details, null);
@@ -52,6 +61,15 @@ public class TicketDetailActivity extends MenuButtonActivity {
 		statusTV = (TextView) findViewById(R.id.status_TV);
 		orderNumberTV = (TextView) findViewById(R.id.orderNumber_TV);
 		numberOfTicketsTV = (TextView) findViewById(R.id.numberOfTickets_TV);
+
+		actionTV = (TextView) findViewById(R.id.action_TV);
+
+		label_name_TV = (TextView) findViewById(R.id.label_name_TV);
+		label_barcode_TV = (TextView) findViewById(R.id.label_barcode_TV);
+		label_status_TV = (TextView) findViewById(R.id.label_status_TV);
+		label_order_TV = (TextView) findViewById(R.id.label_order_TV);
+		label_ticket_TV = (TextView) findViewById(R.id.label_ticket_TV);
+		label_action_TV = (TextView) findViewById(R.id.label_action_TV);
 	}
 
 	private void findThingsForNewView() {
@@ -74,16 +92,12 @@ public class TicketDetailActivity extends MenuButtonActivity {
 				.getOrderQuantity()));
 
 		if (selectedTicket.isCheckedIn()) {
-			statusTV.setText("Admitted");
+			// statusTV.setText("Admitted");
+			// statusTV.setTextColor(Color.parseColor("#ff0000"));
+			//
+			// actionTV.setClickable(false);
 
-			// replace view in parent LL
-			parentLL.removeView(oldChildLL);
-			parentLL.addView(newChildLL);
-
-			findThingsForNewView();
-
-			scanDateTV.setText(selectedTicket.getScanTime().toString());
-			scannerIDTV.setText(selectedTicket.getScannerID());
+			onAdmit(null);
 		}
 
 	}
@@ -94,14 +108,37 @@ public class TicketDetailActivity extends MenuButtonActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_ticket_details);
 
-		findThings();
 		initThings();
+		findThings();
 		initView();
 
 	}
 
 	public void onAdmit(View view) {
+		if (view != null) {
+			// selectedTicket.setScanTime(new Date());
+			// selectedTicket.setScannerID(myApp.getLoginUser().getUsername());
+			// selectedTicket.setCheckedIn(true);
 
+			selectedTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
+					myApp.getLoginUser().getUsername(), true);
+
+			myApp.getTicketList().add(position, selectedTicket);
+		}
+
+		statusTV.setText("Admitted");
+		statusTV.setTextColor(Color.parseColor("#ff0000"));
+
+		// replace view in parent LL
+		parentLL.removeView(oldChildLL);
+		parentLL.addView(newChildLL);
+
+		findThingsForNewView();
+
+		scanDateTV.setText(selectedTicket.getScanTime().toString());
+		scannerIDTV.setText(selectedTicket.getScannerID());
+
+		MyApp.isTicketValid(selectedTicket.getBarcode(), true, position);
 	}
 
 	public void onAdmitAll(View view) {

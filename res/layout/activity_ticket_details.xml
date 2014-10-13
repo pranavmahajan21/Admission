@@ -37,7 +37,7 @@
             android:padding="10dp" >
 
             <TextView
-                android:id="@+id/ticket_owner_TV"
+                android:id="@+id/label_name_TV"
                 style="@style/TV_label_green2"
                 android:text="Name on Ticket" />
 
@@ -57,6 +57,7 @@
             <TableRow>
 
                 <TextView
+                    android:id="@+id/label_barcode_TV"
                     style="@style/TV_label_green2"
                     android:layout_column="1"
                     android:padding="3dip"
@@ -65,9 +66,11 @@
                 <!-- android:gravity="right" -->
 
                 <TextView
+                    android:id="@+id/label_status_TV"
                     style="@style/TV_label_green2"
                     android:padding="3dip"
                     android:text="Status:" />
+
             </TableRow>
 
             <TableRow>
@@ -91,6 +94,7 @@
             <TableRow>
 
                 <TextView
+                    android:id="@+id/label_order_TV"
                     style="@style/TV_label_green2"
                     android:layout_column="1"
                     android:padding="3dip"
@@ -99,9 +103,11 @@
                 <!-- android:gravity="right" -->
 
                 <TextView
+                    android:id="@+id/label_ticket_TV"
                     style="@style/TV_label_green2"
                     android:padding="3dip"
                     android:text="Tickets On Order" />
+
             </TableRow>
 
             <TableRow>
@@ -132,12 +138,12 @@
             android:padding="10dp" >
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/label_action_TV"
                 style="@style/TV_label_green2"
                 android:text="Actions" />
 
             <TextView
-                android:id="@+id/action1_TV"
+                android:id="@+id/action_TV"
                 style="@style/TV_label_grey"
                 android:clickable="true"
                 android:onClick="onAdmit"

@@ -98,13 +98,13 @@ public class TicketAdapter extends BaseAdapter {
 				convertView = inflater.inflate(R.layout.element_ticket, parent,
 						false);
 				viewHolder.nameTV = (TextView) convertView
-						.findViewById(R.id.ticket_owner_TV);
+						.findViewById(R.id.label_name_TV);
 				break;
 			case VIEW1:
 				convertView = inflater.inflate(R.layout.element_ticket2,
 						parent, false);
 				viewHolder.nameTV = (TextView) convertView
-						.findViewById(R.id.ticket_owner_TV);
+						.findViewById(R.id.label_name_TV);
 				break;
 			case VIEW2:
 				convertView = inflater.inflate(R.layout.element_ticket3,
@@ -118,7 +118,7 @@ public class TicketAdapter extends BaseAdapter {
 				convertView = inflater.inflate(R.layout.element_ticket, parent,
 						false);
 				viewHolder.nameTV = (TextView) convertView
-						.findViewById(R.id.ticket_owner_TV);
+						.findViewById(R.id.label_name_TV);
 				break;
 
 			default:

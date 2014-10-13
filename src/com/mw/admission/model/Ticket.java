@@ -114,4 +114,10 @@ public class Ticket implements Serializable {
 		this.scannerID = scannerID;
 	}
 
+	public void setScanTimeAndScannerIDAndCheckedIn(Date date, String scannerID, boolean checkedIn)
+	{
+		setScanTime(date);
+		setScannerID(scannerID);
+		setCheckedIn(checkedIn);
+	}
 }

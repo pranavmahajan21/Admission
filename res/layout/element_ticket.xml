@@ -5,16 +5,16 @@
     android:padding="10dp" >
 
     <TextView
-        android:id="@+id/ticket_owner_TV"
+        android:id="@+id/label_name_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/arrow_right_IV"
-        android:text="Ticket Owner" 
+        android:text="Ticket Owner"
         android:textColor="@color/green"
-        />
+        android:textSize="16sp" />
+    <!-- android:layout_alignParentTop="true" -->
 
     <ImageView
         android:id="@+id/arrow_right_IV"

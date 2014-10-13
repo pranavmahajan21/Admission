@@ -37,13 +37,13 @@
             android:src="@drawable/mission" />
 
         <TextView
-            android:id="@+id/ticket_owner_TV"
+            android:id="@+id/label_name_TV"
             style="@style/TV_label_green"
               android:textColor="@color/grey_background"
             android:text="Phone Support" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/label_admission_TV"
             style="@style/TV_label_green"
             android:text="888-9996-4774" />
 
@@ -55,7 +55,7 @@
             android:text="Email Feedback:" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/label_rejection_TV"
             style="@style/TV_label_green"
             android:text="support@missiontix.com" />
 

@@ -34,7 +34,7 @@
             android:src="@drawable/mission60x60" />
 
         <TextView
-            android:id="@+id/ticket_owner_TV"
+            android:id="@+id/label_name_TV"
             style="@style/TV_label_green"
             android:layout_marginTop="30dp"
             android:text="App Version:"
@@ -46,7 +46,7 @@
         -->
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/label_admission_TV"
             style="@style/TV_label_green"
             android:text="v1.0" />
 
@@ -58,7 +58,7 @@
             android:textColor="@color/grey_background" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/label_rejection_TV"
             style="@style/TV_label_green"
             android:text="v4.0" />
 
