@@ -30,11 +30,9 @@
         android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/xyz"
             android:background="@drawable/border_one_side"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/label_name_TV"
@@ -48,10 +46,8 @@
         </LinearLayout>
 
         <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/xyz"
             android:background="@drawable/border_one_side"
-            android:padding="10dp"
             android:stretchColumns="1" >
 
             <TableRow>
@@ -60,7 +56,6 @@
                     android:id="@+id/label_barcode_TV"
                     style="@style/TV_label_green2"
                     android:layout_column="1"
-                    android:padding="3dip"
                     android:text="Barcode:" />
 
                 <!-- android:gravity="right" -->
@@ -68,18 +63,15 @@
                 <TextView
                     android:id="@+id/label_status_TV"
                     style="@style/TV_label_green2"
-                    android:padding="3dip"
                     android:text="Status:" />
-
             </TableRow>
 
-            <TableRow>
+            <TableRow android:layout_marginTop="3dp" >
 
                 <TextView
                     android:id="@+id/barcode_TV"
                     style="@style/TV_label_grey"
                     android:layout_column="1"
-                    android:padding="3dip"
                     android:text="zasd5478243" />
 
                 <!-- android:gravity="right" -->
@@ -87,17 +79,15 @@
                 <TextView
                     android:id="@+id/status_TV"
                     style="@style/TV_label_grey"
-                    android:padding="3dip"
                     android:text="Open" />
             </TableRow>
 
-            <TableRow>
+            <TableRow android:layout_marginTop="8dp" >
 
                 <TextView
                     android:id="@+id/label_order_TV"
                     style="@style/TV_label_green2"
                     android:layout_column="1"
-                    android:padding="3dip"
                     android:text="Order Number" />
 
                 <!-- android:gravity="right" -->
@@ -105,37 +95,29 @@
                 <TextView
                     android:id="@+id/label_ticket_TV"
                     style="@style/TV_label_green2"
-                    android:padding="3dip"
                     android:text="Tickets On Order" />
-
             </TableRow>
 
-            <TableRow>
+            <TableRow android:layout_marginTop="3dp" >
 
                 <TextView
                     android:id="@+id/orderNumber_TV"
                     style="@style/TV_label_grey"
                     android:layout_column="1"
-                    android:padding="3dip"
                     android:text="65123" />
-
                 <!-- android:gravity="right" -->
 
                 <TextView
                     android:id="@+id/numberOfTickets_TV"
                     style="@style/TV_label_grey"
-                    android:padding="3dip"
                     android:text="2" />
             </TableRow>
         </TableLayout>
 
         <LinearLayout
             android:id="@+id/child_LL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_one_side"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            style="@style/xyz"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/label_action_TV"

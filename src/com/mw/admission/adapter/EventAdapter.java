@@ -57,7 +57,8 @@ public class EventAdapter extends BaseAdapter {
 			viewHolder.dateTV = (TextView) convertView
 					.findViewById(R.id.date_TV);
 
-			// viewHolder.nameTV.setTypeface(myApp.getTypefaceBold());
+			 viewHolder.nameTV.setTypeface(myApp.getTypefaceBoldSans());
+			 viewHolder.dateTV.setTypeface(myApp.getTypefaceBoldSans());
 
 			convertView.setTag(viewHolder);
 		} else {
@@ -66,14 +67,17 @@ public class EventAdapter extends BaseAdapter {
 
 		Event tempEvent = eventPO.get(position);
 		viewHolder.nameTV.setText(tempEvent.getName());
+		
 		if (selectedEvent != null
 				&& tempEvent.getId().equals(selectedEvent.getId())) {
 			viewHolder.nameTV.setTextAppearance(context, R.style.textRedBold);
+			viewHolder.dateTV.setTextAppearance(context, R.style.textRedBold);
 		} else {
 			viewHolder.nameTV.setTextAppearance(context, R.style.textGreyNormal);
+			viewHolder.dateTV.setTextAppearance(context, R.style.textGreyNormal);
 		}
 
-		 viewHolder.dateTV.setText(myApp.formatDate(tempEvent.getDate()));
+		 viewHolder.dateTV.setText(myApp.formatDateToString(tempEvent.getDate()));
 
 		return convertView;
 	}

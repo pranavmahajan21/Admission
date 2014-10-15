@@ -12,12 +12,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.mw.admission.activity.R;
+import com.mw.admission.extra.MyApp;
 import com.mw.admission.model.Ticket;
 
 public class OrderAdapter extends BaseAdapter {
 
 	Context context;
 
+	MyApp myApp;
 	LayoutInflater inflater;
 
 	List<List<Ticket>> aa;
@@ -25,6 +27,7 @@ public class OrderAdapter extends BaseAdapter {
 	public OrderAdapter(Context context, Map<String, List<Ticket>> orderMap) {
 		super();
 		this.context = context;
+		myApp = (MyApp) this.context.getApplicationContext();
 		aa = new ArrayList<List<Ticket>>(orderMap.values());
 	}
 
@@ -40,11 +43,13 @@ public class OrderAdapter extends BaseAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			viewHolder = new ViewHolder();
 
-			convertView = inflater.inflate(R.layout.element_ticket2, parent,
+			convertView = inflater.inflate(R.layout.element_ticket, parent,
 					false);
 
 			viewHolder.nameTV = (TextView) convertView
 					.findViewById(R.id.label_name_TV);
+
+			viewHolder.nameTV.setTypeface(myApp.getTypefaceRegularSans());
 
 			convertView.setTag(viewHolder);
 		} else {

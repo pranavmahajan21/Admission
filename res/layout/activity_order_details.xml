@@ -26,11 +26,9 @@
         android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/xyz"
             android:background="@drawable/border_one_side"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/label_name_TV"
@@ -44,11 +42,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/xyz"
             android:background="@drawable/border_one_side"
             android:orientation="horizontal"
-            android:padding="10dp"
             android:weightSum="2" >
 
             <LinearLayout
@@ -87,11 +83,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/xyz"
             android:background="@drawable/border_one_side"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/textView7"
@@ -103,16 +97,16 @@
                 style="@style/TV_label_grey"
                 android:clickable="true"
                 android:onClick="onAdmitAll"
-                android:textColor="@color/text_color"
-                android:text="Admit all Guest on Order" />
+                android:text="Admit all Guest on Order"
+                android:textColor="@color/text_color" />
 
             <TextView
                 android:id="@+id/action2_TV"
                 style="@style/TV_label_grey"
-                android:textColor="@color/text_color"
                 android:clickable="true"
                 android:onClick="onAdmitIndividually"
-                android:text="Admit Guests Individually" />
+                android:text="Admit Guests Individually"
+                android:textColor="@color/text_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -123,25 +117,21 @@
 
             <LinearLayout
                 android:id="@+id/child_LL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/xyz"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp"
                 android:weightSum="2" >
 
                 <!-- We can't give paddding on bottom coz rows of ListView already have padding on top -->
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/label_barcode_TV"
                     style="@style/TV_label_green2"
                     android:layout_width="0dip"
                     android:layout_weight="1"
                     android:text="Barcodes:" />
 
                 <TextView
-                    android:id="@+id/label_admission_TV"
+                    android:id="@+id/label_status_TV"
                     style="@style/TV_label_green2"
                     android:layout_width="0dip"
                     android:layout_weight="1"
@@ -151,7 +141,8 @@
             <ListView
                 android:id="@+id/barcode_LV"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="fill_parent"
+                android:dividerHeight="0.5dp" />
         </LinearLayout>
     </LinearLayout>
 

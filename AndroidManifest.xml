@@ -24,17 +24,18 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
         <activity android:name="com.mw.admission.activity.MenuActivity" 
             android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.mw.admission.activity.ContactActivity" 
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name="com.mw.admission.activity.MenuButtonActivity" 
             android:screenOrientation="portrait">
@@ -66,6 +67,10 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.mw.admission.activity.HistoryActivity" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity android:name="com.mw.admission.activity.InvalidTicketActivity" 
             android:screenOrientation="portrait">
         </activity>
         <!-- <activity

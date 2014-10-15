@@ -71,28 +71,6 @@ public class TicketAdapter extends BaseAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			viewHolder = new ViewHolder();
 
-//			if (x == VIEW0) {
-//				System.out.println("00000");
-//				convertView = inflater.inflate(R.layout.element_ticket, parent,
-//						false);
-//				viewHolder.nameTV = (TextView) convertView
-//						.findViewById(R.id.ticket_owner_TV);
-//			} else if (x == VIEW1) {
-//				System.out.println("1111111");
-//				convertView = inflater.inflate(R.layout.element_ticket2,
-//						parent, false);
-//				viewHolder.nameTV = (TextView) convertView
-//						.findViewById(R.id.ticket_owner_TV);
-//			} else if (x == VIEW2) {
-//				System.out.println("22222");
-//				convertView = inflater.inflate(R.layout.element_ticket3,
-//						parent, false);
-//				viewHolder.barcodeTV = (TextView) convertView
-//						.findViewById(R.id.barcode_TV);
-//				viewHolder.statusTV = (TextView) convertView
-//						.findViewById(R.id.status_TV);
-//			}
-
 			switch (x) {
 			case VIEW0:
 				convertView = inflater.inflate(R.layout.element_ticket, parent,
@@ -131,19 +109,6 @@ public class TicketAdapter extends BaseAdapter {
 		}
 
 		Ticket tempTicket = ticketList.get(position);
-
-//		if (x == VIEW0) {
-//			viewHolder.nameTV.setText(tempTicket.getNameOfGuest());
-//		} else if (x == VIEW1) {
-//			viewHolder.nameTV.setText(tempTicket.getNameOfGuest());
-//		} else if (x == VIEW2) {
-//			viewHolder.barcodeTV.setText(tempTicket.getBarcode());
-//			if (tempTicket.isCheckedIn()) {
-//				viewHolder.statusTV.setText("Admitted");
-//			} else {
-//				viewHolder.statusTV.setText("Open");
-//			}
-//		}
 
 		switch (x) {
 		case VIEW0:

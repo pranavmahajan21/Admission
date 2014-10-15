@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,6 +95,8 @@ public class OrderDetailActivity extends MenuButtonActivity {
 		parentLL.removeView(childLL);
 		adapter = new TicketAdapter(this, ticketsOfOrderList, 3);
 		barcodeLV.setAdapter(adapter);
+		barcodeLV.setDivider(new ColorDrawable(this.getResources().getColor(R.color.grey_background)));
+//		barcodeLV.setDividerHeight(1);
 	}
 
 	public void onAdmitAll(View view) {

@@ -26,7 +26,22 @@ public class ReportActivity extends MenuButtonActivity {
 	}
 
 	private void setTypeface() {
+		start_TV.setTypeface(myApp.getTypefaceRegularSans());
+		ticket_TV.setTypeface(myApp.getTypefaceRegularSans());
+		admission_event_TV.setTypeface(myApp.getTypefaceRegularSans());
+		rejection_event_TV.setTypeface(myApp.getTypefaceRegularSans());
+		admission_scanner_TV.setTypeface(myApp.getTypefaceRegularSans());
+		rejection_scanner_TV.setTypeface(myApp.getTypefaceRegularSans());
 
+		label_last_TV.setTypeface(myApp.getTypefaceRegularSans());
+		label_start_TV.setTypeface(myApp.getTypefaceRegularSans());
+		label_ticket_TV.setTypeface(myApp.getTypefaceRegularSans());
+		label_event_TV.setTypeface(myApp.getTypefaceRegularSans());
+		label_admission_event_TV.setTypeface(myApp.getTypefaceRegularSans());
+		label_rejection_event_TV.setTypeface(myApp.getTypefaceRegularSans());
+		label_scanner_TV.setTypeface(myApp.getTypefaceRegularSans());
+		label_admission_scanner_TV.setTypeface(myApp.getTypefaceRegularSans());
+		label_rejection_scanner_TV.setTypeface(myApp.getTypefaceRegularSans());
 	}
 
 	public void findThings(boolean isHeaderThere) {
@@ -59,7 +74,7 @@ public class ReportActivity extends MenuButtonActivity {
 
 		Event tempEvent = myApp.getSelectedEvent();
 
-		start_TV.setText(myApp.formatDate2(tempEvent.getScanStartDate()));
+		start_TV.setText(myApp.formatDateToString2(tempEvent.getScanStartDate()));
 	}
 
 	@Override
@@ -68,8 +83,8 @@ public class ReportActivity extends MenuButtonActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_report);
 
-		findThings(isHeaderThere);
 		initThings();
+		findThings(isHeaderThere);
 		initView();
 
 	}

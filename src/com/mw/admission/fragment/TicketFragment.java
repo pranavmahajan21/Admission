@@ -95,10 +95,20 @@ public class TicketFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				nextIntent.putExtra("position", position);
-				startActivity(nextIntent);
+				startActivityForResult(nextIntent, 12);
+				// startActivity(nextIntent);
 			}
 
 		});
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		// If we don't do this step then app crashes while coming back from
+		// TicketDetailActivity (after "admit this guest"). TODO Do R&D on that
+		// error
+		adapter.notifyDataSetChanged();
 	}
 
 }

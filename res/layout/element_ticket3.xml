@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingLeft="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
     android:weightSum="2" >
 
     <TextView
@@ -12,7 +13,7 @@
         android:layout_width="0dip"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
-        android:text="Barcodes:" />
+        android:text="51964def236" />
 
     <TextView
         android:id="@+id/status_TV"
@@ -20,6 +21,6 @@
         android:layout_width="0dip"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
-        android:text="Status:" />
+        android:text="Open" />
 
 </LinearLayout>

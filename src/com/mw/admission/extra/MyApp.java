@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mw.admission.model.Event;
 import com.mw.admission.model.MenuItem;
@@ -32,17 +33,17 @@ public class MyApp extends Application {
 
 	public static final int CAMERA_REQUEST_CODE = 0;
 
-	// http://staging.missiontix.com 404
+	public static final int EVENT_CHANGE = 10;
 
-	// http://private-db490-missiontix.apiary-proxy.com 500
+	// http://staging.missiontix.com/ 404
 
-	// http://beta.missiontix.com 500
+	// http://private-db490-missiontix.apiary-proxy.com/ 500
+
+	// http://beta.missiontix.com/ 500
 
 	public static final String URL = "http://staging.missiontix.com/";
 
 	public static final String LOGIN = "api/users/authenticate";
-	// public static final String EVENT =
-	// "http://private-db490-missiontix.apiary-proxy.com/api/users/events/";
 	public static final String EVENT = "api/users/events/";
 	public static final String TICKET = "api/admissions/events/";
 
@@ -66,19 +67,25 @@ public class MyApp extends Application {
 	List<Ticket> ticketList;
 	Map<String, List<Ticket>> orderMap;
 
-	List<MenuItem> menuItemList;
-
 	List<Scan> scanList;
 
-	SharedPreferences sharedPreferences;
+	List<MenuItem> menuItemList;
 
+	SharedPreferences sharedPreferences;
+	SharedPreferences.Editor editor;
+Gson gson;
+	
 	Typeface typefaceRegularSans;
 	Typeface typefaceBoldSans;
 
 	private void initThings() {
 		myAppInstance = this;
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
+		editor = sharedPreferences.edit();
+		
+		GsonBuilder builder = new GsonBuilder();
+		gson = builder.create();
+		
 		menuItemList = new ArrayList<MenuItem>();
 		menuItemList.add(new MenuItem("Scanner", false));
 		menuItemList.add(new MenuItem("Will Call", false));
@@ -121,10 +128,10 @@ public class MyApp extends Application {
 					Event tempEvent = getEventList().get(
 							sharedPreferences.getInt("position_selected_event",
 									0));
-					
+
 					// discuss if the next step is required??
 					tempEvent.setScanStartDate(new Date());
-					
+
 					setSelectedEvent(tempEvent);
 				}
 				if (sharedPreferences.contains("ticketList")) {
@@ -134,6 +141,14 @@ public class MyApp extends Application {
 							sharedPreferences.getString("ticketList", null),
 							listType);
 					setTicketList(ticketList);
+				}
+				if (sharedPreferences.contains("scanList")) {
+					Type listType = (Type) new TypeToken<ArrayList<Scan>>() {
+					}.getType();
+					List<Scan> scanList = (List<Scan>) gson.fromJson(
+							sharedPreferences.getString("scanList", null),
+							listType);
+					setScanList(scanList);
 				}
 
 			} else {
@@ -196,8 +211,12 @@ public class MyApp extends Application {
 
 	}
 
-	public static void isTicketValid(String barcode, boolean isPositionKnown,
+	public int isTicketValid(String barcode, boolean isPositionKnown,
 			int position) {
+
+		Scan scan = new Scan();
+		scan.setBarcode(barcode);
+		scan.setScanDate(new Date());
 
 		// if(isInPatternMode)
 		// {
@@ -210,12 +229,13 @@ public class MyApp extends Application {
 
 		if (isPositionKnown) {
 			// if(we are coming from will call page)
-			tempTicket = myAppInstance.getTicketList().get(position);
+			tempTicket = getTicketList().get(position);
 		} else {
 			// we are coming from scanner page
-			for (int i = 0; i < myAppInstance.getTicketList().size(); i++) {
-				if (barcode.equals(myAppInstance.getTicketList().get(i))) {
-					tempTicket = myAppInstance.getTicketList().get(i);
+			for (int i = 0; i < getTicketList().size(); i++) {
+				if (barcode.equals(getTicketList().get(i)
+						.getBarcode())) {
+					tempTicket = getTicketList().get(i);
 				}
 			}
 		}
@@ -225,11 +245,9 @@ public class MyApp extends Application {
 				// if we don't know the position i.e. we are coming from scanner
 				// page
 				tempTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
-						myAppInstance.getLoginUser().getUsername(), true);
+						getLoginUser().getUsername(), true);
 			}
-			Scan scan = new Scan();
-			scan.setBarcode(barcode);
-			scan.setScanDate(new Date());
+
 			if (barcode.equals(tempTicket.getBarcode())) {
 				// VALID BARCODE
 
@@ -244,24 +262,27 @@ public class MyApp extends Application {
 					// ALREADY CHECKED IN i.e. DUPLICATE TICKET
 					scan.setResult(1);
 				}
-			} else {
-				// INVALID BARCODE
-				scan.setResult(2);
 			}
-			myAppInstance.getScanList().add(scan);
 		} else {
-			// bug (ticket should have been found)
-			// maybe scanner read something wrong
+			// we can reach here only through scanner
+			// INVALID BARCODE
+			scan.setResult(2);
 		}
+		getScanList().add(scan);
+		
+		editor.putString("scanList", gson.toJson(getScanList()));
+		editor.commit();
+		
+		
+		return scan.getResult();
 	}
 
 	private static void checkInTicket(String barcode) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@SuppressLint("SimpleDateFormat")
-	public String formatDate(Date date) {
+	public String formatDateToString(Date date) {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM dd");
 
@@ -270,9 +291,9 @@ public class MyApp extends Application {
 		return dateStr;
 
 	}
-	
+
 	@SuppressLint("SimpleDateFormat")
-	public String formatDate2(Date date) {
+	public String formatDateToString2(Date date) {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM-dd-yyyy/HH:mm");
 
@@ -282,8 +303,19 @@ public class MyApp extends Application {
 
 	}
 	
+	@SuppressLint("SimpleDateFormat")
+	public String formatDateToString3(Date date) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("MMM-dd-yyyy @ HH:mm:ss aa");
+
+		String dateStr = formatter.format(date);
+		System.out.println(">><<><><><" + dateStr);
+		return dateStr;
+
+	}
+
 	public Date formatStringToDate(String dateString) {
-//		2014-10-16 20:00:00 
+		// 2014-10-16 20:00:00
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		Date date = null;
@@ -292,7 +324,7 @@ public class MyApp extends Application {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-//		System.out.println(">><<><><><" + dateStr);
+		// System.out.println(">><<><><><" + dateStr);
 		return date;
 
 	}
@@ -335,6 +367,10 @@ public class MyApp extends Application {
 
 	public void setTicketList(List<Ticket> ticketList) {
 		this.ticketList = ticketList;
+
+		if (ticketList == null) {
+			return;
+		}
 
 		// create a map for orders
 		for (int i = 0; i < this.ticketList.size(); i++) {

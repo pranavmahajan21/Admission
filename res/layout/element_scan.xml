@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="12dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp" >
+
+    <TextView
+        android:id="@+id/scanTime_TV"
+        style="@style/TV_label_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:weightSum="2" >
+
+        <TextView
+            android:id="@+id/label_barcode_TV"
+            style="@style/TV_label_green2"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:text="Barcodes:" />
+
+        <TextView
+            android:id="@+id/label_status_TV"
+            style="@style/TV_label_green2"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:text="Status:" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:weightSum="2" >
+
+        <TextView
+            android:id="@+id/barcode_TV"
+            style="@style/TV_label_grey"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="51964def236" />
+
+        <TextView
+            android:id="@+id/status_TV"
+            style="@style/TV_label_grey"
+            android:textColor="#ff0000"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Open" />
+    </LinearLayout>
+
+</LinearLayout>

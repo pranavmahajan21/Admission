@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -121,15 +122,21 @@ public class LoginActivity extends Activity {
 
 		parentViewLL = (LinearLayout) findViewById(R.id.parent_view_LL);
 		childViewLoginLL = (LinearLayout) findViewById(R.id.child_view_LL);
+		
 		usernameTV = (EditText) findViewById(R.id.user_ET);
 		passwordTV = (EditText) findViewById(R.id.password_ET);
 		loginPageHeaderTV = (TextView) findViewById(R.id.header_TV);
 
+		((TextView) findViewById(R.id.label_forgot_TV)).setTypeface(myApp.getTypefaceRegularSans());
+		((TextView) findViewById(R.id.login_button_TV)).setTypeface(myApp.getTypefaceRegularSans());
+		((TextView) findViewById(R.id.forgot_message_TV)).setTypeface(myApp.getTypefaceRegularSans());
+		((Button) findViewById(R.id.ok_B)).setTypeface(myApp.getTypefaceRegularSans());
 		setTypeface();
 	}
 
 	private void findEventThings() {
 		eventLV = (ListView) findViewById(R.id.event_LV);
+		((TextView) findViewById(R.id.label_TV)).setTypeface(myApp.getTypefaceBoldSans());
 	}
 
 	private void staticNonsense() {
@@ -138,6 +145,15 @@ public class LoginActivity extends Activity {
 
 		usernameTV.setText("scanning_user42160");
 		passwordTV.setText("password");
+		
+//		usernameTV.setText("scanning_user54730");
+//		passwordTV.setText("vb12345");
+		
+//		usernameTV.setText("scanning_user54731");
+//		passwordTV.setText("vb12345");
+		
+//		usernameTV.setText("scanning_user54738");
+//		passwordTV.setText("vb12345");
 	}
 
 	@Override
@@ -327,7 +343,20 @@ public class LoginActivity extends Activity {
 		myApp.setSelectedEvent(null);
 
 		parentViewLL.removeAllViews();
-		parentViewLL.addView(childViewEventLL);
+
+		if (childViewEventLL != null) {
+			parentViewLL.addView(childViewEventLL);
+		} else {
+			// when directly event list page opens coz login details were already there in preferences
+			
+			loadEventListView();
+			
+//			childViewEventLL = inflater.inflate(R.layout.child_list_event, null);
+//			parentViewLL.addView(childViewEventLL);
+
+//			findEventThings();
+//			eventLV.setAdapter(adapter);
+		}
 	}
 
 	@Override

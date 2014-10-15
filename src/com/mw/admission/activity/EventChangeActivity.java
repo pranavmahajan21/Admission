@@ -2,31 +2,34 @@ package com.mw.admission.activity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -57,6 +60,7 @@ public class EventChangeActivity extends MenuButtonActivity {
 
 	CreateDialog createDialog;
 	ProgressDialog progressDialog;
+	AlertDialog alert;
 
 	RequestQueue queue;
 
@@ -67,14 +71,29 @@ public class EventChangeActivity extends MenuButtonActivity {
 		progressDialog = createDialog.createProgressDialog("Fetching Tickets",
 				"Please Wait", true, null);
 
+		AlertDialog.Builder builder = createDialog
+				.createAlertDialog(
+						"Ticket Data not Found",
+						"No local ticket data available. App will scan in Pattern Matching Mode. You can also try to sync with Mission Tix or operate in Live mode.",
+						false);
+
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+
+		alert = builder.create();
+		// alertDialog.set
+
 		eventList = myApp.getEventList();
 
 		if (eventList != null && eventList.size() > 0) {
 			adapter = new EventAdapter(this, eventList);
 		}
 
-		GsonBuilder builder = new GsonBuilder();
-		gson = builder.create();
+		GsonBuilder builder2 = new GsonBuilder();
+		gson = builder2.create();
 
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplicationContext());
@@ -91,7 +110,7 @@ public class EventChangeActivity extends MenuButtonActivity {
 	public void initView() {
 		super.initView();
 		getLabelActionBarTV().setText("Change Event");
-		getLabelHeaderTV().setText("Change Event");
+		getLabelHeaderTV().setText("Events");
 
 		if (adapter != null) {
 			eventLV.setAdapter(adapter);
@@ -120,13 +139,21 @@ public class EventChangeActivity extends MenuButtonActivity {
 						.equals(myApp.getSelectedEvent().getId())) {
 					// when you click on same event
 				} else {
-					myApp.setSelectedEvent(eventList.get(position));
+					Event tempEvent = eventList.get(position);
+					tempEvent.setScanStartDate(new Date());
+					myApp.setSelectedEvent(tempEvent);
+
+					editor.putInt("position_selected_event", position);
+					editor.commit();
 
 					// we can't use notify data set changed coz we need to reset
-					// the selectedEvent variable inside the adapter class
+					// the selectedEvent variable inside the adapter class. That
+					// will happen only when we re-ruin the constructor
 					adapter = new EventAdapter(EventChangeActivity.this,
 							eventList);
 					eventLV.setAdapter(adapter);
+					getSelectedEventTV().setText(
+							myApp.getSelectedEvent().getName());
 
 					getTickets();
 				}
@@ -164,6 +191,11 @@ public class EventChangeActivity extends MenuButtonActivity {
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
+
+						if (ticketList.size() < 1) {
+							alert.show();
+						}
+
 						System.out.println("tickets size : "
 								+ ticketList.size());
 

@@ -11,13 +11,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mw.admission.adapter.MenuAdapter;
 import com.mw.admission.extra.MyApp;
 
 public class MenuActivity extends MenuButtonActivity {
 
-	boolean isHeaderThere = true;
+	boolean isHeaderThere = false;
 
 	MyApp myApp;
 
@@ -44,7 +45,8 @@ public class MenuActivity extends MenuButtonActivity {
 		adapter = new MenuAdapter(this, myApp.getMenuItemList());
 	}
 
-	private void findThings() {
+	public void findThings(boolean isHeaderThere) {
+
 		super.findThings(isHeaderThere);
 		menuLV = (ListView) findViewById(R.id.menu_LV);
 		timeTV = (TextView) findViewById(R.id.time_TV);
@@ -54,6 +56,7 @@ public class MenuActivity extends MenuButtonActivity {
 		super.initView();
 		getLabelActionBarTV().setText("Menu");
 		timeTV.setText("(12 hrs 37 mins)");
+		timeTV.setTypeface(myApp.getTypefaceBoldSans());
 	}
 
 	@Override
@@ -62,7 +65,7 @@ public class MenuActivity extends MenuButtonActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_menu);
 		initThings();
-		findThings();
+		findThings(isHeaderThere);
 		initView();
 
 		menuLV.setAdapter(adapter);
@@ -118,7 +121,7 @@ public class MenuActivity extends MenuButtonActivity {
 				case 6:
 					nextIntent = new Intent(MenuActivity.this,
 							EventChangeActivity.class);
-					startActivity(nextIntent);
+					startActivityForResult(nextIntent, MyApp.EVENT_CHANGE);
 					break;
 				case 7:
 					nextIntent = new Intent(MenuActivity.this,
@@ -168,6 +171,20 @@ public class MenuActivity extends MenuButtonActivity {
 
 				String contents = intent.getStringExtra("SCAN_RESULT");
 				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+				
+				Toast.makeText(this, contents, Toast.LENGTH_SHORT).show();
+				
+				int x = myApp.isTicketValid(contents, false, -1);
+				
+				if(x==1 || x==2)
+				{
+					nextIntent = new Intent(MenuActivity.this,
+							InvalidTicketActivity.class);
+					startActivity(nextIntent);
+				}else{
+					
+				}
+				
 				Log.i("App", "Scan successful");
 
 				// Handle successful scan
@@ -176,7 +193,12 @@ public class MenuActivity extends MenuButtonActivity {
 				// Handle cancel
 				Log.i("App", "Scan unsuccessful");
 			}
+		}else if(requestCode == MyApp.EVENT_CHANGE)
+		{
+			getSelectedEventTV().setText(
+					myApp.getSelectedEvent().getName());
 		}
+		
 	}
 
 	public void onMenu(View view) {

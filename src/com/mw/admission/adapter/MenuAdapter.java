@@ -55,7 +55,7 @@ public class MenuAdapter extends BaseAdapter {
 			viewHolder.arrowIV = (ImageView) convertView
 					.findViewById(R.id.arrow_IV);
 
-			// viewHolder.nameTV.setTypeface(myApp.getTypefaceBold());
+			 viewHolder.labelTV.setTypeface(myApp.getTypefaceRegularSans());
 
 			convertView.setTag(viewHolder);
 		} else {

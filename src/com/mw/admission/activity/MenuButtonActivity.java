@@ -21,13 +21,21 @@ public class MenuButtonActivity extends Activity {
 
 	private ImageButton settingsIB;
 
+	private void setTypeface() {
+		labelActionBarTV.setTypeface(myApp.getTypefaceBoldSans());
+		selectedEventTV.setTypeface(myApp.getTypefaceBoldSans());
+	}
+
 	public void findThings(boolean isHeaderThere) {
 		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
 		if (isHeaderThere) {
 			labelHeaderTV = (TextView) findViewById(R.id.label_TV);
+			labelHeaderTV.setTypeface(myApp.getTypefaceBoldSans());
 		}
 		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
 		settingsIB = (ImageButton) findViewById(R.id.settings_IB);
+
+		setTypeface();
 	}
 
 	public void initView() {

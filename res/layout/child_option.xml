@@ -10,6 +10,7 @@
         android:background="#09B9AB"
         android:gravity="center_horizontal"
         android:padding="10dp"
+        android:textSize="16sp"
         android:text="SELECT A FUNCTION"
         android:textColor="@android:color/white"
         android:textStyle="bold" />
@@ -24,31 +25,30 @@
         <ImageButton
             android:layout_width="0dip"
             android:layout_height="100dp"
-                        android:padding="10dp"
             android:layout_weight="1"
             android:background="@null"
             android:onClick="onScanner"
+            android:padding="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/scanner" />
 
         <ImageButton
             android:layout_width="0dip"
             android:layout_height="100dp"
-                        android:padding="10dp"
             android:layout_weight="1"
             android:background="@null"
             android:onClick="onWillCall"
+            android:padding="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/willcall" />
 
         <ImageButton
             android:layout_width="0dip"
             android:layout_height="100dp"
-            android:padding="10dp"
-
             android:layout_weight="1"
             android:background="@null"
             android:onClick="onReport"
+            android:padding="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/report" />
     </LinearLayout>
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_toLeftOf="@+id/edit_IV"
             android:text="Selected Event"
             android:textColor="@android:color/white"

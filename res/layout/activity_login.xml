@@ -44,7 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp" >
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:paddingTop="10dp" >
 
             <TextView
                 android:id="@+id/header_TV"
@@ -52,13 +54,13 @@
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="#848484" />
+                android:textColor="#848484"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp" >
+                android:layout_marginTop="10dp" >
 
                 <ImageView
                     android:id="@+id/user_IV"
@@ -78,7 +80,7 @@
                     android:layout_toRightOf="@+id/user_IV"
                     android:background="#ffffff"
                     android:hint="E-mail Address"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="10dp"
                     android:singleLine="true" />
             </RelativeLayout>
 
@@ -106,40 +108,41 @@
                     android:background="#ffffff"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="10dp"
                     android:singleLine="true" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" >
+                android:layout_marginTop="10dp" >
 
-                <TextView
+                <Button
+                    android:id="@+id/login_button_TV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#ff6823"
+                    android:background="@color/orange"
                     android:clickable="true"
+                    android:minHeight="30dip"
                     android:onClick="onLogin"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="5dp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
                     android:text="LOGIN"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/label_admission_TV"
+                    android:id="@+id/label_forgot_TV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:clickable="true"
                     android:gravity="center_vertical"
                     android:onClick="onForgotPassword"
+                    android:text="I forgot my password"
                     android:textColor="@color/text_color"
-                    android:textSize="18sp"
-                    android:text="I forgot my password" />
-<!--                     android:textColor="#909090" -->
+                    android:textSize="16sp" />
+                <!-- android:textColor="#909090" -->
             </LinearLayout>
         </LinearLayout>
 
@@ -152,30 +155,28 @@
             android:visibility="gone" >
 
             <TextView
-                android:id="@+id/message"
+                android:id="@+id/forgot_message_TV"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Please contact your administrator to reset your password."
-                android:textColor="#22C4BC"
+                android:text="@string/habibulla4"
+                android:textColor="@color/green"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/okBTN"
+            <Button
+                                android:id="@+id/ok_B"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
-                android:background="#ff6823"
-                android:clickable="true"
-                android:gravity="center_horizontal"
+                android:background="@color/orange"
+                android:minHeight="30dip"
                 android:onClick="onOk"
-                android:paddingBottom="5dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="25dp"
-                android:paddingTop="5dp"
-                android:text="Ok"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="OK"
                 android:textColor="#ffffff"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 

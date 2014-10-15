@@ -18,29 +18,42 @@
     </style>
 
     <style name="dimensions">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="dimensions_TV">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <!-- used in about & contact page -->
-    <style name="TV_label_green" parent="dimensions">
+    <style name="TV_label_green" parent="dimensions_TV">
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/green</item>
     </style>
 
-    <!-- used in ticket & order & report details page -->
-    <style name="TV_label_green2" parent="dimensions">
+    <!-- used in ticket & order details & report & history page -->
+    <style name="TV_label_green2" parent="dimensions_TV">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/green</item>
     </style>
 
-    <!-- used in ticket & order details page -->
-    <style name="TV_label_grey" parent="dimensions">
+    <!-- used in ticket & order details & history page -->
+    <style name="TV_label_grey" parent="dimensions_TV">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/grey_background</item>
     </style>
-    
+
+    <!-- used in ticket_details & order_details -->
+    <style name="xyz" parent="dimensions">
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
     <style name="textRedBold">
         <item name="android:textStyle">bold|italic</item>
         <item name="android:textColor">#FF0000</item>
@@ -50,5 +63,5 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_background</item>
     </style>
-    
+
 </resources>
