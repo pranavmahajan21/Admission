@@ -43,7 +43,7 @@
     <!-- used in ticket & order details & history page -->
     <style name="TV_label_grey" parent="dimensions_TV">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/grey_background</item>
+        <item name="android:textColor">@color/grey_text</item>
     </style>
 
     <!-- used in ticket_details & order_details -->
@@ -61,7 +61,7 @@
 
     <style name="textGreyNormal">
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/grey_background</item>
+        <item name="android:textColor">@color/grey_text</item>
     </style>
 
 </resources>

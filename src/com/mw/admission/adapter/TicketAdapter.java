@@ -128,7 +128,7 @@ public class TicketAdapter extends BaseAdapter {
 		case VIEW3:
 			viewHolder.nameTV.setText(tempTicket.getNameOfGuest());
 			viewHolder.nameTV.setTextColor(context.getResources().getColor(
-					R.color.grey_background));
+					R.color.grey_text));
 			break;
 
 		default:

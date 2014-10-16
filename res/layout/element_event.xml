@@ -13,7 +13,7 @@
         android:layout_marginRight="10dp"
         android:singleLine="true"
         android:text="Event Name"
-        android:textColor="@color/grey_background"
+        android:textColor="@color/grey_text"
         android:textSize="16sp" />
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:text="12/02/99"
-        android:textColor="@color/grey_background"
+        android:textColor="@color/grey_text"
         android:textSize="16sp" />
 
 </RelativeLayout>

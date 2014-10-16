@@ -22,15 +22,15 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/footer"
         android:layout_below="@+id/header"
-        android:background="@android:color/black"
+        android:background="@color/black_body_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="30dp" >
 
         <ImageView
             android:id="@+id/mission_IV"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:src="@drawable/mission60x60" />
 
         <TextView
@@ -38,7 +38,7 @@
             style="@style/TV_label_green"
             android:layout_marginTop="30dp"
             android:text="App Version:"
-            android:textColor="@color/grey_background" />
+            android:textColor="@color/grey_text" />
 
         <TextView
             android:id="@+id/label2_TV"
@@ -50,7 +50,7 @@
             style="@style/TV_label_green"
             android:layout_marginTop="30dp"
             android:text="Android Version"
-            android:textColor="@color/grey_background" />
+            android:textColor="@color/grey_text" />
 
         <TextView
             android:id="@+id/label4_TV"
@@ -64,7 +64,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:text="@string/habibulla"
-            android:textColor="@color/grey_background"
+            android:textColor="@color/grey_text"
             android:textSize="16sp" />
     </LinearLayout>
 

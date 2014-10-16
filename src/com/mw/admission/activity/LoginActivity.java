@@ -429,6 +429,9 @@ public class LoginActivity extends Activity {
 
 	private void findThingsForOptions() {
 		selectedEventTV = (TextView) findViewById(R.id.event_selected_name_TV);
+		selectedEventTV.setTypeface(myApp.getTypefaceBoldSans());
+		
+		((TextView) findViewById(R.id.label_TV)).setTypeface(myApp.getTypefaceBoldSans());
 	}
 
 	private void getTickets() {

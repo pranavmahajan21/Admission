@@ -2,10 +2,14 @@ package com.mw.admission.activity;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -32,7 +36,7 @@ public class SearchActivity extends MenuButtonActivity {
 		if (ticketList != null && ticketList.size() > 0) {
 			adapter = new TicketAdapter(this, ticketList, 1);
 		}
-
+		nextIntent = new Intent(this, TicketDetailActivity.class);
 	}
 
 	public void findThings(boolean isHeaderThere) {
@@ -45,9 +49,6 @@ public class SearchActivity extends MenuButtonActivity {
 	public void initView() {
 		super.initView();
 		getLabelActionBarTV().setText("Search");
-		// if (isHeaderThere) {
-		// getLabelHeaderTV().setText("Search");
-		// }
 
 		if (adapter != null) {
 			ticketLV.setAdapter(adapter);
@@ -58,24 +59,25 @@ public class SearchActivity extends MenuButtonActivity {
 
 	private void myOwnOnTextChangeListeners() {
 		searchET.addTextChangedListener(new TextWatcher() {
-		     
-		    @Override
-		    public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-		        // On text change call filter function of Adapter
-		        SearchActivity.this.adapter.filter(cs.toString());   
-		    }
-		     
-		    @Override
-		    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-		            int arg3) {
-		    }
-		     
-		    @Override
-		    public void afterTextChanged(Editable arg0) {
-		    }
-		});	
+
+			@Override
+			public void onTextChanged(CharSequence cs, int arg1, int arg2,
+					int arg3) {
+				// On text change call filter function of Adapter
+				SearchActivity.this.adapter.filter(cs.toString());
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+			}
+		});
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,7 +89,26 @@ public class SearchActivity extends MenuButtonActivity {
 		initView();
 
 		myOwnOnTextChangeListeners();
+
+		ticketLV.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				nextIntent.putExtra("position", position);
+				startActivityForResult(nextIntent, 1321);
+			}
+
+		});
+
 	}
 
-
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		// If we don't do this step then app crashes while coming back from
+		// TicketDetailActivity (after "admit this guest"). TODO Do R&D on that
+		// error
+		adapter.notifyDataSetChanged();
+	}
 }

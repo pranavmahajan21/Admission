@@ -95,8 +95,7 @@ public class TicketFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				nextIntent.putExtra("position", position);
-				startActivityForResult(nextIntent, 12);
-				// startActivity(nextIntent);
+				startActivityForResult(nextIntent, 1321);
 			}
 
 		});

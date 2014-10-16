@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/translucent_black"
+    android:background="@color/black_header"
     android:orientation="vertical"
     android:paddingBottom="10dp"
     android:paddingTop="10dp" >
@@ -28,6 +28,5 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
-<!--         android:layout_toRightOf="@+id/back_IB" -->
 
 </RelativeLayout>

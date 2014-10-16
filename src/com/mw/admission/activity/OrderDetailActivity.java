@@ -95,7 +95,7 @@ public class OrderDetailActivity extends MenuButtonActivity {
 		parentLL.removeView(childLL);
 		adapter = new TicketAdapter(this, ticketsOfOrderList, 3);
 		barcodeLV.setAdapter(adapter);
-		barcodeLV.setDivider(new ColorDrawable(this.getResources().getColor(R.color.grey_background)));
+		barcodeLV.setDivider(new ColorDrawable(this.getResources().getColor(R.color.grey_text)));
 //		barcodeLV.setDividerHeight(1);
 	}
 

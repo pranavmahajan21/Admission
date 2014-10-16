@@ -90,7 +90,7 @@ Gson gson;
 		menuItemList.add(new MenuItem("Scanner", false));
 		menuItemList.add(new MenuItem("Will Call", false));
 		menuItemList.add(new MenuItem("Event Report", false));
-		menuItemList.add(new MenuItem("Ticket Lookup", false));
+		menuItemList.add(new MenuItem("Search", false));
 		menuItemList.add(new MenuItem("History", false));
 		menuItemList.add(new MenuItem("Synchronize Data", false));
 		menuItemList.add(new MenuItem("Change Event", true));

@@ -5,12 +5,13 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/label_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#09B9AB"
         android:gravity="center_horizontal"
         android:padding="10dp"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:text="SELECT A FUNCTION"
         android:textColor="@android:color/white"
         android:textStyle="bold" />
@@ -71,9 +72,10 @@
 
         <ImageButton
             android:id="@+id/edit_IV"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
             android:background="@null"
             android:onClick="onChangeEvent"
             android:src="@drawable/edit" />

@@ -5,6 +5,6 @@
 
     <item android:state_focused="true" android:color="#4B0082"/> <!-- focused -->
 
-    <item android:color="@color/grey_background"/> <!-- default -->
+    <item android:color="@color/grey_text"/> <!-- default -->
 
 </selector>

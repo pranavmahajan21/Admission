@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/arrow_right_IV"
         android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/arrow_right_IV"
         android:orientation="vertical" >
 
         <TextView
@@ -24,14 +24,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ticket Owner"
-            android:textColor="@color/grey_background" />
+            android:textColor="@color/grey_text" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/arrow_right_IV"
-        android:layout_centerVertical="true"        android:layout_width="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:src="@drawable/arrow" />
 
 </RelativeLayout>

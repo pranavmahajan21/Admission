@@ -43,8 +43,8 @@
         android:layout_height="fill_parent"
         android:layout_above="@+id/footer"
         android:layout_below="@+id/searchbar"
-        android:background="@color/black"
-        android:divider="@color/grey_background"
+        android:background="@color/black_body_bg"
+        android:divider="@color/grey_text"
         android:dividerHeight="2dp" />
 
     <include

@@ -17,58 +17,64 @@
         android:layout_below="@+id/actionbar"
         layout="@layout/header" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/footer"
         android:layout_below="@+id/header"
-        android:background="@android:color/black"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="40dp" >
+        android:background="@color/black_body_bg"
+        android:paddingBottom="30dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="40dp" >
 
-        <ImageView
-            android:id="@+id/arrow_right_IV"
-            android:layout_width="222dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="20dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/mission" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="222dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/mission" />
+
+            <TextView
+                android:id="@+id/label_TV"
+                style="@style/TV_label_green"
+                android:text="Phone Support"
+                android:textColor="@color/grey_text" />
+
+            <TextView
+                android:id="@+id/label2_TV"
+                style="@style/TV_label_green"
+                android:text="888-9996-4774" />
+
+            <TextView
+                android:id="@+id/label3_TV"
+                style="@style/TV_label_green"
+                android:layout_marginTop="40dp"
+                android:text="Email Feedback:"
+                android:textColor="@color/grey_text" />
+
+            <TextView
+                android:id="@+id/label4_TV"
+                style="@style/TV_label_green"
+                android:text="support@missiontix.com" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/label_TV"
-            style="@style/TV_label_green"
-            android:text="Phone Support"
-            android:textColor="@color/grey_background" />
-
-        <TextView
-            android:id="@+id/label2_TV"
-            style="@style/TV_label_green"
-            android:text="888-9996-4774" />
-
-        <TextView
-            android:id="@+id/label3_TV"
-            style="@style/TV_label_green"
-            android:layout_marginTop="40dp"
-            android:text="Email Feedback:"
-            android:textColor="@color/grey_background" />
-
-        <TextView
-            android:id="@+id/label4_TV"
-            style="@style/TV_label_green"
-            android:text="support@missiontix.com" />
-
-        <TextView
-android:layout_marginTop="25dp"
             android:id="@+id/label5_TV"
             style="@style/TV_label_green"
-            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
+            android:gravity="center_horizontal"
             android:text="@string/habibulla2"
-            android:textColor="@color/grey_background"
+            android:textColor="@color/grey_text"
             android:textSize="16sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <include
         android:id="@+id/footer"

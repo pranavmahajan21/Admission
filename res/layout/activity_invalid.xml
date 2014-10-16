@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/habibulla3"
-            android:textColor="@color/grey_background" />
+            android:textColor="@color/grey_text" />
 
         <Button
             android:id="@+id/button1"
@@ -55,7 +55,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="CONTINUE"
-            android:textColor="@color/grey_background" />
+            android:textColor="@color/grey_text" />
     </LinearLayout>
 
     <include

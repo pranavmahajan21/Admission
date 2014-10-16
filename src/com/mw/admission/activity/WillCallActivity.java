@@ -28,7 +28,7 @@ public class WillCallActivity extends FragmentActivity {
 	TextView selectedEventTV;
 
 	private ImageButton settingsIB;
-	
+
 	private void initThings() {
 		myApp = (MyApp) getApplicationContext();
 	}
@@ -36,14 +36,15 @@ public class WillCallActivity extends FragmentActivity {
 	public void findThings() {
 		labelActionBarTV = (TextView) findViewById(R.id.label_action_TV);
 		selectedEventTV = (TextView) findViewById(R.id.selectedEvent_TV);
-		
+
 		settingsIB = (ImageButton) findViewById(R.id.settings_IB);
+
+		labelActionBarTV.setTypeface(myApp.getTypefaceBoldSans());
+		selectedEventTV.setTypeface(myApp.getTypefaceBoldSans());
 	}
 
 	public void initView() {
 		labelActionBarTV.setText("Will Call");
-//		selectedEventTV.setText("TODO");
-
 		selectedEventTV.setText(myApp.getSelectedEvent().getName());
 		settingsIB.setVisibility(View.GONE);
 	}
@@ -54,8 +55,8 @@ public class WillCallActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_will_call);
 
-		findThings();
 		initThings();
+		findThings();
 		initView();
 
 		ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
@@ -82,7 +83,8 @@ public class WillCallActivity extends FragmentActivity {
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				// Pranav : I have not removed the args just to see the scope of fragments
+				// Pranav : I have not removed the args just to see the scope of
+				// fragments
 				return TicketFragment.newInstance(0, "Ticket");
 			case 1:
 				return OrderFragment.newInstance();
@@ -119,5 +121,4 @@ public class WillCallActivity extends FragmentActivity {
 		onMenu(null);
 	}
 
-	
 }
