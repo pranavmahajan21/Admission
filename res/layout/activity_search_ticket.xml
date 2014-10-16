@@ -44,8 +44,8 @@
         android:layout_above="@+id/footer"
         android:layout_below="@+id/searchbar"
         android:background="@color/black_body_bg"
-        android:divider="@color/grey_text"
-        android:dividerHeight="2dp" />
+        android:divider="@color/grey_divider"
+        android:dividerHeight="0.1dp" />
 
     <include
         android:id="@+id/footer"

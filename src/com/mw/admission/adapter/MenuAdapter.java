@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.mw.admission.activity.R;
 import com.mw.admission.extra.MyApp;
-import com.mw.admission.model.Event;
 import com.mw.admission.model.MenuItem;
 
 public class MenuAdapter extends BaseAdapter {

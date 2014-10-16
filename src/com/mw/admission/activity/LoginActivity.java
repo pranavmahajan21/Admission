@@ -435,7 +435,7 @@ public class LoginActivity extends Activity {
 	}
 
 	private void getTickets() {
-		String ticketsUrl = MyApp.URL + MyApp.TICKET
+		String ticketsUrl = MyApp.URL + MyApp.TICKET_FETCH
 				+ myApp.getSelectedEvent().getId() + "/"
 				+ myApp.getLoginUser().getToken();
 		System.out.println("tickets url : " + ticketsUrl);

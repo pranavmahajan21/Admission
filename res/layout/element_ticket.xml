@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="12dp"
-    android:paddingTop="12dp"
-    android:paddingRight="15dp"
     android:paddingLeft="15dp"
-    
-     >
+    android:paddingRight="15dp"
+    android:paddingTop="12dp" >
 
+<!--     Used in TicketFragment, OrderFragment -->
+    
     <TextView
         android:id="@+id/label_name_TV"
         android:layout_width="wrap_content"
@@ -19,7 +19,6 @@
         android:text="Ticket Owner"
         android:textColor="@color/green"
         android:textSize="18sp" />
-    <!-- android:layout_alignParentTop="true" -->
 
     <ImageView
         android:id="@+id/arrow_right_IV"

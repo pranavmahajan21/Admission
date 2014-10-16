@@ -9,16 +9,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -45,7 +60,8 @@ public class MyApp extends Application {
 
 	public static final String LOGIN = "api/users/authenticate";
 	public static final String EVENT = "api/users/events/";
-	public static final String TICKET = "api/admissions/events/";
+	public static final String TICKET_FETCH = "api/admissions/events/";
+	// public static final String TICKET_ = "api/admissions/events/";
 
 	// volley stuff
 	public static final String TAG = MyApp.class.getSimpleName();
@@ -55,6 +71,8 @@ public class MyApp extends Application {
 
 	private static MyApp myAppInstance;
 
+	// To check for internet
+	ConnectionDetector cd;
 	// don't initialize in this class
 	User loginUser;
 
@@ -73,19 +91,21 @@ public class MyApp extends Application {
 
 	SharedPreferences sharedPreferences;
 	SharedPreferences.Editor editor;
-Gson gson;
-	
+	Gson gson;
+
 	Typeface typefaceRegularSans;
 	Typeface typefaceBoldSans;
+
+	RequestQueue queue;
 
 	private void initThings() {
 		myAppInstance = this;
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = sharedPreferences.edit();
-		
+
 		GsonBuilder builder = new GsonBuilder();
 		gson = builder.create();
-		
+
 		menuItemList = new ArrayList<MenuItem>();
 		menuItemList.add(new MenuItem("Scanner", false));
 		menuItemList.add(new MenuItem("Will Call", false));
@@ -99,12 +119,16 @@ Gson gson;
 		menuItemList.add(new MenuItem("Logout", false));
 
 		scanList = new ArrayList<Scan>();
-		orderMap = new HashMap<String, List<Ticket>>();
+//		orderMap = new HashMap<String, List<Ticket>>();
 
 		typefaceRegularSans = Typeface.createFromAsset(getAssets(),
 				"fonts/SourceSansPro-Regular.ttf");
 		typefaceBoldSans = Typeface.createFromAsset(getAssets(),
 				"fonts/SourceSansPro-Semibold.ttf");
+
+		queue = Volley.newRequestQueue(this);
+
+		cd = new ConnectionDetector(this);
 	}
 
 	private void fetchPreferences() {
@@ -212,7 +236,7 @@ Gson gson;
 	}
 
 	public int isTicketValid(String barcode, boolean isPositionKnown,
-			int position) {
+			int position, boolean admitAllOnOrder) {
 
 		Scan scan = new Scan();
 		scan.setBarcode(barcode);
@@ -233,8 +257,7 @@ Gson gson;
 		} else {
 			// we are coming from scanner page
 			for (int i = 0; i < getTicketList().size(); i++) {
-				if (barcode.equals(getTicketList().get(i)
-						.getBarcode())) {
+				if (barcode.equals(getTicketList().get(i).getBarcode())) {
 					tempTicket = getTicketList().get(i);
 				}
 			}
@@ -243,7 +266,6 @@ Gson gson;
 		if (tempTicket != null) {
 			if (!isPositionKnown) {
 				// if we don't know the position i.e. we are coming from scanner
-				// page
 				tempTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
 						getLoginUser().getUsername(), true);
 			}
@@ -254,9 +276,11 @@ Gson gson;
 				if (!tempTicket.isCheckedIn()) {
 					// NOT CHECKED IN i.e. *** ideal case ***
 					scan.setResult(0);
-					// if(inOnlineMode)
-					{
-						checkInTicket(barcode);
+					if (cd.isConnectingToInternet()) {
+						checkInTicket(scan, admitAllOnOrder);
+					} else {
+						Toast.makeText(this, "No Internet",
+								Toast.LENGTH_SHORT);
 					}
 				} else {
 					// ALREADY CHECKED IN i.e. DUPLICATE TICKET
@@ -269,16 +293,60 @@ Gson gson;
 			scan.setResult(2);
 		}
 		getScanList().add(scan);
-		
+
 		editor.putString("scanList", gson.toJson(getScanList()));
 		editor.commit();
-		
-		
+
 		return scan.getResult();
 	}
 
-	private static void checkInTicket(String barcode) {
+	private void checkInTicket(Scan scan, boolean admitAllOnOrder) {
+		JSONObject jsonObject;
+		try {
+			jsonObject = new JSONObject();
+			jsonObject.put("barcode", scan.getBarcode());
+			jsonObject.put("check_in_order", admitAllOnOrder);
+			jsonObject
+					.put("timestamp", formatDateToString4(scan.getScanDate()));
 
+			String url = MyApp.URL + MyApp.TICKET_FETCH
+					+ getSelectedEvent().getId() + "/"
+					+ getLoginUser().getToken();
+			System.out.println("ticket URL : " + url);
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest(Method.PUT,
+					url, jsonObject, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							System.out.println(">>>>Response => "
+									+ response.toString());
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							System.out.println("ERROR  : " + error.getMessage());
+							error.printStackTrace();
+							if (error instanceof NetworkError) {
+								System.out.println("NetworkError");
+							}
+							if (error instanceof NoConnectionError) {
+								System.out
+										.println("NoConnectionError you are now offline.");
+							}
+							if (error instanceof ServerError) {
+								System.out.println("ServerError");
+							}
+						}
+					});
+			RetryPolicy policy = new DefaultRetryPolicy(30000,
+					DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+					DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+			jsObjRequest.setRetryPolicy(policy);
+			queue.add(jsObjRequest);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressLint("SimpleDateFormat")
@@ -302,11 +370,23 @@ Gson gson;
 		return dateStr;
 
 	}
-	
+
 	@SuppressLint("SimpleDateFormat")
 	public String formatDateToString3(Date date) {
 
-		SimpleDateFormat formatter = new SimpleDateFormat("MMM-dd-yyyy @ HH:mm:ss aa");
+		SimpleDateFormat formatter = new SimpleDateFormat(
+				"MMM-dd-yyyy @ HH:mm:ss aa");
+
+		String dateStr = formatter.format(date);
+		System.out.println(">><<><><><" + dateStr);
+		return dateStr;
+
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	public String formatDateToString4(Date date) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		String dateStr = formatter.format(date);
 		System.out.println(">><<><><><" + dateStr);
@@ -373,6 +453,7 @@ Gson gson;
 		}
 
 		// create a map for orders
+		orderMap = new HashMap<String, List<Ticket>>();
 		for (int i = 0; i < this.ticketList.size(); i++) {
 			Ticket tempTicket = this.ticketList.get(i);
 			if (orderMap.containsKey(tempTicket.getOrderId())) {

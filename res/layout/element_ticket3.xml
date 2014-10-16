@@ -7,6 +7,8 @@
     android:paddingRight="20dp"
     android:weightSum="2" >
 
+<!--     Used in OrderDetailActivity -->
+    
     <TextView
         android:id="@+id/barcode_TV"
         style="@style/TV_label_grey"

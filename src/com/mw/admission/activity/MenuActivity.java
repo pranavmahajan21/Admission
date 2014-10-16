@@ -174,7 +174,7 @@ public class MenuActivity extends MenuButtonActivity {
 				
 				Toast.makeText(this, contents, Toast.LENGTH_SHORT).show();
 				
-				int x = myApp.isTicketValid(contents, false, -1);
+				int x = myApp.isTicketValid(contents, false, -1, false);
 				
 				if(x==1 || x==2)
 				{

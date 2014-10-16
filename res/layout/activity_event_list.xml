@@ -24,7 +24,7 @@
         android:layout_above="@+id/footer"
         android:layout_below="@+id/header"
         android:background="@color/black_body_bg"
-        android:divider="@color/grey_text"
+        android:divider="@color/grey_divider"
         android:dividerHeight="1.0dp" />
 
     <include

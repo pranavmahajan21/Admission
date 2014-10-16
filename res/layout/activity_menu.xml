@@ -10,14 +10,14 @@
         android:layout_alignParentTop="true"
         layout="@layout/action_bar" />
 
-<!--         android:divider="@color/black_body_bg" -->
     <ListView
         android:id="@+id/menu_LV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0.2dp"
         android:layout_above="@+id/footer"
-        android:layout_below="@+id/actionbar" />
+        android:layout_below="@+id/actionbar"
+        android:divider="@color/grey_divider"
+        android:dividerHeight="0.2dp" />
 
     <include
         android:id="@+id/footer"
@@ -25,5 +25,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         layout="@layout/footer2" />
-    
+
 </RelativeLayout>

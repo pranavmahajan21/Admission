@@ -27,8 +27,6 @@ public class TicketAdapter extends BaseAdapter {
 	List<Ticket> ticketList;
 	List<Ticket> tempTicketList = new ArrayList<Ticket>();
 
-	// boolean whichViewToUse;
-
 	int whichViewToUse;
 
 	MyApp myApp;

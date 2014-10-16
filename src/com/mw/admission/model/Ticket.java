@@ -3,12 +3,25 @@ package com.mw.admission.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import android.content.Context;
+
 import com.google.gson.annotations.SerializedName;
+import com.mw.admission.extra.MyApp;
 
 public class Ticket implements Serializable {
 
 	private static final long serialVersionUID = -4396689988903006695L;
 
+	Context context;
+	
+	public Ticket() {
+		super();
+	}
+
+	public Ticket(Context context) {
+	this.context = context;
+	}
+	
 	@SerializedName("id")
 	String ticketId;
 
@@ -30,7 +43,12 @@ public class Ticket implements Serializable {
 	@SerializedName("checked_in")
 	boolean checkedIn;
 
+//	@SerializedName("scanned_at")
+//	Date scanTime;
+	
 	@SerializedName("scanned_at")
+	String scanned_at;
+	
 	Date scanTime;
 
 	@SerializedName("scanner_id")
@@ -112,6 +130,15 @@ public class Ticket implements Serializable {
 
 	public void setScannerID(String scannerID) {
 		this.scannerID = scannerID;
+	}
+
+	public String getScanned_at() {
+		return scanned_at;
+	}
+
+	public void setScanned_at(String scanned_at) {
+		this.scanned_at = scanned_at;
+		setScanTime(((MyApp)context.getApplicationContext()).formatStringToDate(this.scanned_at));
 	}
 
 	public void setScanTimeAndScannerIDAndCheckedIn(Date date, String scannerID, boolean checkedIn)

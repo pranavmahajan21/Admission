@@ -1,6 +1,7 @@
 package com.mw.admission.activity;
 
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -50,10 +51,10 @@ public class TicketDetailActivity extends MenuButtonActivity {
 		previousIntent = getIntent();
 
 		myApp = (MyApp) getApplicationContext();
-		
+
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = sharedPreferences.edit();
-		
+
 		GsonBuilder builder = new GsonBuilder();
 		gson = builder.create();
 
@@ -150,27 +151,33 @@ public class TicketDetailActivity extends MenuButtonActivity {
 
 	public void onAdmit(View view) {
 		if (view != null) {
-			selectedTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
-					myApp.getLoginUser().getUsername(), true);
+			int x = myApp.isTicketValid(selectedTicket.getBarcode(), true,
+					position, false);
 
-			myApp.getTicketList().add(position, selectedTicket);
+			if (x == 0) {
+				System.out.println("if");
+			} else {
+				System.out.println("else");
+			}
+
+//			selectedTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
+//					myApp.getLoginUser().getUsername(), false);
+
 
 			// TODO update order map
 			// BEWARE** This code leads to OutOfMemoryException **BEWARE
 
-			// List<Ticket> tempTicketList = myApp.getOrderMap().get(
-			// selectedTicket.getOrderId());
-			// for (int i = 0; i < tempTicketList.size(); i++) {
-			// if (tempTicketList.get(i).getBarcode()
-			// .equals(selectedTicket.getBarcode())) {
-			// tempTicketList.add(i, selectedTicket);
-			// }
-			// }
-			myApp.isTicketValid(selectedTicket.getBarcode(), true, position);
+			List<Ticket> tempTicketList = myApp.getOrderMap().get(
+					selectedTicket.getOrderId());
+			for (int i = 0; i < tempTicketList.size(); i++) {
+				if (tempTicketList.get(i).getBarcode()
+						.equals(selectedTicket.getBarcode())) {
+					tempTicketList.set(i, selectedTicket);
+				}
+			}
 
 			// TODO update preferences
-			editor.putString("ticketList",
-					gson.toJson(myApp.getTicketList()));
+			editor.putString("ticketList", gson.toJson(myApp.getTicketList()));
 			editor.commit();
 		}
 
@@ -183,13 +190,14 @@ public class TicketDetailActivity extends MenuButtonActivity {
 
 		findThingsForNewView();
 
-		scanDateTV.setText(selectedTicket.getScanTime().toString());
-		scannerIDTV.setText(selectedTicket.getScannerID());
+//		scanDateTV.setText(selectedTicket.getScanTime().toString());
+//		scannerIDTV.setText(selectedTicket.getScannerID());
 
 	}
 
 	public void onAdmitAll(View view) {
-
+		int x = myApp.isTicketValid(selectedTicket.getBarcode(), true,
+				position, true);
 	}
 
 }
