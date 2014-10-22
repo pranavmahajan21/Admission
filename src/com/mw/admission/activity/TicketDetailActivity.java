@@ -233,7 +233,7 @@ public class TicketDetailActivity extends MenuButtonActivity {
 		checkInOrder(aa);
 	}
 
-	private void fun(int i) {
+	private void updateTicketListAndScanList(int i) {
 		myApp.getTicketList()
 				.get(i)
 				.setScanTimeAndScannerIDAndCheckedIn(new Date(),
@@ -276,7 +276,7 @@ public class TicketDetailActivity extends MenuButtonActivity {
 											.getOrderId()
 											.equals(selectedTicket.getOrderId())) {
 										System.out.println("true");
-										fun(i);
+										updateTicketListAndScanList(i);
 									}
 								}
 								myApp.setTicketList(tempTicketList);
@@ -318,7 +318,7 @@ public class TicketDetailActivity extends MenuButtonActivity {
 												.equals(aa.getJSONObject(j)
 														.getString("barcode"))) {
 
-											fun(i);
+											updateTicketListAndScanList(i);
 										}
 									} catch (JSONException e) {
 										e.printStackTrace();
