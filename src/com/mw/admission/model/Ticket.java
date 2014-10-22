@@ -13,15 +13,15 @@ public class Ticket implements Serializable {
 	private static final long serialVersionUID = -4396689988903006695L;
 
 	Context context;
-	
+
 	public Ticket() {
 		super();
 	}
 
 	public Ticket(Context context) {
-	this.context = context;
+		this.context = context;
 	}
-	
+
 	@SerializedName("id")
 	String ticketId;
 
@@ -43,12 +43,12 @@ public class Ticket implements Serializable {
 	@SerializedName("checked_in")
 	boolean checkedIn;
 
-//	@SerializedName("scanned_at")
-//	Date scanTime;
-	
+	// @SerializedName("scanned_at")
+	// Date scanTime;
+
 	@SerializedName("scanned_at")
 	String scanned_at;
-	
+
 	Date scanTime;
 
 	@SerializedName("scanner_id")
@@ -58,6 +58,19 @@ public class Ticket implements Serializable {
 	public String toString() {
 		return "Ticket [ticketId=" + ticketId + ", nameOfGuest=" + nameOfGuest
 				+ "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Ticket) {
+			if (this.getTicketId().equals(((Ticket) o).getTicketId())) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 
 	public String getTicketId() {
@@ -138,11 +151,12 @@ public class Ticket implements Serializable {
 
 	public void setScanned_at(String scanned_at) {
 		this.scanned_at = scanned_at;
-		setScanTime(((MyApp)context.getApplicationContext()).formatStringToDate(this.scanned_at));
+		setScanTime(((MyApp) context.getApplicationContext())
+				.formatStringToDate(this.scanned_at));
 	}
 
-	public void setScanTimeAndScannerIDAndCheckedIn(Date date, String scannerID, boolean checkedIn)
-	{
+	public void setScanTimeAndScannerIDAndCheckedIn(Date date,
+			String scannerID, boolean checkedIn) {
 		setScanTime(date);
 		setScannerID(scannerID);
 		setCheckedIn(checkedIn);

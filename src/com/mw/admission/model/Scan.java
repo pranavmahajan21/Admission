@@ -13,8 +13,19 @@ public class Scan implements Serializable {
 	// 0 -> valid barcode & not checked in i.e. ideal case
 	// 1 -> valid barcode & checked in i.e. duplicate
 	// 2 -> invalid barcode
-	
+
 	Date scanDate;
+
+	public Scan() {
+		super();
+	}
+
+	public Scan(String barcode, int result, Date scanDate) {
+		super();
+		this.barcode = barcode;
+		this.result = result;
+		this.scanDate = scanDate;
+	}
 
 	public String getBarcode() {
 		return barcode;

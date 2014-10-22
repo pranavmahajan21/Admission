@@ -163,7 +163,7 @@ public class EventChangeActivity extends MenuButtonActivity {
 	}
 
 	private void getTickets() {
-		String ticketsUrl = MyApp.URL + MyApp.TICKET_FETCH
+		String ticketsUrl = MyApp.URL + MyApp.TICKET
 				+ myApp.getSelectedEvent().getId() + "/"
 				+ myApp.getLoginUser().getToken();
 		System.out.println("tickets url : " + ticketsUrl);
@@ -180,34 +180,16 @@ public class EventChangeActivity extends MenuButtonActivity {
 						System.out.println("Ticket Response => "
 								+ responseJsonObject.toString());
 
-						Type listType = (Type) new TypeToken<ArrayList<Ticket>>() {
-						}.getType();
-						try {
-							ticketList = (List<Ticket>) gson.fromJson(
-									responseJsonObject.getJSONArray("tickets")
-											.toString(), listType);
-						} catch (JsonSyntaxException e) {
-							e.printStackTrace();
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
+						int i = myApp
+								.convertJOResponseToTicket(responseJsonObject);
 
-						if (ticketList.size() < 1) {
+						if (i < 1) {
 							alert.show();
 						}
 
-						System.out.println("tickets size : "
-								+ ticketList.size());
-
 						Toast.makeText(EventChangeActivity.this,
-								"tickets size : " + ticketList.size(),
-								Toast.LENGTH_SHORT).show();
-
-						myApp.setTicketList(ticketList);
-
-						editor.putString("ticketList",
-								gson.toJson(myApp.getTicketList()));
-						editor.commit();
+								"tickets size : " + i, Toast.LENGTH_SHORT)
+								.show();
 
 					}
 

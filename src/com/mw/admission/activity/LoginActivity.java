@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -122,38 +123,43 @@ public class LoginActivity extends Activity {
 
 		parentViewLL = (LinearLayout) findViewById(R.id.parent_view_LL);
 		childViewLoginLL = (LinearLayout) findViewById(R.id.child_view_LL);
-		
+
 		usernameTV = (EditText) findViewById(R.id.user_ET);
 		passwordTV = (EditText) findViewById(R.id.password_ET);
 		loginPageHeaderTV = (TextView) findViewById(R.id.header_TV);
 
-		((TextView) findViewById(R.id.label_forgot_TV)).setTypeface(myApp.getTypefaceRegularSans());
-		((TextView) findViewById(R.id.login_button_TV)).setTypeface(myApp.getTypefaceRegularSans());
-		((TextView) findViewById(R.id.forgot_message_TV)).setTypeface(myApp.getTypefaceRegularSans());
-		((Button) findViewById(R.id.ok_B)).setTypeface(myApp.getTypefaceRegularSans());
+		((TextView) findViewById(R.id.label_forgot_TV)).setTypeface(myApp
+				.getTypefaceRegularSans());
+		((TextView) findViewById(R.id.login_button_TV)).setTypeface(myApp
+				.getTypefaceRegularSans());
+		((TextView) findViewById(R.id.forgot_message_TV)).setTypeface(myApp
+				.getTypefaceRegularSans());
+		((Button) findViewById(R.id.ok_B)).setTypeface(myApp
+				.getTypefaceRegularSans());
 		setTypeface();
 	}
 
 	private void findEventThings() {
 		eventLV = (ListView) findViewById(R.id.event_LV);
-		((TextView) findViewById(R.id.label_TV)).setTypeface(myApp.getTypefaceBoldSans());
+		((TextView) findViewById(R.id.label_TV)).setTypeface(myApp
+				.getTypefaceBoldSans());
 	}
 
 	private void staticNonsense() {
 		// usernameTV.setText("vats_8x10");
 		// passwordTV.setText("m1ss1on");
 
-		usernameTV.setText("scanning_user42160");
-		passwordTV.setText("password");
-		
+		// usernameTV.setText("scanning_user42160");
+		// passwordTV.setText("password");
+
 //		usernameTV.setText("scanning_user54730");
 //		passwordTV.setText("vb12345");
-		
-//		usernameTV.setText("scanning_user54731");
-//		passwordTV.setText("vb12345");
-		
-//		usernameTV.setText("scanning_user54738");
-//		passwordTV.setText("vb12345");
+
+		 usernameTV.setText("scanning_user54731");
+		 passwordTV.setText("vb12345");
+
+		// usernameTV.setText("scanning_user54738");
+		// passwordTV.setText("vb12345");
 	}
 
 	@Override
@@ -254,7 +260,6 @@ public class LoginActivity extends Activity {
 			// progressDialog = createDialog.createProgressDialog("Validation",
 			// "Please wait while we validate your login.", true, null);
 			// progressDialog.show();import com.google.gson.reflect.TypeToken;
-
 			String url = MyApp.URL + MyApp.LOGIN;
 			System.out.println("login URL : " + url);
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(Method.POST,
@@ -264,7 +269,7 @@ public class LoginActivity extends Activity {
 						public void onResponse(JSONObject response) {
 							System.out.println(">>>>Response => "
 									+ response.toString());
-							progressDialog.hide();
+							progressDialog.dismiss();
 							User user = null;
 							try {
 								user = gson.fromJson(
@@ -292,21 +297,23 @@ public class LoginActivity extends Activity {
 
 						@Override
 						public void onErrorResponse(VolleyError error) {
+
+							
+
 							System.out.println("ERROR" + error.getMessage());
+							// error.networkResponse
+							progressDialog.hide();
 							error.printStackTrace();
 							loginPageHeaderTV.setTextColor(Color
 									.parseColor("#00AEA4"));
 							if (error instanceof NetworkError) {
-								loginPageHeaderTV
-										.setText("NetworkError Email address provided is not registered.");
+								loginPageHeaderTV.setText("NetworkError");
 							}
 							if (error instanceof NoConnectionError) {
-								loginPageHeaderTV
-										.setText("NoConnectionError you are now offline.");
+								loginPageHeaderTV.setText("NoConnectionError");
 							}
 							if (error instanceof ServerError) {
-								loginPageHeaderTV
-										.setText("ServerError  Email address provided is not registered.");
+								loginPageHeaderTV.setText("ServerError");
 							}
 						}
 					});
@@ -347,15 +354,17 @@ public class LoginActivity extends Activity {
 		if (childViewEventLL != null) {
 			parentViewLL.addView(childViewEventLL);
 		} else {
-			// when directly event list page opens coz login details were already there in preferences
-			
-			loadEventListView();
-			
-//			childViewEventLL = inflater.inflate(R.layout.child_list_event, null);
-//			parentViewLL.addView(childViewEventLL);
+			// when directly event list page opens coz login details were
+			// already there in preferences
 
-//			findEventThings();
-//			eventLV.setAdapter(adapter);
+			loadEventListView();
+
+			// childViewEventLL = inflater.inflate(R.layout.child_list_event,
+			// null);
+			// parentViewLL.addView(childViewEventLL);
+
+			// findEventThings();
+			// eventLV.setAdapter(adapter);
 		}
 	}
 
@@ -430,12 +439,13 @@ public class LoginActivity extends Activity {
 	private void findThingsForOptions() {
 		selectedEventTV = (TextView) findViewById(R.id.event_selected_name_TV);
 		selectedEventTV.setTypeface(myApp.getTypefaceBoldSans());
-		
-		((TextView) findViewById(R.id.label_TV)).setTypeface(myApp.getTypefaceBoldSans());
+
+		((TextView) findViewById(R.id.label_TV)).setTypeface(myApp
+				.getTypefaceBoldSans());
 	}
 
 	private void getTickets() {
-		String ticketsUrl = MyApp.URL + MyApp.TICKET_FETCH
+		String ticketsUrl = MyApp.URL + MyApp.TICKET
 				+ myApp.getSelectedEvent().getId() + "/"
 				+ myApp.getLoginUser().getToken();
 		System.out.println("tickets url : " + ticketsUrl);
@@ -452,29 +462,17 @@ public class LoginActivity extends Activity {
 						System.out.println("Ticket Response => "
 								+ responseJsonObject.toString());
 
-						Type listType = (Type) new TypeToken<ArrayList<Ticket>>() {
-						}.getType();
-						try {
-							ticketList = (List<Ticket>) gson.fromJson(
-									responseJsonObject.getJSONArray("tickets")
-											.toString(), listType);
-						} catch (JsonSyntaxException e) {
-							e.printStackTrace();
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-						System.out.println("tickets size : "
-								+ ticketList.size());
-
+						int i= myApp.convertJOResponseToTicket(responseJsonObject);
+						
+//						if (i < 1) {
+//							alert.show();
+//						}
+						
 						Toast.makeText(LoginActivity.this,
-								"tickets size : " + ticketList.size(),
+								"tickets size : " + i,
 								Toast.LENGTH_SHORT).show();
 
-						myApp.setTicketList(ticketList);
-
-						editor.putString("ticketList",
-								gson.toJson(myApp.getTicketList()));
-						editor.commit();
+//						myApp.setTicketList(ticketList);
 
 						loadMenuView();
 

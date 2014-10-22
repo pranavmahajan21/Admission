@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
-public class InvalidTicketActivity extends MenuButtonActivity {
+public class ValidTicketActivity extends MenuButtonActivity {
 
 	boolean isHeaderThere = false;
 	
@@ -31,7 +31,7 @@ public class InvalidTicketActivity extends MenuButtonActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 	
-		setContentView(R.layout.activity_invalid);
+		setContentView(R.layout.activity_valid);
 		
 		findThings(isHeaderThere);
 		initThings();

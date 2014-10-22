@@ -25,8 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="INVALID CODE"
-            android:textColor="@color/orange"
+            android:text="VALID CODE"
+            android:textColor="@color/green"
             android:textSize="20sp" />
 
         <ImageView
@@ -34,14 +34,14 @@
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
             android:scaleType="fitXY"
-            android:src="@drawable/face_invalid" />
+            android:src="@drawable/face_valid" />
 
         <TextView
             android:id="@+id/label2_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/habibulla3"
+            android:text="Admit Guest"
             android:textColor="@color/grey_text" />
 
         <Button

@@ -84,7 +84,14 @@
             android:name="com.mw.admission.activity.InvalidTicketActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <!--
+        <activity
+            android:name="com.mw.admission.activity.ValidTicketActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.mw.admission.activity.TestAct"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -102,7 +109,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        -->
     </application>
 
 </manifest>

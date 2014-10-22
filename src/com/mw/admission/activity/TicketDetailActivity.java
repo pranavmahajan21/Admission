@@ -3,6 +3,11 @@ package com.mw.admission.activity;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,10 +19,24 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+import com.android.volley.Request.Method;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mw.admission.extra.CreateDialog;
 import com.mw.admission.extra.MyApp;
+import com.mw.admission.model.Scan;
 import com.mw.admission.model.Ticket;
 
 public class TicketDetailActivity extends MenuButtonActivity {
@@ -47,6 +66,11 @@ public class TicketDetailActivity extends MenuButtonActivity {
 	SharedPreferences.Editor editor;
 	Gson gson;
 
+	CreateDialog createDialog;
+	ProgressDialog progressDialog;
+
+	RequestQueue queue;
+
 	private void initThings() {
 		previousIntent = getIntent();
 
@@ -63,6 +87,12 @@ public class TicketDetailActivity extends MenuButtonActivity {
 
 		inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		newChildLL = inflater.inflate(R.layout.child_ticket_details, null);
+
+		queue = Volley.newRequestQueue(this);
+
+		createDialog = new CreateDialog(this);
+		progressDialog = createDialog.createProgressDialog("Check In",
+				"This may take some time", true, null);
 	}
 
 	private void setTypeface() {
@@ -152,7 +182,7 @@ public class TicketDetailActivity extends MenuButtonActivity {
 	public void onAdmit(View view) {
 		if (view != null) {
 			int x = myApp.isTicketValid(selectedTicket.getBarcode(), true,
-					position, false);
+					position);
 
 			if (x == 0) {
 				System.out.println("if");
@@ -160,13 +190,11 @@ public class TicketDetailActivity extends MenuButtonActivity {
 				System.out.println("else");
 			}
 
-//			selectedTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
-//					myApp.getLoginUser().getUsername(), false);
-
+			// selectedTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
+			// myApp.getLoginUser().getUsername(), false);
 
 			// TODO update order map
 			// BEWARE** This code leads to OutOfMemoryException **BEWARE
-
 			List<Ticket> tempTicketList = myApp.getOrderMap().get(
 					selectedTicket.getOrderId());
 			for (int i = 0; i < tempTicketList.size(); i++) {
@@ -190,14 +218,163 @@ public class TicketDetailActivity extends MenuButtonActivity {
 
 		findThingsForNewView();
 
-//		scanDateTV.setText(selectedTicket.getScanTime().toString());
-//		scannerIDTV.setText(selectedTicket.getScannerID());
+		// scanDateTV.setText(selectedTicket.getScanTime().toString());
+		// scannerIDTV.setText(selectedTicket.getScannerID());
 
 	}
 
+	List<Ticket> tempTicketList;
+
 	public void onAdmitAll(View view) {
-		int x = myApp.isTicketValid(selectedTicket.getBarcode(), true,
-				position, true);
+		System.out.println("onAdmitAll");
+		tempTicketList = myApp.getOrderMap().get(selectedTicket.getOrderId());
+		progressDialog.show();
+		JSONObject aa = myApp.createOrderJSON(tempTicketList);
+		checkInOrder(aa);
+	}
+
+	private void fun(int i) {
+		myApp.getTicketList()
+				.get(i)
+				.setScanTimeAndScannerIDAndCheckedIn(new Date(),
+						myApp.getLoginUser().getUsername(), true);
+
+		Scan scan = new Scan(myApp.getTicketList().get(i).getBarcode(), 0,
+				new Date());
+
+		myApp.getScanList().add(scan);
+
+		editor.putString("scanList", gson.toJson(myApp.getScanList()));
+		editor.commit();
+	}
+
+	private void checkInOrder(JSONObject jsonObject) {
+		try {
+
+			String url = MyApp.URL + MyApp.TICKET
+					+ myApp.getSelectedEvent().getId() + "/"
+					+ myApp.getLoginUser().getToken();
+			System.out.println("ticket URL : " + url);
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest(Method.POST,
+					url, jsonObject, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							progressDialog.dismiss();
+							System.out.println(">>>>Response => "
+									+ response.toString());
+							if (!response.has("rejected_barcodes")
+									&& response.has("message")) {
+
+								// update Ticket & order List in Global
+								// Application class
+								List<Ticket> tempTicketList = myApp
+										.getTicketList();
+								for (int i = 0; i < tempTicketList.size(); i++) {
+									if (tempTicketList
+											.get(i)
+											.getOrderId()
+											.equals(selectedTicket.getOrderId())) {
+										System.out.println("true");
+										fun(i);
+									}
+								}
+								myApp.setTicketList(tempTicketList);
+
+								Toast.makeText(
+										TicketDetailActivity.this,
+										"Admit all " + tempTicketList.size()
+												+ " on order.",
+										Toast.LENGTH_SHORT).show();
+							}// if
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							progressDialog.dismiss();
+							System.out.println("ERROR  : " + error.getMessage());
+							error.printStackTrace();
+							JSONArray aa = null;
+							try {
+								JSONObject jsonObject = new JSONObject(error.getMessage());
+								if (jsonObject.has("rejected_barcodes")) {
+									aa = jsonObject
+											.getJSONArray("rejected_barcodes");
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+
+							// update Ticket in Global Application class &
+							// create Scan Objects
+							for (int i = 0; i < myApp.getTicketList().size(); i++) {
+								for (int j = 0; j < aa.length(); j++) {
+									try {
+										if (myApp
+												.getTicketList()
+												.get(i)
+												.getBarcode()
+												.equals(aa.getJSONObject(j)
+														.getString("barcode"))) {
+
+											fun(i);
+										}
+									} catch (JSONException e) {
+										e.printStackTrace();
+									}
+								}// for
+							}// for
+							myApp.setTicketList(myApp.getTicketList());
+
+							// Show Toast/Alert
+							if (tempTicketList.size() == aa.length()) {
+								Toast.makeText(TicketDetailActivity.this,
+										"Do not admit any guest on order",
+										Toast.LENGTH_SHORT).show();
+							} else {
+								Toast.makeText(
+										TicketDetailActivity.this,
+										"Admit "
+												+ (tempTicketList.size() - aa
+														.length()) + "/"
+												+ tempTicketList.size()
+												+ " guests", Toast.LENGTH_SHORT)
+										.show();
+							}
+
+							if (error instanceof NetworkError) {
+								System.out.println("NetworkError");
+							} else if (error instanceof NoConnectionError) {
+								System.out
+										.println("NoConnectionError you are now offline.");
+							} else if (error instanceof ServerError) {
+								System.out.println("ServerError");
+							}
+						}
+					}) {
+
+				@Override
+				protected VolleyError parseNetworkError(VolleyError volleyError) {
+					if (volleyError.networkResponse != null
+							&& volleyError.networkResponse.data != null) {
+						VolleyError error = new VolleyError(new String(
+								volleyError.networkResponse.data));
+						volleyError = error;
+					}
+					return volleyError;
+				}
+
+			};
+
+			RetryPolicy policy = new DefaultRetryPolicy(30000,
+					DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+					DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+			jsObjRequest.setRetryPolicy(policy);
+			queue.add(jsObjRequest);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -77,21 +77,26 @@ public class MenuActivity extends MenuButtonActivity {
 					int position, long id) {
 				switch (position) {
 				case 0:
-					nextIntent = new Intent(
-							"com.google.zxing.client.android.SCAN");
-					nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-					startActivityForResult(nextIntent,
-							MyApp.CAMERA_REQUEST_CODE);
+					// try1
+//					nextIntent = new Intent(
+//							"com.google.zxing.client.android.SCAN");
+//					nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+//					startActivityForResult(nextIntent,
+//							MyApp.CAMERA_REQUEST_CODE);
 
+					// try2
 					// Intent intent = new Intent(
 					// "com.google.zxing.client.android.SCAN");
 					// intent.putExtra("SCAN_MODE",
 					// "QR_CODE_MODE,PRODUCT_MODE");
 					// startActivityForResult(intent, 0);
 
-					// nextIntent = new Intent(MenuActivity.this,
-					// ScannerActivity.class);
-					// startActivity(nextIntent);
+					// try 3
+					 nextIntent = new Intent(MenuActivity.this,
+					 TestAct.class);
+					nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+					 startActivity(nextIntent);
+					
 					break;
 				case 1:
 					nextIntent = new Intent(MenuActivity.this,
@@ -174,7 +179,7 @@ public class MenuActivity extends MenuButtonActivity {
 				
 				Toast.makeText(this, contents, Toast.LENGTH_SHORT).show();
 				
-				int x = myApp.isTicketValid(contents, false, -1, false);
+				int x = myApp.isTicketValid(contents, false, -1);
 				
 				if(x==1 || x==2)
 				{
