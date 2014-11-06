@@ -43,8 +43,8 @@ public class Ticket implements Serializable {
 	@SerializedName("checked_in")
 	boolean checkedIn;
 
-	// @SerializedName("scanned_at")
-	// Date scanTime;
+//	 @SerializedName("scanned_at")
+//	 Date scanTime;
 
 	@SerializedName("scanned_at")
 	String scanned_at;

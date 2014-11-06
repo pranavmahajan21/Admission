@@ -226,7 +226,7 @@ public class MyApp extends Application {
 
 	}
 
-	public int isTicketValid(String barcode, boolean isPositionKnown,
+	public Scan createScanObject(String barcode, boolean isPositionKnown,
 			int position) {
 
 		Scan scan = new Scan();
@@ -287,7 +287,7 @@ public class MyApp extends Application {
 		editor.putString("scanList", gson.toJson(getScanList()));
 		editor.commit();
 
-		return scan.getResult();
+		return scan;
 	}
 
 	private void checkInTicket(Scan scan) {
@@ -338,7 +338,7 @@ public class MyApp extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}// end of function
 
 	public JSONObject createOrderJSON(List<Ticket> ticketList) {
 		Date date = new Date();
@@ -729,13 +729,13 @@ public class MyApp extends Application {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		for(int i=0;i<ticketList.size();i++)
-		{
-			if(ticketList.get(i).getNameOfGuest() == null)
-			{ticketList.get(i).setNameOfGuest("Walk-Up");}
+
+		for (int i = 0; i < ticketList.size(); i++) {
+			if (ticketList.get(i).getNameOfGuest() == null) {
+				ticketList.get(i).setNameOfGuest("Walk-Up");
+			}
 		}
-		
+
 		setTicketList(ticketList);
 		return ticketList.size();
 	}

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.mw.admission.adapter.MenuAdapter;
 import com.mw.admission.extra.MyApp;
+import com.mw.admission.model.Scan;
 
 public class MenuActivity extends MenuButtonActivity {
 
@@ -78,11 +79,11 @@ public class MenuActivity extends MenuButtonActivity {
 				switch (position) {
 				case 0:
 					// try1
-//					nextIntent = new Intent(
-//							"com.google.zxing.client.android.SCAN");
-//					nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-//					startActivityForResult(nextIntent,
-//							MyApp.CAMERA_REQUEST_CODE);
+					// nextIntent = new Intent(
+					// "com.google.zxing.client.android.SCAN");
+					// nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+					// startActivityForResult(nextIntent,
+					// MyApp.CAMERA_REQUEST_CODE);
 
 					// try2
 					// Intent intent = new Intent(
@@ -92,11 +93,10 @@ public class MenuActivity extends MenuButtonActivity {
 					// startActivityForResult(intent, 0);
 
 					// try 3
-					 nextIntent = new Intent(MenuActivity.this,
-					 TestAct.class);
+					nextIntent = new Intent(MenuActivity.this, TestAct.class);
 					nextIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-					 startActivity(nextIntent);
-					
+					startActivity(nextIntent);
+
 					break;
 				case 1:
 					nextIntent = new Intent(MenuActivity.this,
@@ -176,20 +176,20 @@ public class MenuActivity extends MenuButtonActivity {
 
 				String contents = intent.getStringExtra("SCAN_RESULT");
 				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-				
+
 				Toast.makeText(this, contents, Toast.LENGTH_SHORT).show();
-				
-				int x = myApp.isTicketValid(contents, false, -1);
-				
-				if(x==1 || x==2)
-				{
+
+				Scan scan = myApp.createScanObject(contents, false, -1);
+				int x = scan.getResult();
+
+				if (x == 1 || x == 2) {
 					nextIntent = new Intent(MenuActivity.this,
 							InvalidTicketActivity.class);
 					startActivity(nextIntent);
-				}else{
-					
+				} else {
+
 				}
-				
+
 				Log.i("App", "Scan successful");
 
 				// Handle successful scan
@@ -198,12 +198,10 @@ public class MenuActivity extends MenuButtonActivity {
 				// Handle cancel
 				Log.i("App", "Scan unsuccessful");
 			}
-		}else if(requestCode == MyApp.EVENT_CHANGE)
-		{
-			getSelectedEventTV().setText(
-					myApp.getSelectedEvent().getName());
+		} else if (requestCode == MyApp.EVENT_CHANGE) {
+			getSelectedEventTV().setText(myApp.getSelectedEvent().getName());
 		}
-		
+
 	}
 
 	public void onMenu(View view) {

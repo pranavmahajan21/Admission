@@ -158,8 +158,8 @@ public class LoginActivity extends Activity {
 		 usernameTV.setText("scanning_user54731");
 		 passwordTV.setText("vb12345");
 
-		// usernameTV.setText("scanning_user54738");
-		// passwordTV.setText("vb12345");
+//		 usernameTV.setText("scanning_user54738");
+//		 passwordTV.setText("vb12345");
 	}
 
 	@Override
@@ -458,21 +458,19 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onResponse(JSONObject responseJsonObject) {
-						progressDialog.hide();
+						progressDialog.dismiss();
 						System.out.println("Ticket Response => "
 								+ responseJsonObject.toString());
 
-						int i= myApp.convertJOResponseToTicket(responseJsonObject);
+						int size= myApp.convertJOResponseToTicket(responseJsonObject);
 						
 //						if (i < 1) {
 //							alert.show();
 //						}
 						
 						Toast.makeText(LoginActivity.this,
-								"tickets size : " + i,
+								"tickets size : " + size,
 								Toast.LENGTH_SHORT).show();
-
-//						myApp.setTicketList(ticketList);
 
 						loadMenuView();
 
@@ -482,7 +480,7 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						progressDialog.hide();
+						progressDialog.dismiss();
 						System.out.println("ERROR" + error.getMessage());
 						error.printStackTrace();
 						if (error instanceof NetworkError) {

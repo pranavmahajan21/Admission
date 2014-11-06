@@ -179,51 +179,164 @@ public class TicketDetailActivity extends MenuButtonActivity {
 
 	}
 
+	List<Ticket> tempTicketList;
+
 	public void onAdmit(View view) {
 		if (view != null) {
-			int x = myApp.isTicketValid(selectedTicket.getBarcode(), true,
-					position);
+			Scan scan = myApp.createScanObject(selectedTicket.getBarcode(),
+					true, position);
 
+			int x = scan.getResult();
 			if (x == 0) {
-				System.out.println("if");
+				// TODO check for internet connection
+				checkInTicket(scan);
 			} else {
-				System.out.println("else");
+				// when x==2 , (x==1 won't be possible on this page)
+				Toast.makeText(this, "Duplicate Entry", Toast.LENGTH_SHORT)
+						.show();
 			}
+		} else {
+			statusTV.setText("Admitted");
+			statusTV.setTextColor(Color.parseColor("#ff0000"));
 
-			// selectedTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
-			// myApp.getLoginUser().getUsername(), false);
+			parentLL.removeView(oldChildLL);
+			parentLL.addView(newChildLL);
 
-			// TODO update order map
-			// BEWARE** This code leads to OutOfMemoryException **BEWARE
-			List<Ticket> tempTicketList = myApp.getOrderMap().get(
-					selectedTicket.getOrderId());
-			for (int i = 0; i < tempTicketList.size(); i++) {
-				if (tempTicketList.get(i).getBarcode()
-						.equals(selectedTicket.getBarcode())) {
-					tempTicketList.set(i, selectedTicket);
-				}
+			findThingsForNewView();
+
+			if (selectedTicket.getScanTime() != null) {
+				scanDateTV.setText(selectedTicket.getScanned_at());
+			} else {
+				scanDateTV.setText("NA");
 			}
-
-			// TODO update preferences
-			editor.putString("ticketList", gson.toJson(myApp.getTicketList()));
-			editor.commit();
+			scannerIDTV.setText(selectedTicket.getScannerID());
 		}
-
-		statusTV.setText("Admitted");
-		statusTV.setTextColor(Color.parseColor("#ff0000"));
-
-		// replace view in parent LL
-		parentLL.removeView(oldChildLL);
-		parentLL.addView(newChildLL);
-
-		findThingsForNewView();
-
-		// scanDateTV.setText(selectedTicket.getScanTime().toString());
-		// scannerIDTV.setText(selectedTicket.getScannerID());
 
 	}
 
-	List<Ticket> tempTicketList;
+	private void checkInTicket(final Scan scan) {
+		progressDialog.show();
+		JSONObject jsonObject;
+		try {
+			jsonObject = new JSONObject();
+			jsonObject.put("barcode", scan.getBarcode());
+			jsonObject.put("check_in_order", false);
+			jsonObject.put("timestamp",
+					myApp.formatDateToString4(scan.getScanDate()));
+
+			String url = MyApp.URL + MyApp.TICKET
+					+ myApp.getSelectedEvent().getId() + "/"
+					+ myApp.getLoginUser().getToken();
+			System.out.println("ticket URL : " + url);
+
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest(Method.PUT,
+					url, jsonObject, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							progressDialog.dismiss();
+							System.out.println(">>>>Response => "
+									+ response.toString());
+							selectedTicket.setScanTimeAndScannerIDAndCheckedIn(
+									scan.getScanDate(), myApp.getLoginUser()
+											.getUsername(), false);
+							selectedTicket.setCheckedIn(true);
+
+							// changes in view
+							statusTV.setText("Admitted");
+							statusTV.setTextColor(Color.parseColor("#ff0000"));
+
+							// replace view in parent LL
+							parentLL.removeView(oldChildLL);
+							parentLL.addView(newChildLL);
+
+							findThingsForNewView();
+
+							scanDateTV.setText(selectedTicket.getScanTime()
+									.toString());
+							scannerIDTV.setText(selectedTicket.getScannerID());
+
+							// update global ticket list
+							myApp.getTicketList().set(position, selectedTicket);
+
+							// update global order map
+							// BEWARE** This code can lead to
+							// OutOfMemoryException. Test properly.
+							// **BEWARE
+							List<Ticket> tempOrderTicketList = myApp
+									.getOrderMap().get(
+											selectedTicket.getOrderId());
+							for (int i = 0; i < tempOrderTicketList.size(); i++) {
+								if (tempOrderTicketList.get(i).getBarcode()
+										.equals(selectedTicket.getBarcode())) {
+									tempOrderTicketList.set(i, selectedTicket);
+								}
+							}
+
+							// update preferences
+							editor.putString("ticketList",
+									gson.toJson(myApp.getTicketList()));
+							editor.commit();
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							progressDialog.dismiss();
+							System.out.println("ERROR  : " + error.getMessage());
+							error.printStackTrace();
+
+							try {
+								JSONObject jsonObject = new JSONObject(error
+										.getMessage());
+								if (jsonObject.has("reason")) {
+									if (jsonObject.getString("reason")
+											.equalsIgnoreCase("duplicate")) {
+										Toast.makeText(
+												TicketDetailActivity.this,
+												"Duplicate Ticket",
+												Toast.LENGTH_LONG).show();
+									}
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+
+							if (error instanceof NetworkError) {
+								System.out.println("NetworkError");
+							}
+							if (error instanceof NoConnectionError) {
+								System.out
+										.println("NoConnectionError you are now offline.");
+							}
+							if (error instanceof ServerError) {
+								System.out.println("ServerError");
+							}
+						}
+					}) {
+
+				@Override
+				protected VolleyError parseNetworkError(VolleyError volleyError) {
+					if (volleyError.networkResponse != null
+							&& volleyError.networkResponse.data != null) {
+						VolleyError error = new VolleyError(new String(
+								volleyError.networkResponse.data));
+						volleyError = error;
+					}
+					return volleyError;
+				}
+
+			};
+
+			RetryPolicy policy = new DefaultRetryPolicy(30000,
+					DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+					DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+			jsObjRequest.setRetryPolicy(policy);
+			queue.add(jsObjRequest);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}// end of function
 
 	public void onAdmitAll(View view) {
 		System.out.println("onAdmitAll");
@@ -231,21 +344,6 @@ public class TicketDetailActivity extends MenuButtonActivity {
 		progressDialog.show();
 		JSONObject aa = myApp.createOrderJSON(tempTicketList);
 		checkInOrder(aa);
-	}
-
-	private void updateTicketListAndScanList(int i) {
-		myApp.getTicketList()
-				.get(i)
-				.setScanTimeAndScannerIDAndCheckedIn(new Date(),
-						myApp.getLoginUser().getUsername(), true);
-
-		Scan scan = new Scan(myApp.getTicketList().get(i).getBarcode(), 0,
-				new Date());
-
-		myApp.getScanList().add(scan);
-
-		editor.putString("scanList", gson.toJson(myApp.getScanList()));
-		editor.commit();
 	}
 
 	private void checkInOrder(JSONObject jsonObject) {
@@ -268,9 +366,14 @@ public class TicketDetailActivity extends MenuButtonActivity {
 
 								// update Ticket & order List in Global
 								// Application class
+
 								List<Ticket> tempTicketList = myApp
 										.getTicketList();
 								for (int i = 0; i < tempTicketList.size(); i++) {
+									/**
+									 * if(orderId matches) { update ticket list
+									 * & create new scan object }
+									 **/
 									if (tempTicketList
 											.get(i)
 											.getOrderId()
@@ -281,11 +384,27 @@ public class TicketDetailActivity extends MenuButtonActivity {
 								}
 								myApp.setTicketList(tempTicketList);
 
+								// changes in view
+								statusTV.setText("Admitted");
+								statusTV.setTextColor(Color
+										.parseColor("#ff0000"));
+
+								// replace view in parent LL
+								parentLL.removeView(oldChildLL);
+								parentLL.addView(newChildLL);
+
+								findThingsForNewView();
+
+								scanDateTV.setText(selectedTicket.getScanTime()
+										.toString());
+								scannerIDTV.setText(selectedTicket
+										.getScannerID());
+
 								Toast.makeText(
 										TicketDetailActivity.this,
 										"Admit all " + tempTicketList.size()
 												+ " on order.",
-										Toast.LENGTH_SHORT).show();
+										Toast.LENGTH_LONG).show();
 							}// if
 						}
 					}, new Response.ErrorListener() {
@@ -295,40 +414,69 @@ public class TicketDetailActivity extends MenuButtonActivity {
 							progressDialog.dismiss();
 							System.out.println("ERROR  : " + error.getMessage());
 							error.printStackTrace();
-							JSONArray aa = null;
+
+							JSONArray rejectedTicketsJSONArray = null;
 							try {
-								JSONObject jsonObject = new JSONObject(error.getMessage());
+								JSONObject jsonObject = new JSONObject(error
+										.getMessage());
 								if (jsonObject.has("rejected_barcodes")) {
-									aa = jsonObject
+									rejectedTicketsJSONArray = jsonObject
 											.getJSONArray("rejected_barcodes");
 								}
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
 
-							// update Ticket in Global Application class &
-							// create Scan Objects
-							for (int i = 0; i < myApp.getTicketList().size(); i++) {
-								for (int j = 0; j < aa.length(); j++) {
-									try {
-										if (myApp
-												.getTicketList()
-												.get(i)
-												.getBarcode()
-												.equals(aa.getJSONObject(j)
-														.getString("barcode"))) {
+							/**
+							 * update Ticket in Global Application class &
+							 * create Scan Objects
+							 **/
+							/**
+							 * No. of tickets to update = All tickets in order -
+							 * Tickets that have been rejected
+							 **/
+							List<Ticket> tempOrderTicketList = myApp
+									.getOrderMap().get(
+											selectedTicket.getOrderId());
 
-											updateTicketListAndScanList(i);
+							List<Ticket> tempTicketList = myApp.getTicketList();
+
+							for (int i = 0; i < tempOrderTicketList.size(); i++) {
+								for (int j = 0; j < rejectedTicketsJSONArray
+										.length(); j++) {
+									try {
+										JSONObject jsonObject = rejectedTicketsJSONArray
+												.getJSONObject(j);
+										if (jsonObject.getString("barcode")
+												.equals(tempOrderTicketList
+														.get(i).getBarcode())) {
+											break;
 										}
 									} catch (JSONException e) {
 										e.printStackTrace();
 									}
+								}
+
+								// if code reaches this point, it means that
+								// tempOrderTicketList.get(i) barcode is not
+								// rejected
+								for (int k = 0; k < tempTicketList.size(); k++) {
+									if (tempTicketList
+											.get(k)
+											.getBarcode()
+											.equals(tempOrderTicketList.get(i)
+													.getBarcode())) {
+
+										updateTicketListAndScanList(k);
+									}
 								}// for
-							}// for
-							myApp.setTicketList(myApp.getTicketList());
+							}
+
+							myApp.setTicketList(tempTicketList);
 
 							// Show Toast/Alert
-							if (tempTicketList.size() == aa.length()) {
+							if (tempTicketList.size() == rejectedTicketsJSONArray
+									.length()) {
 								Toast.makeText(TicketDetailActivity.this,
 										"Do not admit any guest on order",
 										Toast.LENGTH_SHORT).show();
@@ -336,7 +484,7 @@ public class TicketDetailActivity extends MenuButtonActivity {
 								Toast.makeText(
 										TicketDetailActivity.this,
 										"Admit "
-												+ (tempTicketList.size() - aa
+												+ (tempTicketList.size() - rejectedTicketsJSONArray
 														.length()) + "/"
 												+ tempTicketList.size()
 												+ " guests", Toast.LENGTH_SHORT)
@@ -375,6 +523,23 @@ public class TicketDetailActivity extends MenuButtonActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void updateTicketListAndScanList(int i) {
+		// TODO the date used in this function are not correct, we have to fetch
+		// them from
+		myApp.getTicketList()
+				.get(i)
+				.setScanTimeAndScannerIDAndCheckedIn(new Date(),
+						myApp.getLoginUser().getUsername(), true);
+
+		Scan scan = new Scan(myApp.getTicketList().get(i).getBarcode(), 0,
+				new Date());
+
+		myApp.getScanList().add(scan);
+
+		editor.putString("scanList", gson.toJson(myApp.getScanList()));
+		editor.commit();
 	}
 
 }
