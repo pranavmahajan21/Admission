@@ -237,10 +237,15 @@ public class TicketDetailActivity extends MenuButtonActivity {
 							progressDialog.dismiss();
 							System.out.println(">>>>Response => "
 									+ response.toString());
+//							selectedTicket.setScanTimeAndScannerIDAndCheckedIn(
+//									scan.getScanDate(), myApp.getLoginUser()
+//											.getUsername(), false);
+//							selectedTicket.setCheckedIn(true);
+							
 							selectedTicket.setScanTimeAndScannerIDAndCheckedIn(
 									scan.getScanDate(), myApp.getLoginUser()
-											.getUsername(), false);
-							selectedTicket.setCheckedIn(true);
+											.getUsername(), true);
+//							selectedTicket.setCheckedIn(true);
 
 							// changes in view
 							statusTV.setText("Admitted");
@@ -256,13 +261,14 @@ public class TicketDetailActivity extends MenuButtonActivity {
 									.toString());
 							scannerIDTV.setText(selectedTicket.getScannerID());
 
-							// update global ticket list
+							/** update global ticket list **/
 							myApp.getTicketList().set(position, selectedTicket);
 
-							// update global order map
-							// BEWARE** This code can lead to
-							// OutOfMemoryException. Test properly.
-							// **BEWARE
+							/** update global order map **/
+							/**
+							 * BEWARE. This code can lead to
+							 * OutOfMemoryException. Test properly. BEWARE
+							 **/
 							List<Ticket> tempOrderTicketList = myApp
 									.getOrderMap().get(
 											selectedTicket.getOrderId());
@@ -273,9 +279,15 @@ public class TicketDetailActivity extends MenuButtonActivity {
 								}
 							}
 
-							// update preferences
+							/** update preferences **/
 							editor.putString("ticketList",
 									gson.toJson(myApp.getTicketList()));
+							editor.commit();
+							
+							scan.setResult(0);
+							myApp.getScanList().add(scan);
+							
+							editor.putString("scanList", gson.toJson(myApp.getScanList()));
 							editor.commit();
 						}
 					}, new Response.ErrorListener() {
@@ -298,6 +310,11 @@ public class TicketDetailActivity extends MenuButtonActivity {
 												Toast.LENGTH_LONG).show();
 									}
 								}
+								scan.setResult(1);
+								myApp.getScanList().add(scan);
+								
+								editor.putString("scanList", gson.toJson(myApp.getScanList()));
+								editor.commit();
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}

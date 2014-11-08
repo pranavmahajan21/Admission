@@ -9,7 +9,7 @@ public class Scan implements Serializable {
 
 	String barcode;
 
-	int result;
+	int result = -1;
 	// 0 -> valid barcode & not checked in i.e. ideal case
 	// 1 -> valid barcode & checked in i.e. duplicate
 	// 2 -> invalid barcode

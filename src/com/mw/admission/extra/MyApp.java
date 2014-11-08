@@ -246,7 +246,7 @@ public class MyApp extends Application {
 			// if(we are coming from will call page)
 			tempTicket = getTicketList().get(position);
 		} else {
-			// we are coming from scanner page
+			/** we are coming from scanner page **/
 			for (int i = 0; i < getTicketList().size(); i++) {
 				if (barcode.equals(getTicketList().get(i).getBarcode())) {
 					tempTicket = getTicketList().get(i);
@@ -255,37 +255,37 @@ public class MyApp extends Application {
 		}
 
 		if (tempTicket != null) {
-			if (!isPositionKnown) {
-				// if we don't know the position i.e. we are coming from scanner
-				tempTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
-						getLoginUser().getUsername(), true);
-			}
-
-			if (barcode.equals(tempTicket.getBarcode())) {
-				// VALID BARCODE
-
-				if (!tempTicket.isCheckedIn()) {
-					// NOT CHECKED IN i.e. *** ideal case ***
-					scan.setResult(0);
-					if (cd.isConnectingToInternet()) {
-						checkInTicket(scan);
-					} else {
-						Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT);
-					}
-				} else {
-					// ALREADY CHECKED IN i.e. DUPLICATE TICKET
-					scan.setResult(1);
-				}
-			}
+//			if (!isPositionKnown) {
+//				/** if we don't know the position i.e. we are coming from scanner **/
+////				tempTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
+////						getLoginUser().getUsername(), true);
+//			}
+//
+//			if (barcode.equals(tempTicket.getBarcode())) {
+//				// VALID BARCODE
+//
+//				if (!tempTicket.isCheckedIn()) {
+//					// NOT CHECKED IN i.e. *** ideal case ***
+//					scan.setResult(0);
+////					if (cd.isConnectingToInternet()) {
+////						checkInTicket(scan);
+////					} else {
+////						Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT);
+////					}
+//				} else {
+//					// ALREADY CHECKED IN i.e. DUPLICATE TICKET
+//					scan.setResult(1);
+//				}
+//			}
 		} else {
-			// we can reach here only through scanner
-			// INVALID BARCODE
+			/** we can reach here only through scanner **/
+			/** INVALID BARCODE **/
 			scan.setResult(2);
+			getScanList().add(scan);
+			
+			editor.putString("scanList", gson.toJson(getScanList()));
+			editor.commit();
 		}
-		getScanList().add(scan);
-
-		editor.putString("scanList", gson.toJson(getScanList()));
-		editor.commit();
 
 		return scan;
 	}
@@ -738,5 +738,15 @@ public class MyApp extends Application {
 
 		setTicketList(ticketList);
 		return ticketList.size();
+	}
+	
+	public int getTicketPosition(Ticket ticket)
+	{
+		for (int i = 0; i < getTicketList().size(); i++) {
+			if (ticket.getBarcode().equals(getTicketList().get(i).getBarcode())) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }
