@@ -17,9 +17,8 @@
         android:layout_above="@+id/footer"
         android:layout_below="@+id/actionbar"
         android:background="@color/black_body_bg"
-        android:divider="@color/grey_text" 
-        android:dividerHeight="0.5dp"
-        />
+        android:divider="@color/grey_text"
+        android:dividerHeight="0.5dp" />
 
     <include
         android:id="@+id/footer"
@@ -28,4 +27,11 @@
         android:layout_alignParentBottom="true"
         layout="@layout/footer" />
 
+    <TextView 
+        android:id="@+id/error_message_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nothing in scan history."
+        android:layout_centerInParent="true"
+        android:visibility="invisible"        />
 </RelativeLayout>

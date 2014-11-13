@@ -237,15 +237,15 @@ public class TicketDetailActivity extends MenuButtonActivity {
 							progressDialog.dismiss();
 							System.out.println(">>>>Response => "
 									+ response.toString());
-//							selectedTicket.setScanTimeAndScannerIDAndCheckedIn(
-//									scan.getScanDate(), myApp.getLoginUser()
-//											.getUsername(), false);
-//							selectedTicket.setCheckedIn(true);
-							
+							// selectedTicket.setScanTimeAndScannerIDAndCheckedIn(
+							// scan.getScanDate(), myApp.getLoginUser()
+							// .getUsername(), false);
+							// selectedTicket.setCheckedIn(true);
+
 							selectedTicket.setScanTimeAndScannerIDAndCheckedIn(
 									scan.getScanDate(), myApp.getLoginUser()
 											.getUsername(), true);
-//							selectedTicket.setCheckedIn(true);
+							// selectedTicket.setCheckedIn(true);
 
 							// changes in view
 							statusTV.setText("Admitted");
@@ -283,11 +283,12 @@ public class TicketDetailActivity extends MenuButtonActivity {
 							editor.putString("ticketList",
 									gson.toJson(myApp.getTicketList()));
 							editor.commit();
-							
+
 							scan.setResult(0);
 							myApp.getScanList().add(scan);
-							
-							editor.putString("scanList", gson.toJson(myApp.getScanList()));
+
+							editor.putString("scanList",
+									gson.toJson(myApp.getScanList()));
 							editor.commit();
 						}
 					}, new Response.ErrorListener() {
@@ -312,8 +313,9 @@ public class TicketDetailActivity extends MenuButtonActivity {
 								}
 								scan.setResult(1);
 								myApp.getScanList().add(scan);
-								
-								editor.putString("scanList", gson.toJson(myApp.getScanList()));
+
+								editor.putString("scanList",
+										gson.toJson(myApp.getScanList()));
 								editor.commit();
 							} catch (JSONException e) {
 								e.printStackTrace();
@@ -381,8 +383,10 @@ public class TicketDetailActivity extends MenuButtonActivity {
 							if (!response.has("rejected_barcodes")
 									&& response.has("message")) {
 
-								// update Ticket & order List in Global
-								// Application class
+								/**
+								 * update Ticket & order & Scan List in Global
+								 * Application class
+								 **/
 
 								List<Ticket> tempTicketList = myApp
 										.getTicketList();
@@ -401,12 +405,11 @@ public class TicketDetailActivity extends MenuButtonActivity {
 								}
 								myApp.setTicketList(tempTicketList);
 
-								// changes in view
+								/** changes in view **/
 								statusTV.setText("Admitted");
 								statusTV.setTextColor(Color
 										.parseColor("#ff0000"));
 
-								// replace view in parent LL
 								parentLL.removeView(oldChildLL);
 								parentLL.addView(newChildLL);
 
@@ -445,8 +448,8 @@ public class TicketDetailActivity extends MenuButtonActivity {
 							}
 
 							/**
-							 * update Ticket in Global Application class &
-							 * create Scan Objects
+							 * update Ticket & order & Scan List in Global
+							 * Application class
 							 **/
 							/**
 							 * No. of tickets to update = All tickets in order -
@@ -459,6 +462,10 @@ public class TicketDetailActivity extends MenuButtonActivity {
 							List<Ticket> tempTicketList = myApp.getTicketList();
 
 							for (int i = 0; i < tempOrderTicketList.size(); i++) {
+								/**
+								 * check if ticket(i) is in list of rejected
+								 * barcodes
+								 **/
 								for (int j = 0; j < rejectedTicketsJSONArray
 										.length(); j++) {
 									try {
@@ -474,9 +481,10 @@ public class TicketDetailActivity extends MenuButtonActivity {
 									}
 								}
 
-								// if code reaches this point, it means that
-								// tempOrderTicketList.get(i) barcode is not
-								// rejected
+								/**
+								 * if code reaches this point, it means that
+								 * ticket(i) is not in list of rejected barcodes
+								 **/
 								for (int k = 0; k < tempTicketList.size(); k++) {
 									if (tempTicketList
 											.get(k)
@@ -492,18 +500,18 @@ public class TicketDetailActivity extends MenuButtonActivity {
 							myApp.setTicketList(tempTicketList);
 
 							// Show Toast/Alert
-							if (tempTicketList.size() == rejectedTicketsJSONArray
+							if (tempOrderTicketList.size() == rejectedTicketsJSONArray
 									.length()) {
 								Toast.makeText(TicketDetailActivity.this,
-										"Do not admit any guest on order",
+										"Do not admit any guest on order.",
 										Toast.LENGTH_SHORT).show();
 							} else {
 								Toast.makeText(
 										TicketDetailActivity.this,
 										"Admit "
-												+ (tempTicketList.size() - rejectedTicketsJSONArray
+												+ (tempOrderTicketList.size() - rejectedTicketsJSONArray
 														.length()) + "/"
-												+ tempTicketList.size()
+												+ tempOrderTicketList.size()
 												+ " guests", Toast.LENGTH_SHORT)
 										.show();
 							}

@@ -144,7 +144,7 @@ public class MenuActivity extends MenuButtonActivity {
 					nextIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 							| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-					// TODO : clear preferences
+					// TODO : update data to server
 					editor.clear();
 					editor.commit();
 
@@ -152,6 +152,7 @@ public class MenuActivity extends MenuButtonActivity {
 					myApp.setEventList(null);
 					myApp.setSelectedEvent(null);
 					myApp.setTicketList(null);
+					myApp.setScanList(null);
 
 					startActivity(nextIntent);
 					break;

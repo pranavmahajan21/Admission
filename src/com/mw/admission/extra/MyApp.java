@@ -255,34 +255,35 @@ public class MyApp extends Application {
 		}
 
 		if (tempTicket != null) {
-//			if (!isPositionKnown) {
-//				/** if we don't know the position i.e. we are coming from scanner **/
-////				tempTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
-////						getLoginUser().getUsername(), true);
-//			}
-//
-//			if (barcode.equals(tempTicket.getBarcode())) {
-//				// VALID BARCODE
-//
-//				if (!tempTicket.isCheckedIn()) {
-//					// NOT CHECKED IN i.e. *** ideal case ***
-//					scan.setResult(0);
-////					if (cd.isConnectingToInternet()) {
-////						checkInTicket(scan);
-////					} else {
-////						Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT);
-////					}
-//				} else {
-//					// ALREADY CHECKED IN i.e. DUPLICATE TICKET
-//					scan.setResult(1);
-//				}
-//			}
+			// if (!isPositionKnown) {
+			// /** if we don't know the position i.e. we are coming from scanner
+			// **/
+			// // tempTicket.setScanTimeAndScannerIDAndCheckedIn(new Date(),
+			// // getLoginUser().getUsername(), true);
+			// }
+			//
+			// if (barcode.equals(tempTicket.getBarcode())) {
+			// // VALID BARCODE
+			//
+			// if (!tempTicket.isCheckedIn()) {
+			// // NOT CHECKED IN i.e. *** ideal case ***
+			// scan.setResult(0);
+			// // if (cd.isConnectingToInternet()) {
+			// // checkInTicket(scan);
+			// // } else {
+			// // Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT);
+			// // }
+			// } else {
+			// // ALREADY CHECKED IN i.e. DUPLICATE TICKET
+			// scan.setResult(1);
+			// }
+			// }
 		} else {
 			/** we can reach here only through scanner **/
 			/** INVALID BARCODE **/
 			scan.setResult(2);
 			getScanList().add(scan);
-			
+
 			editor.putString("scanList", gson.toJson(getScanList()));
 			editor.commit();
 		}
@@ -341,6 +342,8 @@ public class MyApp extends Application {
 	}// end of function
 
 	public JSONObject createOrderJSON(List<Ticket> ticketList) {
+		/** prepare JSON to be sent along with the URL **/
+
 		Date date = new Date();
 		JSONArray aa = new JSONArray();
 		JSONObject mainJsonObject = new JSONObject();
@@ -739,14 +742,28 @@ public class MyApp extends Application {
 		setTicketList(ticketList);
 		return ticketList.size();
 	}
-	
-	public int getTicketPosition(Ticket ticket)
-	{
+
+	public int getTicketPosition(Ticket ticket) {
 		for (int i = 0; i < getTicketList().size(); i++) {
 			if (ticket.getBarcode().equals(getTicketList().get(i).getBarcode())) {
 				return i;
 			}
 		}
 		return -1;
+	}
+
+	public void updateTicketListAndScanList(int i) {
+		// TODO the date used in this function are not correct, we have to fetch
+		// them from (maybe)Scan object
+		getTicketList().get(i).setScanTimeAndScannerIDAndCheckedIn(new Date(),
+				getLoginUser().getUsername(), true);
+		// TODO update ticketList preferences
+
+		Scan scan = new Scan(getTicketList().get(i).getBarcode(), 0, new Date());
+
+		getScanList().add(scan);
+
+		editor.putString("scanList", gson.toJson(getScanList()));
+		editor.commit();
 	}
 }

@@ -1,16 +1,22 @@
 package com.mw.admission.activity;
 
-import com.mw.admission.extra.MyApp;
-import com.mw.admission.model.Event;
+import java.util.List;
 
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.mw.admission.extra.MyApp;
+import com.mw.admission.model.Event;
+import com.mw.admission.model.Scan;
+import com.mw.admission.model.Ticket;
+
 public class ReportActivity extends MenuButtonActivity {
 
 	boolean isHeaderThere = true;
 
+	List<Scan> scanList;
+	List<Ticket> ticketList;
 	MyApp myApp;
 
 	TextView label_last_TV, label_start_TV, label_ticket_TV, label_event_TV,
@@ -23,6 +29,8 @@ public class ReportActivity extends MenuButtonActivity {
 
 	private void initThings() {
 		myApp = (MyApp) getApplicationContext();
+		scanList = myApp.getScanList();
+		ticketList = myApp.getTicketList();
 	}
 
 	private void setTypeface() {
@@ -75,6 +83,32 @@ public class ReportActivity extends MenuButtonActivity {
 		Event tempEvent = myApp.getSelectedEvent();
 
 		start_TV.setText(myApp.formatDateToString2(tempEvent.getScanStartDate()));
+
+		// TODO: check if the code breaks if no ticket was fetched. Basically is
+		// myApp.getTicketList() is null or 0.
+		int count = 0;
+		for (int i = 0; i < ticketList.size(); i++) {
+			if (ticketList.get(i).isCheckedIn()) {
+				count++;
+			}
+		}
+		admission_event_TV.setText(Integer.toString(count));
+
+		int count2 = 0;
+		for (int i = 0; i < scanList.size(); i++) {
+			if (scanList.get(i).getResult() == 0) {
+				count2++;
+			}
+		}
+		if (count2 > 0) {
+			admission_scanner_TV.setText(Integer.toString(count2));
+			rejection_scanner_TV.setText(Integer.toString(scanList.size()
+					- count2));
+
+		} else {
+			admission_scanner_TV.setText("-");
+			rejection_scanner_TV.setText("-");
+		}
 	}
 
 	@Override
