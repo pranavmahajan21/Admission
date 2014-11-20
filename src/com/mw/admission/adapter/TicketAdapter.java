@@ -159,7 +159,9 @@ public class TicketAdapter extends BaseAdapter {
 		} else {
 			for (Ticket tempTicket : tempTicketList) {
 				if (tempTicket.getNameOfGuest()
-						.toLowerCase(Locale.getDefault()).contains(charText)) {
+						.toLowerCase(Locale.getDefault()).contains(charText)
+						|| tempTicket.getTicketId().contains(charText)
+						|| tempTicket.getOrderId().contains(charText)) {
 					ticketList.add(tempTicket);
 				}
 			}

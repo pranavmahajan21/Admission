@@ -6,10 +6,11 @@
             <solid android:color="@color/grey_divider" />
         </shape>
     </item>
-   
+    
     <item android:bottom="0.5dp">
         <shape android:shape="rectangle" >
-<!--             <solid android:color="#FFFFFF" /> -->
+
+            <!-- <solid android:color="#FFFFFF" /> -->
             <solid android:color="#000000" />
         </shape>
     </item>

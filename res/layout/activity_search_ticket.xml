@@ -22,19 +22,23 @@
             android:id="@+id/search_ET"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/search_IB"
+            android:layout_alignTop="@+id/search_IB"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/search_IB"
-            android:gravity="center_horizontal"
+            android:background="@drawable/custom_bg_solid_radius"
+            android:gravity="center"
             android:hint="Search ticket" />
 
         <ImageButton
             android:id="@+id/search_IB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="@null"
-            android:src="@drawable/tick" />
+            android:scaleType="fitXY"
+            android:src="@drawable/search" />
     </RelativeLayout>
 
     <ListView

@@ -52,12 +52,15 @@ public class MyApp extends Application {
 
 	public static final int EVENT_CHANGE = 10;
 
+//	webapi2...mvc
+//	mvc5
 	// http://staging.missiontix.com/ 404
 
 	// http://beta.missiontix.com/ 500
 
 	// http://private-db490-missiontix.apiary-proxy.com/ 500
 
+	//qa
 	public static final String URL = "http://beta.missiontix.com/";
 
 	public static final String LOGIN = "api/users/authenticate";
@@ -72,7 +75,7 @@ public class MyApp extends Application {
 
 	private static MyApp myAppInstance;
 
-	// To check for internet
+	// To check for Internet
 	ConnectionDetector cd;
 	// don't initialize in this class
 	User loginUser;

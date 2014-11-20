@@ -152,11 +152,11 @@ public class LoginActivity extends Activity {
 		// usernameTV.setText("scanning_user42160");
 		// passwordTV.setText("password");
 
-//		usernameTV.setText("scanning_user54730");
-//		passwordTV.setText("vb12345");
+		usernameTV.setText("scanning_user54730");
+		passwordTV.setText("vb12345");
 
-		 usernameTV.setText("scanning_user54731");
-		 passwordTV.setText("vb12345");
+//		 usernameTV.setText("scanning_user54731");
+//		 passwordTV.setText("vb12345");
 
 //		 usernameTV.setText("scanning_user54738");
 //		 passwordTV.setText("vb12345");
